@@ -1,0 +1,26 @@
+How to use U-Boot on SOMLABS VisionSOM-6ULL board.
+-----------------------------------------------
+
+- Build U-Boot for SOMLABS VisionSOM-6ULL board set to boot from SD card:
+
+$ make mrproper
+$ make somlabs_visionsom_6ull_defconfig
+$ make
+
+- Build U-Boot for SOMLABS VisionSOM-6ULL board set to boot from eMMC:
+
+$ make mrproper
+$ make somlabs_visionsom_6ull_emmc_defconfig
+$ make
+
+- Build U-Boot for SOMLABS VisionSOM-6ULL board set to boot from NAND:
+
+$ make mrproper
+$ make somlabs_visionsom_6ull_nand_defconfig
+$ make
+
+- Build U-Boot for SOMLABS VisionSOM-6ULL board set to boot from QSPI:
+
+$ make mrproper
+$ make somlabs_visionsom_6ull_qspi_defconfig
+$ make

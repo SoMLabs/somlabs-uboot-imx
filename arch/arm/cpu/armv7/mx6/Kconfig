@@ -204,6 +204,13 @@ config TARGET_MX6ULL_9X9_EVK
 	select DM
 	select DM_THERMAL
 
+config TARGET_SOMLABS_VISIONSOM_6ULL
+	bool "visionsom-6ull"
+	select MX6ULL
+	select DM
+	select DM_THERMAL
+	select SUPPORT_SPL
+
 config TARGET_SECOMX6
 	bool "secomx6 boards"
 
@@ -270,6 +277,7 @@ source "board/gateworks/gw_ventana/Kconfig"
 source "board/kosagi/novena/Kconfig"
 source "board/seco/Kconfig"
 source "board/solidrun/mx6cuboxi/Kconfig"
+source "board/somlabs/visionsom-6ull/Kconfig"
 source "board/tbs/tbs2910/Kconfig"
 source "board/technexion/picosom-imx6ul/Kconfig"
 source "board/tqc/tqma6/Kconfig"

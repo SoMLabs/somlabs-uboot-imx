@@ -1,0 +1,9 @@
+VISIONSOM-6ULL BOARD
+M:	A K < ak@ak.net>
+S:	Maintained
+F:	board/somlabs/visionsom-6ull/
+F:	include/configs/somlabs_visionsom_6ull.h
+F:	configs/somlabs_visionsom_6ull_defconfig
+F:	configs/somlabs_visionsom_6ull_emmc_defconfig
+F:	configs/somlabs_visionsom_6ull_nand_defconfig
+F:	configs/somlabs_visionsom_6ull_qspi_defconfig
