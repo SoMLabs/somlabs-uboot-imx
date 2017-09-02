@@ -253,7 +253,7 @@ static int mxs_nand_get_ecc_strength(struct mtd_info *mtd)
 		ecc_strength = ((page_oob_size - MXS_NAND_METADATA_SIZE) * 8)
 			/(galois_field * mxs_nand_ecc_chunk_cnt(mtd->writesize));
 		ecc_strength += ecc_strength & 1;
-		ecc_strength = min(ecc_strength, MXS_NAND_MAX_ECC_STRENGTH);
+		ecc_strength = min(ecc_strength, max_ecc_strength_supported);
 #endif
 	}
 	return 0;

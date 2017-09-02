@@ -3502,6 +3502,8 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
 		mtd->name = type->name;
 
 	chip->chipsize = (uint64_t)type->chipsize << 20;
+	chip->ecc_strength_ds = 1;
+	chip->ecc_step_ds = 512;
 
 	if (!type->pagesize && chip->init_size) {
 		/* Set the pagesize, oobsize, erasesize by the driver */
