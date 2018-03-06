@@ -63,7 +63,7 @@
 #define CONFIG_SYS_MMC_IMG_LOAD_PART	1
 
 #ifdef CONFIG_SYS_BOOT_NAND
-#define CONFIG_MFG_NAND_PARTITION "mtdparts=gpmi-nand:2m(boot),-(ubi) "
+#define CONFIG_MFG_NAND_PARTITION "mtdparts=gpmi-nand:4m(boot),-(ubi) "
 #else
 #define CONFIG_MFG_NAND_PARTITION ""
 #endif
@@ -107,7 +107,7 @@
 	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
 		"root=ubi0:rootfs rootfstype=ubifs "		     \
 		CONFIG_BOOTARGS_CMA_SIZE \
-		"mtdparts=gpmi-nand:2m(boot),-(ubi)\0" \
+		"mtdparts=gpmi-nand:4m(boot),-(ubi)\0" \
 	"bootcmd=mtdparts default; ubi part ubi; ubifsmount ubi0:rootfs;" \
 		"ubifsload ${loadaddr} /boot/zImage;" \
 		"ubifsload ${fdt_addr} /boot/${fdt_file};" \
@@ -261,7 +261,6 @@
 #define CONFIG_CMD_NAND_TRIMFFS
 
 #define CONFIG_NAND_MXS
-#define CONFIG_NAND_MXS_BCH_LEGACY_GEO
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
 #define CONFIG_SYS_NAND_BASE		0x40000000
 #define CONFIG_SYS_NAND_5_ADDR_CYCLE
@@ -285,7 +284,7 @@
 #define CONFIG_MTD_PARTITIONS
 #define CONFIG_MTD_DEVICE
 #define MTDIDS_DEFAULT            "nand0=gpmi-nand"
-#define MTDPARTS_DEFAULT          "mtdparts=gpmi-nand:2m(boot),-(ubi)"
+#define MTDPARTS_DEFAULT          "mtdparts=gpmi-nand:4m(boot),-(ubi)"
 
 #endif
 
