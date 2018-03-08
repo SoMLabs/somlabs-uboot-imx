@@ -384,6 +384,13 @@ config TARGET_PCM058
 	select BOARD_LATE_INIT
 	select SUPPORT_SPL
 
+config TARGET_SOMLABS_VISIONSOM_6ULL
+	bool "visionsom-6ull"
+	select MX6ULL
+	select DM
+	select DM_THERMAL
+	select SUPPORT_SPL
+
 config TARGET_SECOMX6
 	bool "secomx6 boards"
 
@@ -509,6 +516,7 @@ source "board/seco/Kconfig"
 source "board/solidrun/mx6cuboxi/Kconfig"
 source "board/freescale/picosom-imx6ul/Kconfig"
 source "board/freescale/mx6ul_aquila/Kconfig"
+source "board/somlabs/visionsom-6ull/Kconfig"
 source "board/tbs/tbs2910/Kconfig"
 source "board/tqc/tqma6/Kconfig"
 source "board/toradex/apalis_imx6/Kconfig"
