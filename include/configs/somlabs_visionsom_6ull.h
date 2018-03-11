@@ -30,7 +30,7 @@
 #endif
 
 #define PHYS_SDRAM_SIZE		SZ_512M
-#define CONFIG_BOOTARGS_CMA_SIZE   ""
+#define BOOTARGS_CMA_SIZE   ""
 
 #undef CONFIG_LDO_BYPASS_CHECK
 
@@ -41,13 +41,12 @@
  * #include "imx6_spl.h"
 */
 
-#define CONFIG_DISPLAY_CPUINFO
+/*#define CONFIG_DISPLAY_CPUINFO
 #define CONFIG_DISPLAY_BOARDINFO
-
+*/
 /* Size of malloc() pool */
 #define CONFIG_SYS_MALLOC_LEN		(16 * SZ_1M)
 
-#define CONFIG_BOARD_EARLY_INIT_F
 #define CONFIG_BOARD_LATE_INIT
 
 #define CONFIG_MXC_UART
@@ -62,10 +61,10 @@
 #define CONFIG_SYS_MMC_ENV_DEV			0
 #define CONFIG_SYS_MMC_IMG_LOAD_PART	1
 
-#ifdef CONFIG_SYS_BOOT_NAND
-#define CONFIG_MFG_NAND_PARTITION "mtdparts=gpmi-nand:4m(boot),-(ubi) "
+#ifdef CONFIG_NAND_BOOT
+#define MFG_NAND_PARTITION "mtdparts=gpmi-nand:4m(boot),-(ubi) "
 #else
-#define CONFIG_MFG_NAND_PARTITION ""
+#define MFG_NAND_PARTITION ""
 #endif
 
 #if defined CONFIG_SOMLABS_VISIONSOM_6ULL_EMMC || defined CONFIG_SOMLABS_VISIONSOM_6ULL_SD
@@ -84,20 +83,20 @@
 
 #define CONFIG_MFG_ENV_SETTINGS \
 	"mfgtool_args=setenv bootargs console=${console},${baudrate} " \
-	    CONFIG_BOOTARGS_CMA_SIZE \
+	    BOOTARGS_CMA_SIZE \
 		"rdinit=/linuxrc " \
 		"g_mass_storage.stall=0 g_mass_storage.removable=1 " \
 		"g_mass_storage.file=/fat g_mass_storage.ro=1 " \
 		"g_mass_storage.idVendor=0x066F g_mass_storage.idProduct=0x37FF "\
 		"g_mass_storage.iSerialNumber=\"\" "\
-		CONFIG_MFG_NAND_PARTITION \
+		MFG_NAND_PARTITION \
 		"clk_ignore_unused "\
 		"\0" \
 	"initrd_addr=0x83800000\0" \
 	"initrd_high=0xffffffff\0" \
 	"bootcmd_mfg=run mfgtool_args;bootz ${loadaddr} ${initrd_addr} ${fdt_addr};\0" \
 
-#if defined(CONFIG_SYS_BOOT_NAND)
+#if defined(CONFIG_NAND_BOOT)
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	CONFIG_MFG_ENV_SETTINGS \
 	"panel=TFT43AB\0" \
@@ -106,7 +105,7 @@
 	"console=ttymxc0\0" \
 	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
 		"root=ubi0:rootfs rootfstype=ubifs "		     \
-		CONFIG_BOOTARGS_CMA_SIZE \
+		BOOTARGS_CMA_SIZE \
 		"mtdparts=gpmi-nand:4m(boot),-(ubi)\0" \
 	"bootcmd=mtdparts default; ubi part ubi; ubifsmount ubi0:rootfs;" \
 		"ubifsload ${loadaddr} /boot/zImage;" \
@@ -139,7 +138,7 @@
 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
 	"mmcautodetect=yes\0" \
 	"mmcargs=setenv bootargs console=${console},${baudrate} " \
-		CONFIG_BOOTARGS_CMA_SIZE \
+		BOOTARGS_CMA_SIZE \
 		"root=${mmcroot}\0" \
 	"loadbootscript=" \
 		"ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${script};\0" \
@@ -163,7 +162,7 @@
 			"bootz; " \
 		"fi;\0" \
 	"netargs=setenv bootargs console=${console},${baudrate} " \
-		CONFIG_BOOTARGS_CMA_SIZE \
+		BOOTARGS_CMA_SIZE \
 		"root=/dev/nfs " \
 	"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
 		"netboot=echo Booting from net ...; " \
@@ -203,7 +202,6 @@
 #endif
 
 /* Miscellaneous configurable options */
-#define CONFIG_CMD_MEMTEST
 #define CONFIG_SYS_MEMTEST_START	0x80000000
 #define CONFIG_SYS_MEMTEST_END		(CONFIG_SYS_MEMTEST_START + 0x8000000)
 
@@ -226,17 +224,19 @@
 	(CONFIG_SYS_INIT_RAM_ADDR + CONFIG_SYS_INIT_SP_OFFSET)
 
 /* FLASH and environment organization */
-#define CONFIG_SYS_NO_FLASH
+#define CONFIG_ENV_IS_NOWHERE
 
+#ifndef CONFIG_ENV_IS_NOWHERE
 #ifdef CONFIG_SYS_BOOT_QSPI
 #define CONFIG_FSL_QSPI
 #define CONFIG_ENV_IS_IN_SPI_FLASH
-#elif defined CONFIG_SYS_BOOT_NAND
+#elif defined CONFIG_NAND_BOOT
 #define CONFIG_SYS_USE_NAND
 #define CONFIG_ENV_IS_IN_NAND
 #else
 #define CONFIG_FSL_QSPI
 #define CONFIG_ENV_IS_IN_MMC
+#endif
 #endif
 
 #define CONFIG_CMD_BMODE
@@ -256,9 +256,7 @@
 #endif
 
 /* NAND stuff */
-#ifdef CONFIG_SYS_USE_NAND
-#define CONFIG_CMD_NAND
-#define CONFIG_CMD_NAND_TRIMFFS
+#ifdef CONFIG_NAND_BOOT
 
 #define CONFIG_NAND_MXS
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
@@ -272,10 +270,9 @@
 #define CONFIG_APBH_DMA_BURST8
 
 /* UBI/UBIFS support */
-#define CONFIG_CMD_UBI
 #define CONFIG_CMD_UBIFS
-#define CONFIG_UBI_SILENCE_MSG
-#define CONFIG_UBIFS_SILENCE_MSG
+/*#define CONFIG_UBI_SILENCE_MSG*/
+/*#define CONFIG_UBIFS_SILENCE_MSG*/
 #define CONFIG_RBTREE
 #define CONFIG_LZO
 
@@ -307,11 +304,7 @@
 
 
 /* USB Configs */
-#define CONFIG_CMD_USB
 #ifdef CONFIG_CMD_USB
-#define CONFIG_USB_EHCI
-#define CONFIG_USB_EHCI_MX6
-#define CONFIG_USB_STORAGE
 #define CONFIG_EHCI_HCD_INIT_AFTER_RESET
 #define CONFIG_USB_HOST_ETHER
 #define CONFIG_USB_ETHER_ASIX
@@ -321,10 +314,6 @@
 #endif
 
 #ifdef CONFIG_CMD_NET
-#define CONFIG_CMD_MII
-#define CONFIG_LIB_RAND
-#define CONFIG_NET_RANDOM_ETHADDR
-
 #define CONFIG_FEC_MXC
 #define CONFIG_MII
 #define CONFIG_FEC_ENET_DEV		0
@@ -333,28 +322,35 @@
 #define IMX_FEC_BASE			ENET_BASE_ADDR
 #define CONFIG_FEC_MXC_PHYADDR          0x1
 #define CONFIG_FEC_XCV_TYPE             RMII
+#ifdef CONFIG_DM_ETH
+#define CONFIG_ETHPRIME			"eth0"
+#else
+#define CONFIG_ETHPRIME			"FEC0"
+#endif
 #elif (CONFIG_FEC_ENET_DEV == 1)
 #define IMX_FEC_BASE			ENET2_BASE_ADDR
 #define CONFIG_FEC_MXC_PHYADDR		0x2
 #define CONFIG_FEC_XCV_TYPE		RMII
+#ifdef CONFIG_DM_ETH
+#define CONFIG_ETHPRIME			"eth1"
+#else
+#define CONFIG_ETHPRIME			"FEC1"
 #endif
-#define CONFIG_ETHPRIME			"FEC0"
+#endif
 
 #define CONFIG_PHYLIB
 #define CONFIG_PHY_MICREL
+#define CONFIG_FEC_MXC_MDIO_BASE ENET_BASE_ADDR
 #endif
+
 
 #define CONFIG_IMX_THERMAL
 
 #ifndef CONFIG_SPL_BUILD
-#define CONFIG_VIDEO
+
 #ifdef CONFIG_VIDEO
-#define CONFIG_CFB_CONSOLE
 #define CONFIG_VIDEO_MXS
 #define CONFIG_VIDEO_LOGO
-#define CONFIG_VIDEO_SW_CURSOR
-#define CONFIG_VGA_AS_SINGLE_DEVICE
-#define CONFIG_SYS_CONSOLE_IS_IN_ENV
 #define CONFIG_SPLASH_SCREEN
 #define CONFIG_SPLASH_SCREEN_ALIGN
 #define CONFIG_CMD_BMP

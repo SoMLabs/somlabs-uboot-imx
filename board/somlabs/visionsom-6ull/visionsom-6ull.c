@@ -24,8 +24,6 @@
 #include <mmc.h>
 #include <mxsfb.h>
 #include <netdev.h>
-#include <usb.h>
-#include <usb/ehci-fsl.h>
 #include <asm/imx-common/video.h>
 
 #ifdef CONFIG_FSL_FASTBOOT
@@ -261,7 +259,7 @@ int board_mmc_init(bd_t *bis)
 			imx_iomux_v3_setup_multiple_pads(
 				usdhc2_emmc_pads, ARRAY_SIZE(usdhc2_emmc_pads));
 #else
-#ifndef CONFIG_SYS_USE_NAND
+#ifndef CONFIG_NAND_BOOT
 			imx_iomux_v3_setup_multiple_pads(
 				usdhc2_pads, ARRAY_SIZE(usdhc2_pads));
 #endif
@@ -301,29 +299,6 @@ static void setup_usb(void)
 					 ARRAY_SIZE(usb_otg_pads));
 }
 
-int board_usb_phy_mode(int port)
-{
-	if (port == 1)
-		return USB_INIT_HOST;
-	else
-		return USB_INIT_HOST;//usb_phy_mode(port);
-}
-
-int board_ehci_hcd_init(int port)
-{
-	u32 *usbnc_usb_ctrl;
-
-	if (port > 1)
-		return -EINVAL;
-
-	usbnc_usb_ctrl = (u32 *)(USB_BASE_ADDR + USB_OTHERREGS_OFFSET +
-				 port * 4);
-
-	/* Set Power polarity */
-	setbits_le32(usbnc_usb_ctrl, UCTRL_PWR_POL);
-
-	return 0;
-}
 #endif
 
 #ifdef CONFIG_NAND_MXS
