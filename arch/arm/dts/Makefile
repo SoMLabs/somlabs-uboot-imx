@@ -446,6 +446,8 @@ dtb-$(CONFIG_MX6UL) += \
 
 dtb-$(CONFIG_MX6ULL) += imx6ull-14x14-evk.dtb
 
+dtb-$(CONFIG_MX6ULL_SOMLABS) += somlabs-visionsom-6ull.dtb
+
 dtb-$(CONFIG_MX7) += imx7-colibri.dtb \
 	imx7d-sdb.dtb \
 	imx7d-sdb-qspi.dtb
