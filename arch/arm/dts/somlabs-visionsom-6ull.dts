@@ -12,7 +12,7 @@
 
 / {
 	model = "SomLabs i.MX6 ULL Visionsom";
-	compatible = "fsl,somlabs-visionsom-6ull", "fsl,imx6ull";
+	compatible = "fsl,somlabs-visionsom-6ull";
 
 	chosen {
 		stdout-path = &uart1;

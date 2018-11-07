@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2017 A. Karas
- * Copyright (C) 2016 Freescale Semiconductor, Inc.
+ * Copyright (C) 2018 M. Wolowik
  *
  * SPDX-License-Identifier:	GPL-2.0+
  */

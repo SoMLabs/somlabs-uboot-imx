@@ -1,6 +1,5 @@
-// SPDX-License-Identifier: GPL-2.0+
 /*
- * Copyright (C) 2018 M. Wolowik (based on mx6ull_14x14_evk)
+ * Copyright (C) 2017 M. Wolowik
  *
  * SPDX-License-Identifier:	GPL-2.0+
  */
@@ -22,11 +21,8 @@
 #include <miiphy.h>
 #include <linux/sizes.h>
 #include <mmc.h>
-//#include <mxsfb.h>
 #include <netdev.h>
 #include <usb.h>
-//#include <usb/ehci-fsl.h>
-#include <usb/ehci-ci.h>
 #include <asm/mach-imx/video.h>
 
 #ifdef CONFIG_FSL_FASTBOOT
@@ -119,30 +115,6 @@ static iomux_v3_cfg_t const usdhc2_emmc_pads[] = {
 	 * RST_B
 	 */
 	MX6_PAD_NAND_ALE__GPIO4_IO10 | MUX_PAD_CTRL(NO_PAD_CTRL),
-};
-#endif
-
-#if defined(CONFIG_SOMLABS_VISIONSOM_6ULL_SD)
-static iomux_v3_cfg_t const usdhc2_pads[] = {
-	MX6_PAD_NAND_RE_B__USDHC2_CLK | MUX_PAD_CTRL(USDHC_PAD_CTRL),
-	MX6_PAD_NAND_WE_B__USDHC2_CMD | MUX_PAD_CTRL(USDHC_PAD_CTRL),
-	MX6_PAD_NAND_DATA00__USDHC2_DATA0 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
-	MX6_PAD_NAND_DATA01__USDHC2_DATA1 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
-	MX6_PAD_NAND_DATA02__USDHC2_DATA2 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
-	MX6_PAD_NAND_DATA03__USDHC2_DATA3 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
-};
-
-static iomux_v3_cfg_t const usdhc2_cd_pads[] = {
-	/*
-	 * The evk board uses DAT3 to detect CD card plugin,
-	 * in u-boot we mux the pin to GPIO when doing board_mmc_getcd.
-	 */
-	MX6_PAD_NAND_DATA03__GPIO4_IO05 | MUX_PAD_CTRL(USDHC_DAT3_CD_PAD_CTRL),
-};
-
-static iomux_v3_cfg_t const usdhc2_dat3_pads[] = {
-	MX6_PAD_NAND_DATA03__USDHC2_DATA3 |
-	MUX_PAD_CTRL(USDHC_DAT3_CD_PAD_CTRL),
 };
 #endif
 
@@ -285,13 +257,14 @@ int board_mmc_init(bd_t *bis)
 #endif
 
 #ifdef CONFIG_USB_EHCI_MX6
-#ifndef CONFIG_DM_USB
-
 #define USB_OTHERREGS_OFFSET	0x800
 #define UCTRL_PWR_POL		(1 << 9)
 
 static iomux_v3_cfg_t const usb_otg_pads[] = {
-	MX6_PAD_GPIO1_IO00__ANATOP_OTG1_ID | MUX_PAD_CTRL(OTG_ID_PAD_CTRL),
+	//MX6_PAD_GPIO1_IO00__ANATOP_OTG1_ID | MUX_PAD_CTRL(OTG_ID_PAD_CTRL),
+
+	MX6_PAD_ENET2_TX_DATA1__USB_OTG2_PWR | MUX_PAD_CTRL(OTG_ID_PAD_CTRL),
+	MX6_PAD_ENET2_RX_DATA0__USB_OTG1_PWR | MUX_PAD_CTRL(OTG_ID_PAD_CTRL),
 };
 
 /* At default the 3v3 enables the MIC2026 for VBUS power */
@@ -324,7 +297,6 @@ int board_ehci_hcd_init(int port)
 
 	return 0;
 }
-#endif
 #endif
 
 #ifdef CONFIG_NAND_MXS
@@ -422,6 +394,7 @@ static int setup_fec(int fec_id)
 	int ret;
 
 	if (fec_id == 0) {
+
 		/*
 		 * Use 50M anatop loopback REF_CLK1 for ENET1,
 		 * clear gpr1[13], set gpr1[17].
@@ -429,6 +402,7 @@ static int setup_fec(int fec_id)
 		clrsetbits_le32(&iomuxc_regs->gpr[1], IOMUX_GPR1_FEC1_MASK,
 				IOMUX_GPR1_FEC1_CLOCK_MUX1_SEL_MASK);
 	} else {
+
 		/*
 		 * Use 50M anatop loopback REF_CLK2 for ENET2,
 		 * clear gpr1[14], set gpr1[18].
@@ -495,25 +469,42 @@ static iomux_v3_cfg_t const lcd_pads[] = {
 	MX6_PAD_GPIO1_IO08__GPIO1_IO08 | MUX_PAD_CTRL(NO_PAD_CTRL),
 };
 
-static int setup_lcd(void)
+void do_enable_parallel_lcd(struct display_info_t const *dev)
 {
 	enable_lcdif_clock(LCDIF1_BASE_ADDR, 1);
 
 	imx_iomux_v3_setup_multiple_pads(lcd_pads, ARRAY_SIZE(lcd_pads));
 
 	/* Reset the LCD */
-  gpio_request(IMX_GPIO_NR(5, 9), "lcd reset");
 	gpio_direction_output(IMX_GPIO_NR(5, 9) , 0);
 	udelay(500);
 	gpio_direction_output(IMX_GPIO_NR(5, 9) , 1);
 
 	/* Set Brightness to high */
-	gpio_request(IMX_GPIO_NR(1, 8), "backlight");
 	gpio_direction_output(IMX_GPIO_NR(1, 8) , 1);
-
-	return 0;
 }
 
+struct display_info_t const displays[] = {{
+	.bus = MX6UL_LCDIF1_BASE_ADDR,
+	.addr = 0,
+	.pixfmt = 24,
+	.detect = NULL,
+	.enable	= do_enable_parallel_lcd,
+	.mode	= {
+		.name			= "TFT43AB",
+		.xres           = 480,
+		.yres           = 272,
+		.pixclock       = 108695,
+		.left_margin    = 8,
+		.right_margin   = 4,
+		.upper_margin   = 2,
+		.lower_margin   = 4,
+		.hsync_len      = 41,
+		.vsync_len      = 10,
+		.sync           = 0,
+		.vmode          = FB_VMODE_NONINTERLACED
+} } };
+size_t display_count = ARRAY_SIZE(displays);
 #endif
 
 int board_early_init_f(void)
@@ -556,10 +547,6 @@ int board_init(void)
 	setup_gpmi_nand();
 #endif
 
-#ifdef CONFIG_VIDEO_MXS
-	setup_lcd();
-#endif
-
 	return 0;
 }
 
@@ -567,33 +554,11 @@ int board_late_init(void)
 {
 	int is_im6ull = is_cpu_type(MXC_CPU_MX6ULL);
 
-	// switch (get_boot_device()) {
-	// 	case SD1_BOOT:
-	// 	case SD2_BOOT:
-	// 	case QSPI_BOOT:
-	// 	default:
-	// 		if(is_im6ull) {
-	// 			env_set("fdt_file", "somlabs-visionsom-6ull.dtb");
-	// 		} else {
-	// 			env_set("fdt_file", "somlabs-visionsom-6ul.dtb");
-	// 		}
-	// 		break;
-	// 	case MMC1_BOOT:
-	// 	case MMC2_BOOT:
-			if(is_im6ull) {
-				env_set("fdt_file", "somlabs-visionsom-6ull-emmc.dtb");
-			} else {
-				env_set("fdt_file", "somlabs-visionsom-6ul-emmc.dtb");
-			}
-	// 		break;
-	// 	case NAND_BOOT:
-	// 		if(is_im6ull) {
-	// 			env_set("fdt_file", "somlabs-visionsom-6ull-nand.dtb");
-	// 		} else {
-	// 			env_set("fdt_file", "somlabs-visionsom-6ul-nand.dtb");
-	// 		}
-	// 		break;
-	// }
+	if(is_im6ull) {
+		env_set("fdt_file", "somlabs-visionsom-6ull.dtb");
+	} else {
+		env_set("fdt_file", "somlabs-visionsom-6ul.dtb");
+	}
 
 	return 0;
 }
@@ -606,6 +571,43 @@ int checkboard(void)
 }
 
 #ifdef CONFIG_FSL_FASTBOOT
+void board_fastboot_setup(void)
+{
+	switch (get_boot_device()) {
+#if defined(CONFIG_FASTBOOT_STORAGE_MMC)
+	case SD1_BOOT:
+	case MMC1_BOOT:
+		if (!getenv("fastboot_dev"))
+			env_set("fastboot_dev", "mmc0");
+		if (!getenv("bootcmd"))
+			env_set("bootcmd", "boota mmc0");
+		break;
+	case SD2_BOOT:
+	case MMC2_BOOT:
+		if (!getenv("fastboot_dev"))
+			env_set("fastboot_dev", "mmc1");
+		if (!getenv("bootcmd"))
+			env_set("bootcmd", "boota mmc1");
+		break;
+#endif /*CONFIG_FASTBOOT_STORAGE_MMC*/
+#if defined(CONFIG_FASTBOOT_STORAGE_NAND)
+	case NAND_BOOT:
+		if (!getenv("fastboot_dev"))
+			env_set("fastboot_dev", "nand");
+		if (!getenv("fbparts"))
+			env_set("fbparts", ANDROID_FASTBOOT_NAND_PARTS);
+		if (!getenv("bootcmd"))
+			env_set("bootcmd",
+				"nand read ${loadaddr} ${boot_nand_offset} "
+				"${boot_nand_size};boota ${loadaddr}");
+		break;
+#endif /*CONFIG_FASTBOOT_STORAGE_NAND*/
+
+	default:
+		printf("unsupported boot devices\n");
+		break;
+	}
+}
 
 #ifdef CONFIG_ANDROID_RECOVERY
 int check_recovery_cmd_file(void)

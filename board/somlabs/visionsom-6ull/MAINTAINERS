@@ -1,9 +1,6 @@
 VISIONSOM-6ULL BOARD
-M:	M W <m.wolowik@emsyslabs.com>
+M:	M. W.
 S:	Maintained
-F:	board/visionsom-6ull/
+F:	board/somlabs/visionsom-6ull/
 F:	include/configs/somlabs_visionsom_6ull.h
 F:	configs/somlabs_visionsom_6ull_defconfig
-F:	configs/somlabs_visionsom_6ull_emmc_defconfig
-F:	configs/somlabs_visionsom_6ull_nand_defconfig
-F:	configs/somlabs_visionsom_6ull_qspi_defconfig
