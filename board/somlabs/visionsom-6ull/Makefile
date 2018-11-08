@@ -4,7 +4,6 @@
 #
 
 obj-y  := visionsom-6ull.o
-obj-y  += mmc.o
 
 ifeq ($(CONFIG_FSL_FASTBOOT),y)
 KBUILD_CFLAGS   += -DCONFIG_FSL_FASTBOOT

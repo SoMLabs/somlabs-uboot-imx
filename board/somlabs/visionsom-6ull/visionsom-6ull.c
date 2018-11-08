@@ -190,7 +190,7 @@ static struct fsl_esdhc_cfg usdhc_cfg[] = {
 
 int board_mmc_get_env_dev(int devno)
 {
-	return CONFIG_SYS_MMC_ENV_DEV;
+	return devno;
 }
 
 int mmc_map_to_kernel_blk(int devno)
@@ -579,10 +579,33 @@ int board_late_init(void)
 {
 	int is_im6ull = is_cpu_type(MXC_CPU_MX6ULL);
 
-	if(is_im6ull) {
-		env_set("fdt_file", "somlabs-visionsom-6ull.dtb");
-	} else {
-		env_set("fdt_file", "somlabs-visionsom-6ul.dtb");
+	/* set_wdog_reset((struct wdog_regs *)WDOG1_BASE_ADDR); */
+	switch (mmc_get_env_dev()) {
+		case SD1_BOOT:
+		case SD2_BOOT:
+		case QSPI_BOOT:
+		default:
+			if(is_im6ull) {
+				env_set("fdt_file", "somlabs-visionsom-6ull.dtb");
+			} else {
+				env_set("fdt_file", "somlabs-visionsom-6ul.dtb");
+			}
+			break;
+		case MMC1_BOOT:
+		case MMC2_BOOT:
+			if(is_im6ull) {
+				env_set("fdt_file", "somlabs-visionsom-6ull-emmc.dtb");
+			} else {
+				env_set("fdt_file", "somlabs-visionsom-6ul-emmc.dtb");
+			}
+			break;
+		case NAND_BOOT:
+			if(is_im6ull) {
+				env_set("fdt_file", "somlabs-visionsom-6ull-nand.dtb");
+			} else {
+				env_set("fdt_file", "somlabs-visionsom-6ul-nand.dtb");
+			}
+			break;
 	}
 
 	return 0;
@@ -646,7 +669,7 @@ int check_recovery_cmd_file(void)
 
 void board_recovery_setup(void)
 {
-	int bootdev = get_boot_device();
+	int bootdev = mmc_get_env_dev();
 
 	switch (bootdev) {
 #if defined(CONFIG_FASTBOOT_STORAGE_MMC)
