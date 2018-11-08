@@ -9,4 +9,12 @@ config SYS_VENDOR
 config SYS_CONFIG_NAME
 	default "somlabs_visionsom_6ull"
 
+config FSL_FASTBOOT
+	bool "Select to fastboot"
+	default y
+
+config SOMLABS_VISIONSOM_6ULL_SD
+	bool "Use SD card"
+	default y
+
 endif
