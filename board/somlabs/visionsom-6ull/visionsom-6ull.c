@@ -195,9 +195,6 @@ int board_mmc_get_env_dev(int devno)
 
 int mmc_map_to_kernel_blk(int devno)
 {
-	if (devno == 0)
-		devno = 1;
-
 	return devno;
 }
 
@@ -575,38 +572,54 @@ int board_init(void)
 	return 0;
 }
 
+#ifdef CONFIG_CMD_BMODE
+static const struct boot_mode board_boot_modes[] = {
+	/* 4 bit bus width */
+	{"sd1", MAKE_CFGVAL(0x42, 0x20, 0x00, 0x00)},
+	{"sd2", MAKE_CFGVAL(0x40, 0x28, 0x00, 0x00)},
+	{"qspi1", MAKE_CFGVAL(0x10, 0x00, 0x00, 0x00)},
+	{NULL,	 0},
+};
+#endif
+
 int board_late_init(void)
 {
 	int is_im6ull = is_cpu_type(MXC_CPU_MX6ULL);
 
+	#ifdef CONFIG_CMD_BMODE
+	add_board_boot_modes(board_boot_modes);
+	#endif
+
+	env_set("fdt_file", "somlabs-visionsom-6ull.dtb");
+
 	/* set_wdog_reset((struct wdog_regs *)WDOG1_BASE_ADDR); */
-	switch (mmc_get_env_dev()) {
-		case SD1_BOOT:
-		case SD2_BOOT:
-		case QSPI_BOOT:
-		default:
-			if(is_im6ull) {
-				env_set("fdt_file", "somlabs-visionsom-6ull.dtb");
-			} else {
-				env_set("fdt_file", "somlabs-visionsom-6ul.dtb");
-			}
-			break;
-		case MMC1_BOOT:
-		case MMC2_BOOT:
-			if(is_im6ull) {
-				env_set("fdt_file", "somlabs-visionsom-6ull-emmc.dtb");
-			} else {
-				env_set("fdt_file", "somlabs-visionsom-6ul-emmc.dtb");
-			}
-			break;
-		case NAND_BOOT:
-			if(is_im6ull) {
-				env_set("fdt_file", "somlabs-visionsom-6ull-nand.dtb");
-			} else {
-				env_set("fdt_file", "somlabs-visionsom-6ul-nand.dtb");
-			}
-			break;
-	}
+	// switch (mmc_get_env_dev()) {
+	// 	case SD1_BOOT:
+	// 	case SD2_BOOT:
+	// 	case QSPI_BOOT:
+	// 	default:
+	// 		if(is_im6ull) {
+	// 			env_set("fdt_file", "somlabs-visionsom-6ull.dtb");
+	// 		} else {
+	// 			env_set("fdt_file", "somlabs-visionsom-6ul.dtb");
+	// 		}
+	// 		break;
+	// 	case MMC1_BOOT:
+	// 	case MMC2_BOOT:
+	// 		if(is_im6ull) {
+	// 			env_set("fdt_file", "somlabs-visionsom-6ull-emmc.dtb");
+	// 		} else {
+	// 			env_set("fdt_file", "somlabs-visionsom-6ul-emmc.dtb");
+	// 		}
+	// 		break;
+	// 	case NAND_BOOT:
+	// 		if(is_im6ull) {
+	// 			env_set("fdt_file", "somlabs-visionsom-6ull-nand.dtb");
+	// 		} else {
+	// 			env_set("fdt_file", "somlabs-visionsom-6ul-nand.dtb");
+	// 		}
+	// 		break;
+	// }
 
 	return 0;
 }
