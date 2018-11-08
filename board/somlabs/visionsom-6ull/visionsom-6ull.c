@@ -573,7 +573,7 @@ int checkboard(void)
 #ifdef CONFIG_FSL_FASTBOOT
 void board_fastboot_setup(void)
 {
-	switch (get_boot_device()) {
+	switch (mmc_get_env_dev()) {
 #if defined(CONFIG_FASTBOOT_STORAGE_MMC)
 	case SD1_BOOT:
 	case MMC1_BOOT:

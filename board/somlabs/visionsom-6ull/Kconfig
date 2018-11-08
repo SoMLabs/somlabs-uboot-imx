@@ -17,4 +17,12 @@ config SOMLABS_VISIONSOM_6ULL_SD
 	bool "Use SD card"
 	default y
 
+config SYS_BOOT_NAND
+	bool "Boot NAND partition syntax"
+	default n
+
+config BOOTARGS_CMA
+	bool "Boot arguments syntax"
+	default y
+
 endif

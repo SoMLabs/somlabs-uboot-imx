@@ -14,6 +14,14 @@ ifeq ($(CONFIG_SOMLABS_VISIONSOM_6ULL_SD),y)
 KBUILD_CFLAGS   += -DCONFIG_SOMLABS_VISIONSOM_6ULL_SD
 endif
 
+ifeq ($(CONFIG_SYS_BOOT_NAND),y)
+KBUILD_CFLAGS   += -DCONFIG_SYS_BOOT_NAND
+endif
+
+ifeq ($(CONFIG_BOOTARGS_CMA),y)
+KBUILD_CFLAGS   += -DCONFIG_BOOTARGS_CMA
+endif
+
 extra-$(CONFIG_USE_PLUGIN) :=  plugin.bin
 $(obj)/plugin.bin: $(obj)/plugin.o
 	$(OBJCOPY) -O binary --gap-fill 0xff $< $@
