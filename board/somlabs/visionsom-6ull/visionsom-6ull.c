@@ -118,6 +118,31 @@ static iomux_v3_cfg_t const usdhc2_emmc_pads[] = {
 };
 #endif
 
+#if defined(CONFIG_SOMLABS_VISIONSOM_6ULL_SD)
+
+static iomux_v3_cfg_t const usdhc2_pads[] = {
+	MX6_PAD_NAND_RE_B__USDHC2_CLK | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+	MX6_PAD_NAND_WE_B__USDHC2_CMD | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+	MX6_PAD_NAND_DATA00__USDHC2_DATA0 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+	MX6_PAD_NAND_DATA01__USDHC2_DATA1 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+	MX6_PAD_NAND_DATA02__USDHC2_DATA2 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+	MX6_PAD_NAND_DATA03__USDHC2_DATA3 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
+};
+
+static iomux_v3_cfg_t const usdhc2_cd_pads[] = {
+	/*
+	 * The evk board uses DAT3 to detect CD card plugin,
+	 * in u-boot we mux the pin to GPIO when doing board_mmc_getcd.
+	 */
+	MX6_PAD_NAND_DATA03__GPIO4_IO05 | MUX_PAD_CTRL(USDHC_DAT3_CD_PAD_CTRL),
+};
+
+static iomux_v3_cfg_t const usdhc2_dat3_pads[] = {
+	MX6_PAD_NAND_DATA03__USDHC2_DATA3 |
+	MUX_PAD_CTRL(USDHC_DAT3_CD_PAD_CTRL),
+};
+#endif
+
 static void setup_iomux_uart(void)
 {
 	imx_iomux_v3_setup_multiple_pads(uart1_pads, ARRAY_SIZE(uart1_pads));
