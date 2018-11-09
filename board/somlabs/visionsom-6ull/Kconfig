@@ -25,4 +25,16 @@ config BOOTARGS_CMA
 	bool "Boot arguments syntax"
 	default y
 
+config SYS_NO_FLASH
+	bool "No flash option"
+	default y
+
+config DISPLAY_CPUINFO
+	bool "Show CPU information"
+	default y
+
+config DISPLAY_BOARDINFO
+	bool "Show board information"
+	default y
+
 endif

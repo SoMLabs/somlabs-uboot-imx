@@ -590,7 +590,11 @@ int board_late_init(void)
 	add_board_boot_modes(board_boot_modes);
 	#endif
 
-	env_set("fdt_file", "somlabs-visionsom-6ull.dtb");
+	if(is_im6ull) {
+		env_set("fdt_file", "somlabs-visionsom-6ull.dtb");
+	} else {
+		env_set("fdt_file", "somlabs-visionsom-6ul.dtb");
+	}
 
 	/* set_wdog_reset((struct wdog_regs *)WDOG1_BASE_ADDR); */
 	// switch (mmc_get_env_dev()) {
