@@ -101,7 +101,7 @@ int board_late_init(void)
 
 int checkboard(void)
 {
-	puts("Board: SoMLabs visionsom 6ull\n");
+	puts("Board: SomLabs visionsom 6ull\n");
 
 	return 0;
 }
