@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0+ */
 /*
- * Copyright (C) 2017 M. Wolowik
+ * Copyright (C) 2018 M. Wolowik
+ * Copyright (C) 2018 EMSYSLABS
  *
  * SPDX-License-Identifier:	GPL-2.0+
  */
@@ -91,8 +92,8 @@ int board_late_init(void)
 #endif
 
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
-	env_set("board_name", "EVK");
-	env_set("board_rev", "14X14");
+	env_set("board_name", "VISIONSON");
+	env_set("board_rev", "6ULL");
 #endif
 
 	return 0;
@@ -100,7 +101,7 @@ int board_late_init(void)
 
 int checkboard(void)
 {
-	puts("Board: MX6ULL 14x14 EVK\n");
+	puts("Board: SoMLabs visionsom 6ull\n");
 
 	return 0;
 }
