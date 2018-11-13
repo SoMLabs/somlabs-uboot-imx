@@ -85,7 +85,7 @@
 	"fdt_addr=0x83000000\0" \
 	"boot_fdt=try\0" \
 	"ip_dyn=yes\0" \
-	"videomode=video=ctfb:x:480,y:800,depth:24,pclk:33300000,le:8,ri:4,up:2,lo:4,hs:20,vs:10,sync:0,vmode:0\0" \
+	"videomode=video=ctfb:x:800,y:480,depth:24,pclk:30000,le:40,ri:40,up:29,lo:13,hs:48,vs:3,sync:s,vmode:0\0" \
 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
 	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
