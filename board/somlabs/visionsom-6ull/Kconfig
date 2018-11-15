@@ -15,11 +15,11 @@ config FSL_FASTBOOT
 
 config SOMLABS_VISIONSOM_6ULL_SD
 	bool "Use SD card"
-	default y
+	default n
 
 config SYS_BOOT_NAND
 	bool "Boot NAND partition syntax"
-	default n
+	default y
 
 config BOOTARGS_CMA
 	bool "Boot arguments syntax"
@@ -27,7 +27,7 @@ config BOOTARGS_CMA
 
 config SYS_NO_FLASH
 	bool "No flash option"
-	default y
+	default n
 
 config DISPLAY_CPUINFO
 	bool "Show CPU information"
@@ -35,6 +35,10 @@ config DISPLAY_CPUINFO
 
 config DISPLAY_BOARDINFO
 	bool "Show board information"
+	default y
+
+config SYS_USE_NAND
+	bool "Enable NAND to use"
 	default y
 
 endif

@@ -247,37 +247,20 @@
 #define FSL_QSPI_FLASH_SIZE			SZ_32M
 #endif
 
+
 /* NAND stuff */
-#ifdef CONFIG_SYS_USE_NAND
-#define CONFIG_CMD_NAND
+#if defined(CONFIG_SYS_USE_NAND)
+
 #define CONFIG_CMD_NAND_TRIMFFS
 
-#define CONFIG_NAND_MXS
-#define CONFIG_NAND_MXS_BCH_LEGACY_GEO
+/* #define CONFIG_NAND_MXS */
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
 #define CONFIG_SYS_NAND_BASE		0x40000000
 #define CONFIG_SYS_NAND_5_ADDR_CYCLE
 #define CONFIG_SYS_NAND_ONFI_DETECTION
 
-/* DMA stuff, needed for GPMI/MXS NAND support */
-#define CONFIG_APBH_DMA
-#define CONFIG_APBH_DMA_BURST
-#define CONFIG_APBH_DMA_BURST8
-
-/* UBI/UBIFS support */
-#define CONFIG_CMD_UBI
-#define CONFIG_CMD_UBIFS
-#define CONFIG_UBI_SILENCE_MSG
-#define CONFIG_UBIFS_SILENCE_MSG
-#define CONFIG_RBTREE
-#define CONFIG_LZO
-
-/* Dynamic MTD partition support */
-#define CONFIG_CMD_MTDPARTS
-#define CONFIG_MTD_PARTITIONS
-#define CONFIG_MTD_DEVICE
-#define MTDIDS_DEFAULT            "nand0=gpmi-nand"
-#define MTDPARTS_DEFAULT          "mtdparts=gpmi-nand:2m(boot),-(ubi)"
+#define MTDIDS_DEFAULT "nand0=gpmi-nand"
+#define MTDPARTS_DEFAULT "mtdparts=gpmi-nand:2m(boot),-(ubi)"
 
 #endif
 
