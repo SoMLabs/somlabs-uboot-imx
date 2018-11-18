@@ -95,6 +95,9 @@
 	"fdt_file=somlabs-visionsom-6ull-nand.dtb\0" \
 	"fdt_addr=0x83000000\0" \
 	"fdt_high=0xffffffff\0"	  \
+	"initrd_high=0xffffffff\0" \
+	"boot_fdt=try\0" \
+	"ip_dyn=yes\0" \
 	"console=ttymxc0\0" \
 	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
 	"root=ubi0:rootfs rootfstype=ubifs "		     \
