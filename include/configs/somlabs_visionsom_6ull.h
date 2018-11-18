@@ -95,7 +95,7 @@
 	"fdt_addr=0x83000000\0" \
 	"fdt_high=0xffffffff\0"	  \
 	"console=ttymxc0\0" \
-	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
+	"bootargs=console=ttymxc0,115200 ubi.mtd=rootfs"  \
 	"root=ubi0:rootfs rootfstype=ubifs "		     \
 	"" \
 	"mtdparts=gpmi-nand:2m(boot),-(ubi)\0" \
@@ -260,7 +260,7 @@
 #define CONFIG_SYS_NAND_ONFI_DETECTION
 
 #define MTDIDS_DEFAULT "nand0=gpmi-nand"
-#define MTDPARTS_DEFAULT "mtdparts=gpmi-nand:2m(boot),-(ubi)"
+#define MTDPARTS_DEFAULT "mtdparts=gpmi-nand:2m(boot),-(rootfs)"
 
 #endif
 
