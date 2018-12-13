@@ -1,6 +1,6 @@
 distclean.sh
-defconfig_nand.sh
-defconfig_sd.sh
-make.sh
+mmc_defconfig.sh
+nand_defconfig.sh
+sd_defconfig.sh
+make_build.sh
 menuconfig.sh
-
