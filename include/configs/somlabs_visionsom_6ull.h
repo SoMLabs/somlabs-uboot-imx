@@ -100,8 +100,8 @@
 	"ip_dyn=yes\0" \
 	"console=ttymxc0\0" \
 	"bootargs=console=ttymxc0,115200"  \
-	"root=ubi0:rootfs rw ubi.mtd=ubi " \
-	"rootfstype=ubifs rootwait=1" \
+	"root=ubi0:rootfs rw ubi.mtd=ubi rootfstype=ubifs rootwait=1" \
+	"" \
 	"mtdparts=gpmi-nand:2m(boot),-(ubi)\0" \
 	"bootcmd=mtdparts default; ubi part ubi; ubifsmount ubi0:rootfs;" \
 	"ubifsload ${loadaddr} /boot/zImage;" \
