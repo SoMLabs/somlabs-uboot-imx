@@ -100,9 +100,9 @@
 	"ip_dyn=yes\0" \
 	"console=ttymxc0\0" \
 	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
-	"root=ubi0:rootfs rw rootfstype=ubifs rootwait=1 "		     \
+	"root=ubi0:rootfs rw rootfstype=ubifs rootwait=1 " \
 	"" \
-	CONFIG_MTDPARTS_DEFAULT \
+	CONFIG_MTDPARTS_DEFAULT "\0" \
 	"bootcmd=mtdparts default; ubi part ubi; ubifsmount ubi0:rootfs;" \
 	"ubifsload ${loadaddr} /boot/zImage;" \
 	"ubifsload ${fdt_addr} /boot/${fdt_file};" \
