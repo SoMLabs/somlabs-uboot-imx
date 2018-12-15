@@ -101,7 +101,7 @@
 	"boot_fdt=try\0" \
 	"ip_dyn=yes\0" \
 	"console=ttymxc0\0" \
-	"bootargs=console=ttymxc0,115200"  \
+	"bootargs=console=ttymxc0,115200 "  \
 	"root=ubi0:rootfs rootfstype=ubifs " \
 	"" \
 	"mtdparts=gpmi-nand:2m(boot),-(ubi)\0" \
