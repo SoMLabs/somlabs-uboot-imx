@@ -102,7 +102,7 @@
 	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
 	"root=ubi0:rootfs rw rootfstype=ubifs rootwait=1 "		     \
 	"" \
-	"mtdparts=" CONFIG_MTDPARTS_DEFAULT "\0" \
+	CONFIG_MTDPARTS_DEFAULT \
 	"bootcmd=mtdparts default; ubi part ubi; ubifsmount ubi0:rootfs;" \
 	"ubifsload ${loadaddr} /boot/zImage;" \
 	"ubifsload ${fdt_addr} /boot/${fdt_file};" \
