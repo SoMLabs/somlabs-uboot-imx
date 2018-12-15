@@ -82,7 +82,7 @@
 	"g_mass_storage.file=/fat g_mass_storage.ro=1 " \
 	"g_mass_storage.idVendor=0x066F g_mass_storage.idProduct=0x37FF "\
 	"g_mass_storage.iSerialNumber=\"\" "\
-	CONFIG_MTDPARTS_DEFAULT \
+	CONFIG_MTDPARTS_DEFAULT "\0" \
 	"clk_ignore_unused "\
 	"\0" \
 	"initrd_addr=0x83800000\0" \
