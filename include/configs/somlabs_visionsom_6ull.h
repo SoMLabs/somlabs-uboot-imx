@@ -91,8 +91,6 @@
 
 #if defined(CONFIG_SYS_BOOT_NAND)
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"mtdids=" CONFIG_MTDIDS_DEFAULT "\0" \
-	"mtdparts=" CONFIG_MTDPARTS_DEFAULT "\0" \
 	"videomode=video=ctfb:x:800,y:480,depth:24,pclk:30000,le:40,ri:40,up:29,lo:13,hs:48,vs:3,sync:s,vmode:0\0" \
 	"fdt_file=somlabs-visionsom-6ull-nand.dtb\0" \
 	"fdt_addr=0x83000000\0" \
@@ -101,9 +99,10 @@
 	"boot_fdt=try\0" \
 	"ip_dyn=yes\0" \
 	"console=ttymxc0\0" \
-	"bootargs=console=ttymxc0,115200 "  \
-	"root=ubi0:rootfs rw rootfstype=ubifs " \
+	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
+	"root=ubi0:rootfs rw rootfstype=ubifs rootwait=1"		     \
 	"" \
+	"mtdparts=gpmi-nand:2m(boot),-(ubi)\0" \
 	"bootcmd=mtdparts default; ubi part ubi; ubifsmount ubi0:rootfs;" \
 	"ubifsload ${loadaddr} /boot/zImage;" \
 	"ubifsload ${fdt_addr} /boot/${fdt_file};" \
