@@ -82,7 +82,7 @@
 	"g_mass_storage.file=/fat g_mass_storage.ro=1 " \
 	"g_mass_storage.idVendor=0x066F g_mass_storage.idProduct=0x37FF "\
 	"g_mass_storage.iSerialNumber=\"\" "\
-	CONFIG_MFG_NAND_PARTITION \
+	CONFIG_MTDPARTS_DEFAULT \
 	"clk_ignore_unused "\
 	"\0" \
 	"initrd_addr=0x83800000\0" \
@@ -91,6 +91,8 @@
 
 #if defined(CONFIG_SYS_BOOT_NAND)
 #define CONFIG_EXTRA_ENV_SETTINGS \
+	"mtdids=" CONFIG_MTDIDS_DEFAULT "\0" \
+	"mtdparts=" CONFIG_MTDPARTS_DEFAULT "\0" \
 	"videomode=video=ctfb:x:800,y:480,depth:24,pclk:30000,le:40,ri:40,up:29,lo:13,hs:48,vs:3,sync:s,vmode:0\0" \
 	"fdt_file=somlabs-visionsom-6ull-nand.dtb\0" \
 	"fdt_addr=0x83000000\0" \
@@ -262,9 +264,6 @@
 #define CONFIG_SYS_NAND_5_ADDR_CYCLE
 /* #define CONFIG_SYS_NAND_ONFI_DETECTION */
 #define CONFIG_SYS_NAND_USE_FLASH_BBT
-
-#define MTDIDS_DEFAULT "nand0=gpmi-nand"
-#define MTDPARTS_DEFAULT "mtdparts=gpmi-nand:2m(boot),-(ubi)"
 
 #endif
 
