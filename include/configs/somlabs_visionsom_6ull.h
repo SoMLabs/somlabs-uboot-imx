@@ -39,6 +39,16 @@
 #endif
 #endif
 
+/* USB Configs */
+#ifdef CONFIG_CMD_USB
+#define CONFIG_EHCI_HCD_INIT_AFTER_RESET
+#define CONFIG_USB_HOST_ETHER
+#define CONFIG_USB_ETHER_ASIX
+#define CONFIG_MXC_USB_PORTSC  (PORT_PTS_UTMI | PORT_PTS_PTW)
+#define CONFIG_MXC_USB_FLAGS   0
+#define CONFIG_USB_MAX_CONTROLLER_COUNT 2
+#endif
+
 /* Configure Ethernet */
 #ifdef CONFIG_CMD_NET
 #define CONFIG_CMD_MII
@@ -100,7 +110,7 @@
 	"ip_dyn=yes\0" \
 	"console=ttymxc0\0" \
 	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
-	"root=ubi0:rootfs rw rootfstype=ubifs rootwait=1 " \
+	"root=ubi0:rootfs rootfstype=ubifs rootwait=1 rw " \
 	"" \
 	CONFIG_MTDPARTS_DEFAULT "\0" \
 	"bootcmd=mtdparts default; ubi part ubi; ubifsmount ubi0:rootfs;" \

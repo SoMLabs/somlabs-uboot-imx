@@ -53,6 +53,10 @@ DECLARE_GLOBAL_DATA_PTR;
 			PAD_CTL_SRE_FAST)
 #define GPMI_PAD_CTRL2 (GPMI_PAD_CTRL0 | GPMI_PAD_CTRL1)
 
+#define OTG_ID_PAD_CTRL (PAD_CTL_PKE | PAD_CTL_PUE |		\
+	PAD_CTL_PUS_47K_UP  | PAD_CTL_SPEED_LOW |		\
+	PAD_CTL_DSE_80ohm   | PAD_CTL_SRE_FAST  | PAD_CTL_HYS)
+
 int dram_init(void)
 {
 	gd->ram_size = imx_ddr_size();
@@ -99,6 +103,24 @@ static void setup_gpmi_nand(void)
 	/* enable apbh clock gating */
 	setbits_le32(&mxc_ccm->CCGR0, MXC_CCM_CCGR0_APBHDMA_MASK);
 }
+#endif
+
+#ifdef CONFIG_USB_EHCI_MX6
+#define USB_OTHERREGS_OFFSET	0x800
+#define UCTRL_PWR_POL		(1 << 9)
+
+static iomux_v3_cfg_t const usb_otg_pads[] = {
+	MX6_PAD_ENET2_TX_DATA1__USB_OTG2_PWR | MUX_PAD_CTRL(OTG_ID_PAD_CTRL),
+	MX6_PAD_ENET2_RX_DATA0__USB_OTG1_PWR | MUX_PAD_CTRL(OTG_ID_PAD_CTRL),
+};
+
+/* At default the 3v3 enables the MIC2026 for VBUS power */
+static void setup_usb(void)
+{
+	imx_iomux_v3_setup_multiple_pads(usb_otg_pads,
+					 ARRAY_SIZE(usb_otg_pads));
+}
+
 #endif
 
 #ifdef CONFIG_FEC_MXC
@@ -286,6 +308,10 @@ int board_init(void)
 
 	#ifdef CONFIG_VIDEO_MXS
 		setup_lcd();
+	#endif
+
+	#ifdef CONFIG_USB_EHCI_MX6
+		setup_usb();
 	#endif
 
 	#ifdef CONFIG_NAND_MXS
