@@ -86,12 +86,12 @@
 
 #define CONFIG_MFG_ENV_SETTINGS \
 	"mfgtool_args=setenv bootargs console=${console},${baudrate} " \
-	CONFIG_BOOTARGS_CMA_SIZE \
+	"" \
 	"rdinit=/linuxrc " \
 	"g_mass_storage.stall=0 g_mass_storage.removable=1 " \
 	"g_mass_storage.file=/fat g_mass_storage.ro=1 " \
 	"g_mass_storage.idVendor=0x066F g_mass_storage.idProduct=0x37FF "\
-	"g_mass_storage.iSerialNumber=\"\" "\
+	"g_mass_storage.iSerialNumber=\"\" " \
 	CONFIG_MTDPARTS_DEFAULT "\0" \
 	"clk_ignore_unused "\
 	"\0" \
@@ -101,6 +101,7 @@
 
 #if defined(CONFIG_SYS_BOOT_NAND)
 #define CONFIG_EXTRA_ENV_SETTINGS \
+	CONFIG_MFG_ENV_SETTINGS \
 	"videomode=video=ctfb:x:800,y:480,depth:24,pclk:30000,le:40,ri:40,up:29,lo:13,hs:48,vs:3,sync:s,vmode:0\0" \
 	"fdt_file=somlabs-visionsom-6ull-nand.dtb\0" \
 	"fdt_addr=0x83000000\0" \
@@ -112,7 +113,6 @@
 	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
 	"root=ubi0:rootfs rootfstype=ubifs rootwait=1 rw " \
 	"" \
-	CONFIG_MTDPARTS_DEFAULT "\0" \
 	"bootcmd=mtdparts default; ubi part ubi; ubifsmount ubi0:rootfs;" \
 	"ubifsload ${loadaddr} /boot/zImage;" \
 	"ubifsload ${fdt_addr} /boot/${fdt_file};" \

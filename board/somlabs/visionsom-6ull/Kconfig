@@ -21,10 +21,6 @@ config SYS_BOOT_NAND
 	bool "Boot NAND partition syntax"
 	default y
 
-config BOOTARGS_CMA
-	bool "Boot arguments syntax"
-	default y
-
 config SYS_NO_FLASH
 	bool "No flash option"
 	default n
