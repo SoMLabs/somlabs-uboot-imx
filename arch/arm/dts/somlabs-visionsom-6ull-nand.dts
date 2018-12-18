@@ -30,6 +30,11 @@
 		status = "okay";
 	};
 
+	pxp_v4l2 {
+		compatible = "fsl,imx6ul-pxp-v4l2", "fsl,imx6sx-pxp-v4l2", "fsl,imx6sl-pxp-v4l2";
+		status = "okay";
+	};
+
 	regulators {
 		compatible = "simple-bus";
 		#address-cells = <1>;
@@ -63,6 +68,30 @@
 			regulator-type = "voltage";
 			gpios = <&gpio5 3 GPIO_ACTIVE_HIGH>;
 			states = <1300000 0x1 1400000 0x0>;
+		};
+
+		reg_usb_otg1_vbus: regulator@2 {
+			compatible = "regulator-fixed";
+			reg = <2>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_usb_otg1>;
+			regulator-name = "usb_otg1_vbus";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			gpio = <&gpio2 8 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
+		reg_usb_otg2_vbus: regulator@3 {
+			compatible = "regulator-fixed";
+			reg = <3>;
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_usb_otg2>;
+			regulator-name = "usb_otg2_vbus";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			gpio = <&gpio2 12 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
 		};
 	};
 
@@ -309,6 +338,18 @@
 			>;
 		};
 
+		pinctrl_usb_otg1: usbotg1grp {
+			fsl,pins = <
+				MX6UL_PAD_ENET2_TX_DATA1__GPIO2_IO12    0x10b0
+			>;
+		};
+
+		pinctrl_usb_otg2: usbotg2grp {
+			fsl,pins = <
+				MX6UL_PAD_ENET2_RX_DATA0__GPIO2_IO08    0x10b0
+			>;
+		};
+
 		pinctrl_uart1: uart1grp {
 			fsl,pins = <
 				MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX 0x1b0b1
@@ -544,16 +585,14 @@
 };
 
 &usbotg1 {
-	dr_mode = "otg";
-	srp-disable;
-	hnp-disable;
-	adp-disable;
+    vbus-supply = <&reg_usb_otg1_vbus>;
+	dr_mode = "host";
 	status = "okay";
 };
 
 &usbotg2 {
+    vbus-supply = <&reg_usb_otg2_vbus>;
 	dr_mode = "host";
-	disable-over-current;
 	status = "okay";
 };
 
@@ -596,4 +635,8 @@
 	pinctrl-0 = <&pinctrl_gpmi_nand_1>;
 	status = "okay";
 	nand-on-flash-bbt;
+};
+
+&pxp {
+	status = "okay";
 };
