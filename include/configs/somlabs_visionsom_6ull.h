@@ -51,7 +51,6 @@
 /* Configure Ethernet */
 #ifdef CONFIG_CMD_NET
 #define CONFIG_CMD_MII
-#define CONFIG_NET_RANDOM_ETHADDR
 
 #define CONFIG_FEC_MXC
 #define CONFIG_MII
