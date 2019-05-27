@@ -274,6 +274,38 @@ int board_early_init_f(void)
 	return 0;
 }
 
+static struct splash_location splash_location_nand[] = {
+{
+	.name = "nand",
+	.storage = SPLASH_STORAGE_NAND,
+	.flags = SPLASH_STORAGE_RAW,
+	.offset = 0x300000,
+}};
+
+static struct splash_location splash_location_mmc[] = {
+{
+	.name = "mmc",
+	.storage = SPLASH_STORAGE_MMC,
+	.flags = SPLASH_STORAGE_FS,
+	.devpart = "0:1",
+}};
+
+int splash_screen_prepare(void)
+{
+	if(get_boot_device() == NAND_BOOT) {
+        return splash_source_load(splash_location_nand,
+                                  ARRAY_SIZE(splash_location_nand));
+	} else {
+        return splash_source_load(splash_location_mmc,
+                                  ARRAY_SIZE(splash_location_mmc));
+	}
+}
+
+int board_cfb_skip(void)
+{
+        /* skip cfb init */
+        return 1;
+}
 
 int board_init(void)
 {
