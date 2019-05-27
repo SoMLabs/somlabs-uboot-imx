@@ -251,19 +251,19 @@ struct display_info_t const displays[] = {{
 	.detect = NULL,
 	.enable	= do_enable_parallel_lcd,
 	.mode	= {
-		.name			= "TFT43AB",
-		.xres           = 480,
-		.yres           = 272,
-		.pixclock       = 108695,
-		.left_margin    = 8,
-		.right_margin   = 4,
-		.upper_margin   = 2,
-		.lower_margin   = 4,
+		.name			= "SL-TFT7-TP",
+		.xres           = 800,
+		.yres           = 480,
+		.pixclock       = 30030,
+		.left_margin    = 210,
+		.right_margin   = 46,
+		.upper_margin   = 23,
+		.lower_margin   = 22,
 		.hsync_len      = 41,
 		.vsync_len      = 10,
 		.sync           = 0,
 		.vmode          = FB_VMODE_NONINTERLACED
-} } };
+} }, };
 size_t display_count = ARRAY_SIZE(displays);
 #endif
 
