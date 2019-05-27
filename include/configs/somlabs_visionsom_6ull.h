@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 A. Karas
+ * Copyright (C) 2017-2019 A. Karas, SomLabs
  * Copyright (C) 2015-2016 Freescale Semiconductor, Inc.
  *
  * Configuration settings for the Freescale i.MX6UL 14x14 EVK board.
@@ -12,16 +12,7 @@
 #include <asm/arch/imx-regs.h>
 #include <linux/sizes.h>
 #include "mx6_common.h"
-#include <asm/imx-common/gpio.h>
-
-/* uncomment for PLUGIN mode support */
-/* #define CONFIG_USE_PLUGIN */
-
-/* uncomment for SECURE mode support */
-/* #define CONFIG_SECURE_BOOT */
-
-/* uncomment for BEE support, needs to enable CONFIG_CMD_FUSE */
-/* #define CONFIG_CMD_BEE */
+#include <asm/mach-imx/gpio.h>
 
 #ifdef CONFIG_SECURE_BOOT
 #ifndef CONFIG_CSF_SIZE
@@ -34,172 +25,83 @@
 
 #undef CONFIG_LDO_BYPASS_CHECK
 
-/* SPL options */
-/* We default not support SPL
- * #define CONFIG_SPL_LIBCOMMON_SUPPORT
- * #define CONFIG_SPL_MMC_SUPPORT
- * #include "imx6_spl.h"
-*/
+#define CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 
-/*#define CONFIG_DISPLAY_CPUINFO
-#define CONFIG_DISPLAY_BOARDINFO
-*/
 /* Size of malloc() pool */
 #define CONFIG_SYS_MALLOC_LEN		(16 * SZ_1M)
-
-#define CONFIG_BOARD_LATE_INIT
 
 #define CONFIG_MXC_UART
 #define CONFIG_MXC_UART_BASE		UART1_BASE
 
 /* MMC Configs */
 #ifdef CONFIG_FSL_USDHC
-#define CONFIG_SYS_FSL_USDHC_NUM	1
 #define CONFIG_SYS_FSL_ESDHC_ADDR	USDHC2_BASE_ADDR
-#endif
 
-#define CONFIG_SYS_MMC_ENV_DEV			0
-#define CONFIG_SYS_MMC_IMG_LOAD_PART	1
+#define CONFIG_SYS_FSL_USDHC_NUM	1
+#endif /* CONFIG_FSL_USDHC */
 
-#ifdef CONFIG_NAND_BOOT
-#define MFG_NAND_PARTITION "mtdparts=gpmi-nand:4m(boot),-(ubi) "
-#else
-#define MFG_NAND_PARTITION ""
-#endif
 
-#if defined CONFIG_SOMLABS_VISIONSOM_6ULL_EMMC || defined CONFIG_SOMLABS_VISIONSOM_6ULL_SD
-#define CONFIG_SYS_MMC_ENV_DEV		0   /* USDHC2 */
-#define CONFIG_SYS_MMC_ENV_PART		0	/* user area */
-#define CONFIG_MMCROOT			"/dev/mmcblk1p1"  /* USDHC2 */
-#else
-#undef CONFIG_MMC
-#undef CONFIG_CMD_MMC
-#undef CONFIG_GENERIC_MMC
-#undef CONFIG_BOUNCE_BUFFER
-#undef CONFIG_FSL_ESDHC
-#undef CONFIG_FSL_USDHC
-#undef CONFIG_SUPPORT_EMMC_BOOT
-#endif
+#define MFG_NAND_PARTITION "mtdparts=gpmi-nand:3M(boot),1M(splash),-(ubi)"
+
+#define CONFIG_CMD_READ
+#define CONFIG_SERIAL_TAG
 
 #define CONFIG_MFG_ENV_SETTINGS \
-	"mfgtool_args=setenv bootargs console=${console},${baudrate} " \
-	    BOOTARGS_CMA_SIZE \
-		"rdinit=/linuxrc " \
-		"g_mass_storage.stall=0 g_mass_storage.removable=1 " \
-		"g_mass_storage.file=/fat g_mass_storage.ro=1 " \
-		"g_mass_storage.idVendor=0x066F g_mass_storage.idProduct=0x37FF "\
-		"g_mass_storage.iSerialNumber=\"\" "\
-		MFG_NAND_PARTITION \
-		"clk_ignore_unused "\
-		"\0" \
-	"initrd_addr=0x83800000\0" \
+	"initrd_addr=0x86800000\0" \
 	"initrd_high=0xffffffff\0" \
-	"bootcmd_mfg=run mfgtool_args;bootz ${loadaddr} ${initrd_addr} ${fdt_addr};\0" \
+	"bootdelay=0\0" \
+	"emmc_dev=1\0"\
+	"emmc_ack=1\0"\
+	"sd_dev=1\0" \
 
-#if defined(CONFIG_NAND_BOOT)
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	CONFIG_MFG_ENV_SETTINGS \
-	"panel=TFT43AB\0" \
 	"fdt_addr=0x83000000\0" \
 	"fdt_high=0xffffffff\0"	  \
 	"console=ttymxc0\0" \
-	"bootargs=console=ttymxc0,115200 ubi.mtd=ubi "  \
-		"root=ubi0:rootfs rootfstype=ubifs "		     \
-		BOOTARGS_CMA_SIZE \
-		"mtdparts=gpmi-nand:4m(boot),-(ubi)\0" \
-	"bootcmd=mtdparts default; ubi part ubi; ubifsmount ubi0:rootfs;" \
-		"ubifsload ${loadaddr} /boot/zImage;" \
-		"ubifsload ${fdt_addr} /boot/${fdt_file};" \
-		"bootz ${loadaddr} - ${fdt_addr}\0"
-
-#elif defined (CONFIG_SYS_BOOT_QSPI)
-#define CONFIG_EXTRA_ENV_SETTINGS \
-	CONFIG_MFG_ENV_SETTINGS \
-	"panel=TFT43AB\0" \
-	"fdt_addr=0x83000000\0" \
-	"fdt_high=0xffffffff\0"	  \
-	"console=ttymxc0\0" \
-	"bootargs=console=ttymxc0,115200 \0" \
-	"bootcmd=\0"
-#else
-#define CONFIG_EXTRA_ENV_SETTINGS \
-	CONFIG_MFG_ENV_SETTINGS \
 	"script=boot.scr\0" \
 	"image=zImage\0" \
-	"console=ttymxc0\0" \
-	"fdt_high=0xffffffff\0" \
-	"initrd_high=0xffffffff\0" \
-	"fdt_addr=0x83000000\0" \
-	"boot_fdt=try\0" \
-	"ip_dyn=yes\0" \
-	"panel=TFT43AB\0" \
-	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
-	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
-	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
-	"mmcautodetect=yes\0" \
-	"mmcargs=setenv bootargs console=${console},${baudrate} " \
+	"splashimage=0x80000000\0" \
+	"setrootnand=setenv rootspec root=ubi0:rootfs ubi.mtd=ubi rootfstype=ubifs "MFG_NAND_PARTITION"\0" \
+	"setbootscriptnand=setenv loadbootscript ubifsload ${loadaddr} /boot/${script};\0" \
+	"setloadnand=setenv loadimage ubifsload ${loadaddr} /boot/${image}; " \
+	            "setenv loadfdt ubifsload ${fdt_addr} /boot/${fdt_file};\0"\
+	"mmcdev=0\0" \
+	"mmcpart=1\0" \
+	"mmcroot=/dev/mmcblk0p1 rootwait rw\0" \
+	"setrootmmc=setenv rootspec root=${mmcroot}\0" \
+	"setbootscriptmmc=setenv loadbootscript ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${script};\0" \
+	"setloadmmc=setenv loadimage ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${image}; " \
+	           "setenv loadfdt ext4load mmc ${mmcdev}:${mmcpart} ${fdt_sddr} /boot/${fdt_file};\0" \
+	"setbootargs=setenv bootargs console=${console},${baudrate} " \
 		BOOTARGS_CMA_SIZE \
-		"root=${mmcroot}\0" \
-	"loadbootscript=" \
-		"ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${script};\0" \
-	"bootscript=echo Running bootscript from mmc ...; " \
+		"${rootspec}\0" \
+	"execbootscript=echo Running bootscript...; " \
 		"source\0" \
-	"loadimage=ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${image}\0" \
-	"loadfdt=ext4load mmc ${mmcdev}:${mmcpart} ${fdt_addr} /boot/${fdt_file}\0" \
-	"mmcboot=echo Booting from mmc ...; " \
-		"run mmcargs; " \
-		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
-			"if run loadfdt; then " \
-				"bootz ${loadaddr} - ${fdt_addr}; " \
-			"else " \
-				"if test ${boot_fdt} = try; then " \
-					"bootz; " \
-				"else " \
-					"echo WARN: Cannot load the DT; " \
-				"fi; " \
-			"fi; " \
-		"else " \
-			"bootz; " \
-		"fi;\0" \
-	"netargs=setenv bootargs console=${console},${baudrate} " \
-		BOOTARGS_CMA_SIZE \
-		"root=/dev/nfs " \
-	"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
-		"netboot=echo Booting from net ...; " \
-		"run netargs; " \
-		"if test ${ip_dyn} = yes; then " \
-			"setenv get_cmd dhcp; " \
-		"else " \
-			"setenv get_cmd tftp; " \
-		"fi; " \
-		"${get_cmd} ${image}; " \
-		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
-			"if ${get_cmd} ${fdt_addr} ${fdt_file}; then " \
-				"bootz ${loadaddr} - ${fdt_addr}; " \
-			"else " \
-				"if test ${boot_fdt} = try; then " \
-					"bootz; " \
-				"else " \
-					"echo WARN: Cannot load the DT; " \
-				"fi; " \
-			"fi; " \
-		"else " \
-			"bootz; " \
-		"fi;\0" \
+	"setfdtfile=setenv fdt_file somlabs-${board}${fdt_suffix}.dtb\0" \
+	"checkbootdev=if test ${bootdev} = nand; then " \
+		"nand device 0; ubi part ubi; ubifsmount ubi0:rootfs; " \
+		"run setbootscriptnand; " \
+		"run setrootnand; " \
+		"run setloadnand; " \
+	"else " \
+		"run setbootscriptmmc; " \
+		"run setrootmmc; " \
+		"run setloadmmc; " \
+	"fi; " \
 
 #define CONFIG_BOOTCOMMAND \
-	   "mmc dev ${mmcdev};" \
-	   "mmc dev ${mmcdev}; if mmc rescan; then " \
-		   "if run loadbootscript; then " \
-			   "run bootscript; " \
-		   "else " \
-			   "if run loadimage; then " \
-				   "run mmcboot; " \
-			   "else run netboot; " \
-			   "fi; " \
+		"run setfdtfile; " \
+		"run checkbootdev; " \
+		"run loadfdt;" \
+		"if run loadbootscript; then " \
+			"run bootscript; " \
+		"else " \
+			"if run loadimage; then " \
+				"run setbootargs; " \
+				"bootz ${loadaddr} - ${fdt_addr}; " \
 		   "fi; " \
-	   "else run netboot; fi"
-#endif
+	   "fi"
 
 /* Miscellaneous configurable options */
 #define CONFIG_SYS_MEMTEST_START	0x80000000
@@ -207,8 +109,6 @@
 
 #define CONFIG_SYS_LOAD_ADDR		CONFIG_LOADADDR
 #define CONFIG_SYS_HZ			1000
-
-#define CONFIG_STACKSIZE		SZ_128K
 
 /* Physical Memory Map */
 #define CONFIG_NR_DRAM_BANKS		1
@@ -223,100 +123,47 @@
 #define CONFIG_SYS_INIT_SP_ADDR \
 	(CONFIG_SYS_INIT_RAM_ADDR + CONFIG_SYS_INIT_SP_OFFSET)
 
-/* FLASH and environment organization */
-#define CONFIG_ENV_IS_NOWHERE
+#define CONFIG_IMX_THERMAL
 
-#ifndef CONFIG_ENV_IS_NOWHERE
-#ifdef CONFIG_SYS_BOOT_QSPI
-#define CONFIG_FSL_QSPI
-#define CONFIG_ENV_IS_IN_SPI_FLASH
-#elif defined CONFIG_NAND_BOOT
-#define CONFIG_SYS_USE_NAND
-#define CONFIG_ENV_IS_IN_NAND
-#else
-#define CONFIG_FSL_QSPI
-#define CONFIG_ENV_IS_IN_MMC
-#endif
-#endif
+#define CONFIG_IOMUX_LPSR
 
-#define CONFIG_CMD_BMODE
 
 #ifdef CONFIG_FSL_QSPI
-#define CONFIG_QSPI_BASE		QSPI0_BASE_ADDR
-#define CONFIG_QSPI_MEMMAP_BASE		QSPI0_AMBA_BASE
-
-#define CONFIG_CMD_SF
-#define CONFIG_SPI_FLASH
-#define CONFIG_SPI_FLASH_BAR
+#define CONFIG_SYS_FSL_QSPI_AHB
 #define CONFIG_SF_DEFAULT_BUS		0
 #define CONFIG_SF_DEFAULT_CS		0
 #define CONFIG_SF_DEFAULT_SPEED	40000000
 #define CONFIG_SF_DEFAULT_MODE		SPI_MODE_0
-#define CONFIG_SPI_FLASH_WINBOND
-#endif
+#define FSL_QSPI_FLASH_NUM		1
+#define FSL_QSPI_FLASH_SIZE		SZ_32M
+#endif	/* CONFIG_FSL_QSPI */
 
-/* NAND stuff */
-#ifdef CONFIG_NAND_BOOT
+#ifdef CONFIG_CMD_NAND
+#define CONFIG_CMD_NAND_TRIMFFS
 
-#define CONFIG_NAND_MXS
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
 #define CONFIG_SYS_NAND_BASE		0x40000000
 #define CONFIG_SYS_NAND_5_ADDR_CYCLE
 #define CONFIG_SYS_NAND_ONFI_DETECTION
 
-/* DMA stuff, needed for GPMI/MXS NAND support */
-#define CONFIG_APBH_DMA
-#define CONFIG_APBH_DMA_BURST
-#define CONFIG_APBH_DMA_BURST8
-
-/* UBI/UBIFS support */
-#define CONFIG_CMD_UBIFS
-/*#define CONFIG_UBI_SILENCE_MSG*/
-/*#define CONFIG_UBIFS_SILENCE_MSG*/
-#define CONFIG_RBTREE
-#define CONFIG_LZO
-
 /* Dynamic MTD partition support */
-#define CONFIG_CMD_MTDPARTS
 #define CONFIG_MTD_PARTITIONS
 #define CONFIG_MTD_DEVICE
 #define MTDIDS_DEFAULT            "nand0=gpmi-nand"
-#define MTDPARTS_DEFAULT          "mtdparts=gpmi-nand:4m(boot),-(ubi)"
+#define MTDPARTS_DEFAULT          MFG_NAND_PARTITION
 
-#endif
+#endif	/* CONFIG_CMD_NAND */
 
 #define CONFIG_ENV_SIZE			SZ_8K
-#if defined(CONFIG_ENV_IS_IN_MMC)
-#define CONFIG_ENV_OFFSET		(12 * SZ_64K)
-#elif defined(CONFIG_ENV_IS_IN_SPI_FLASH)
-#define CONFIG_ENV_OFFSET		(768 * 1024)
-#define CONFIG_ENV_SECT_SIZE		(64 * 1024)
-#define CONFIG_ENV_SPI_BUS		CONFIG_SF_DEFAULT_BUS
-#define CONFIG_ENV_SPI_CS		CONFIG_SF_DEFAULT_CS
-#define CONFIG_ENV_SPI_MODE		CONFIG_SF_DEFAULT_MODE
-#define CONFIG_ENV_SPI_MAX_HZ		CONFIG_SF_DEFAULT_SPEED
-#elif defined(CONFIG_ENV_IS_IN_NAND)
-#undef CONFIG_ENV_SIZE
-#define CONFIG_ENV_OFFSET		(60 << 20)
-#define CONFIG_ENV_SECT_SIZE		(128 << 10)
-#define CONFIG_ENV_SIZE			CONFIG_ENV_SECT_SIZE
-#endif
-
 
 /* USB Configs */
 #ifdef CONFIG_CMD_USB
-#define CONFIG_EHCI_HCD_INIT_AFTER_RESET
-#define CONFIG_USB_HOST_ETHER
-#define CONFIG_USB_ETHER_ASIX
-#define CONFIG_MXC_USB_PORTSC  (PORT_PTS_UTMI | PORT_PTS_PTW)
-#define CONFIG_MXC_USB_FLAGS   0
-#define CONFIG_USB_MAX_CONTROLLER_COUNT 2
-#endif
+#define CONFIG_MXC_USB_PORTSC		(PORT_PTS_UTMI | PORT_PTS_PTW)
+#endif	/* CONFIG_CMD_USB */
 
-#ifdef CONFIG_CMD_NET
-#define CONFIG_FEC_MXC
+#ifdef CONFIG_FEC_MXC
 #define CONFIG_MII
-#define CONFIG_FEC_ENET_DEV		0
+#define CONFIG_FEC_ENET_DEV		1
 
 #if (CONFIG_FEC_ENET_DEV == 0)
 #define IMX_FEC_BASE			ENET_BASE_ADDR
@@ -324,42 +171,33 @@
 #define CONFIG_FEC_XCV_TYPE             RMII
 #ifdef CONFIG_DM_ETH
 #define CONFIG_ETHPRIME			"eth0"
-#else
+#else	/* CONFIG_DM_ETH */
 #define CONFIG_ETHPRIME			"FEC0"
-#endif
+#endif	/* CONFIG_DM_ETH */
 #elif (CONFIG_FEC_ENET_DEV == 1)
 #define IMX_FEC_BASE			ENET2_BASE_ADDR
 #define CONFIG_FEC_MXC_PHYADDR		0x2
 #define CONFIG_FEC_XCV_TYPE		RMII
 #ifdef CONFIG_DM_ETH
 #define CONFIG_ETHPRIME			"eth1"
-#else
+#else /* CONFIG_DM_ETH */
 #define CONFIG_ETHPRIME			"FEC1"
-#endif
-#endif
-
-#define CONFIG_PHYLIB
-#define CONFIG_PHY_MICREL
+#endif /* CONFIG_DM_ETH*/
+#endif	/* CONFIG_FEC_ENET_DEV */
 #define CONFIG_FEC_MXC_MDIO_BASE ENET_BASE_ADDR
-#endif
-
-
-#define CONFIG_IMX_THERMAL
-
-#ifndef CONFIG_SPL_BUILD
+#endif	/* CONFIG_FEC_MXC */
 
 #ifdef CONFIG_VIDEO
 #define CONFIG_VIDEO_MXS
 #define CONFIG_VIDEO_LOGO
 #define CONFIG_SPLASH_SCREEN
 #define CONFIG_SPLASH_SCREEN_ALIGN
-#define CONFIG_CMD_BMP
+#define CONFIG_SPLASH_SOURCE
 #define CONFIG_BMP_16BPP
 #define CONFIG_VIDEO_BMP_RLE8
 #define CONFIG_VIDEO_BMP_LOGO
 #define CONFIG_IMX_VIDEO_SKIP
-#endif
-#endif
+#endif	/* CONFIG_VIDEO */
 
 #define CONFIG_MODULE_FUSE
 #define CONFIG_OF_SYSTEM_SETUP

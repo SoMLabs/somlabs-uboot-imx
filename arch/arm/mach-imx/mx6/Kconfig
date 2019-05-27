@@ -549,9 +549,9 @@ config TARGET_SKSIMX6
 config TARGET_SOMLABS_VISIONSOM_6ULL
 	bool "visionsom-6ull"
 	select MX6ULL
+	select BOARD_LATE_INIT
 	select DM
 	select DM_THERMAL
-	select SUPPORT_SPL
 
 config TARGET_TBS2910
 	bool "TBS2910 Matrix ARM mini PC"
