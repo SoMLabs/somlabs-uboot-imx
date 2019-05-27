@@ -4,3 +4,4 @@
 #
 
 obj-y  := visionsom-6ull.o
+obj-$(CONFIG_IMX_KOBS)  += nand_imxkobs.o
