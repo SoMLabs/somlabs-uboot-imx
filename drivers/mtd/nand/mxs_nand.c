@@ -23,6 +23,7 @@
 #include <asm/io.h>
 #include <asm/arch/clock.h>
 #include <asm/arch/imx-regs.h>
+#include <asm/arch/crm_regs.h>
 #include <asm/mach-imx/regs-bch.h>
 #include <asm/mach-imx/regs-gpmi.h>
 #include <asm/arch/sys_proto.h>
@@ -1327,6 +1328,12 @@ int board_nand_init(struct nand_chip *nand)
 {
 	struct mxs_nand_info *nand_info;
 	int err;
+	struct mxc_ccm_reg *mxc_ccm = (struct mxc_ccm_reg *)CCM_BASE_ADDR;
+
+	if((readl(&mxc_ccm->CCGR6) & MXC_CCM_CCGR6_GPMI_MASK) != MXC_CCM_CCGR6_GPMI_MASK) {
+		printf("MXS NAND: clock is disabled!\n");
+		return -ENODEV;
+	}
 
 	nand_info = malloc(sizeof(struct mxs_nand_info));
 	if (!nand_info) {
