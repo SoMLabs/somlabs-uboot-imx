@@ -25,6 +25,7 @@
 #include <mxsfb.h>
 #include <asm/mach-imx/video.h>
 #include <splash.h>
+#include <linux/mtd/rawnand.h>
 
 #include <fdt_support.h>
 
@@ -324,13 +325,15 @@ int board_init(void)
 	if(get_boot_device() == NAND_BOOT) {
 		puts("SomLabs VisionSOM-6ULL - configuring NAND interface...\n");
 		setup_gpmi_nand();
-	} else {
-		struct mxc_ccm_reg *mxc_ccm = (struct mxc_ccm_reg *)CCM_BASE_ADDR;
-		clrbits_le32(&mxc_ccm->CCGR6, MXC_CCM_CCGR6_GPMI_MASK);
 	}
 #endif
 
 	return 0;
+}
+
+int board_nand_init_hook(struct nand_chip *nand)
+{
+	return (get_boot_device() != NAND_BOOT);
 }
 
 #ifdef CONFIG_CMD_BMODE

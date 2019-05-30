@@ -1315,6 +1315,11 @@ err1:
 	return ret;
 }
 
+__weak int board_nand_init_hook(struct nand_chip *nand)
+{
+	return 0;
+}
+
 /*!
  * This function is called during the driver binding process.
  *
@@ -1330,8 +1335,7 @@ int board_nand_init(struct nand_chip *nand)
 	int err;
 	struct mxc_ccm_reg *mxc_ccm = (struct mxc_ccm_reg *)CCM_BASE_ADDR;
 
-	if((readl(&mxc_ccm->CCGR6) & MXC_CCM_CCGR6_GPMI_MASK) != MXC_CCM_CCGR6_GPMI_MASK) {
-		printf("MXS NAND: clock is disabled!\n");
+	if(board_nand_init_hook(nand)) {
 		return -ENODEV;
 	}
 
