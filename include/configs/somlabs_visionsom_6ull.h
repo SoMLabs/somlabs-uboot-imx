@@ -72,7 +72,7 @@
 	"setrootmmc=setenv rootspec root=${mmcroot}\0" \
 	"setbootscriptmmc=setenv loadbootscript ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${script};\0" \
 	"setloadmmc=setenv loadimage ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${image}; " \
-	           "setenv loadfdt ext4load mmc ${mmcdev}:${mmcpart} ${fdt_sddr} /boot/${fdt_file};\0" \
+	           "setenv loadfdt ext4load mmc ${mmcdev}:${mmcpart} ${fdt_addr} /boot/${fdt_file};\0" \
 	"setbootargs=setenv bootargs console=${console},${baudrate} " \
 		BOOTARGS_CMA_SIZE \
 		"${rootspec}\0" \
