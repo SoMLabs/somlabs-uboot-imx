@@ -68,7 +68,7 @@
 	            "setenv loadfdt ubifsload ${fdt_addr} /boot/${fdt_file};\0"\
 	"mmcdev=0\0" \
 	"mmcpart=1\0" \
-	"mmcroot=/dev/mmcblk0p1 rootwait rw\0" \
+	"mmcroot=/dev/mmcblk1p1 rootwait rw\0" \
 	"setrootmmc=setenv rootspec root=${mmcroot}\0" \
 	"setbootscriptmmc=setenv loadbootscript ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${script};\0" \
 	"setloadmmc=setenv loadimage ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${image}; " \
