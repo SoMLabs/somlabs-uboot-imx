@@ -62,6 +62,7 @@
 	"script=boot.scr\0" \
 	"image=zImage\0" \
 	"splashimage=0x80000000\0" \
+	"splashfile=/boot/splash.bmp\0" \
 	"setrootnand=setenv rootspec root=ubi0:rootfs ubi.mtd=ubi rootfstype=ubifs "MFG_NAND_PARTITION"\0" \
 	"setbootscriptnand=setenv loadbootscript ubifsload ${loadaddr} /boot/${script};\0" \
 	"setloadnand=setenv loadimage ubifsload ${loadaddr} /boot/${image}; " \
@@ -196,6 +197,7 @@
 #define CONFIG_BMP_16BPP
 #define CONFIG_VIDEO_BMP_RLE8
 #define CONFIG_VIDEO_BMP_LOGO
+#define CONFIG_VIDEO_BMP_GZIP
 #define CONFIG_IMX_VIDEO_SKIP
 #endif	/* CONFIG_VIDEO */
 
