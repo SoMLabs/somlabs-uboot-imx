@@ -84,6 +84,12 @@ config TARGET_IMX8MN_EVK
 	select SUPPORT_SPL
 	select IMX8M_DDR4
 
+config TARGET_SOMLABS_VISIONSOM_8MM
+	bool "SomLabs VisionSOM-8MM"
+	select IMX8MM
+	select SUPPORT_SPL
+	select IMX8M_LPDDR4
+
 endchoice
 
 source "board/freescale/imx8mq_evk/Kconfig"
@@ -92,5 +98,6 @@ source "board/freescale/imx8mq_aiy/Kconfig"
 source "board/freescale/imx8mm_evk/Kconfig"
 source "board/freescale/imx8mm_val/Kconfig"
 source "board/freescale/imx8mn_evk/Kconfig"
+source "board/somlabs/visionsom-8mm/Kconfig"
 
 endif

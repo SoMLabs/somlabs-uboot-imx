@@ -637,6 +637,8 @@ dtb-$(CONFIG_ARCH_IMX8M) += fsl-imx8mq-evk.dtb \
 		fsl-imx8mn-ddr4-evk.dtb \
 		fsl-imx8mq-aiy.dtb
 
+dtb-$(CONFIG_ARCH_IMX8M) += visionsom-8mm.dtb
+
 dtb-$(CONFIG_RCAR_GEN2) += \
 	r8a7790-lager-u-boot.dtb \
 	r8a7790-stout-u-boot.dtb \
