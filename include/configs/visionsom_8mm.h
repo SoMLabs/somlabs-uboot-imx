@@ -151,6 +151,7 @@
 	"fdt_high=0xffffffffffffffff\0"		\
 	"boot_fdt=try\0" \
 	"fdt_file=" CONFIG_DEFAULT_FDT_FILE "\0" \
+	"fdt_file_custom=visionsom-8mm-custom.dtb\0" \
 	"initrd_addr=0x43800000\0"		\
 	"initrd_high=0xffffffffffffffff\0" \
 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
@@ -162,12 +163,17 @@
 	"bootscript=echo Running bootscript from mmc ...; " \
 		"source\0" \
 	"loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}\0" \
+	"loadfdtcustom=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file_custom}\0" \
 	"loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}\0" \
 	"panel=POWERTIP_PH720128T003\0" \
 	"mmcboot=echo Booting from mmc ...; " \
 		"run mmcargs; " \
 		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
-			"if run loadfdt; then " \
+			"if run loadfdtcustom; then " \
+				"echo Using custom dtb file: ${fdt_file_custom}; " \
+				"booti ${loadaddr} - ${fdt_addr}; " \
+			"elif run loadfdt; then " \
+				"echo Using default dtb file: ${fdt_file}; " \
 				"booti ${loadaddr} - ${fdt_addr}; " \
 			"else " \
 				"echo WARN: Cannot load the DT; " \
