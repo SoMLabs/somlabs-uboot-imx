@@ -1,0 +1,14 @@
+/*
+ * Copyright (C) 2020 Somlabs
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+
+#include "visionsom-6ul.dtsi"
+
+/ {
+	model = "SoMLabs VisionSOM-6UL";
+	compatible = "fsl,imx6ul";
+};

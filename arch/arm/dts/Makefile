@@ -577,6 +577,8 @@ dtb-$(CONFIG_MX6UL) += \
 	imx6ul-pico-hobbit.dtb \
 	imx6ul-pico-pi.dtb
 
+dtb-$(CONFIG_MX6UL) += visionsom-6ul.dtb
+
 dtb-$(CONFIG_MX6ULL) += \
 	imx6ull-14x14-ddr3-arm2.dtb \
 	imx6ull-14x14-ddr3-arm2-epdc.dtb \
@@ -591,6 +593,8 @@ dtb-$(CONFIG_MX6ULL) += \
 	imx6ulz-14x14-evk.dtb \
 	imx6ulz-14x14-evk-emmc.dtb \
 	imx6ulz-14x14-evk-gpmi-weim.dtb
+
+dtb-$(CONFIG_MX6ULL) += visionsom-6ull.dtb
 
 dtb-$(CONFIG_MX7) += imx7d-sdb.dtb \
 	imx7d-sdb-qspi.dtb \
