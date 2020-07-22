@@ -196,6 +196,17 @@ config CMD_FSPINAND
 	  Boot from FSPI NAND need extra boot control Blocks which contains
 	  both Firmware Configuration Block(FCB), Discovered Bad Block Table(DBBT).
 
+config NANDBCB_BOOT_SEARCH_COUNT
+	int "Boot search count value"
+	depends on CMD_NANDBCB
+	default 4
+	help
+	  Specify boot search count value.
+	  It controls how many copies of BCB will be stored in NAND flash.
+	  If your NAND boot partition is space limited,
+	  you can decrese this value to 2 or 1.
+	  For more details check iMX reference manual.
+
 config FSL_MFGPROT
 	bool "Support the 'mfgprot' command"
 	depends on IMX_HAB || AHAB_BOOT

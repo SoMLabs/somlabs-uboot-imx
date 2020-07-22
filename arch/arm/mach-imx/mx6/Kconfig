@@ -734,6 +734,18 @@ config TARGET_PCL063_ULL
 	select DM_THERMAL
 	select SUPPORT_SPL
 
+config TARGET_SOMLABS_VISIONSOM_6UL
+	bool "visionsom-6ul"
+	select MX6UL
+	select BOARD_LATE_INIT
+	select DM
+	select DM_ETH
+	select DM_GPIO
+	select DM_MMC
+	select DM_SERIAL
+	select DM_THERMAL
+	imply CMD_DM
+
 config TARGET_SOMLABS_VISIONSOM_6ULL
 	bool "visionsom-6ull"
 	depends on MX6ULL

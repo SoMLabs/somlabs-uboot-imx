@@ -924,6 +924,7 @@ dtb-$(CONFIG_MX6UL) += \
 	imx6ul-14x14-ddr3-val-emmc.dtb \
 	imx6ul-14x14-ddr3-val-gpmi-weim.dtb \
 	imx6ul-14x14-lpddr2-val.dtb \
+	imx6ul-visionsom.dtb \
 	imx6ul-14x14-evk.dtb \
 	imx6ul-14x14-evk-emmc.dtb \
 	imx6ul-14x14-evk-gpmi-weim.dtb \
@@ -953,6 +954,7 @@ dtb-$(CONFIG_MX6ULL) += \
 	imx6ull-dart-6ul.dtb \
 	imx6ull-somlabs-visionsom.dtb \
 	imx6ulz-bsh-smm-m2.dtb \
+	imx6ull-visionsom.dtb \
 	imx6ulz-14x14-evk.dtb \
 	imx6ulz-14x14-evk-emmc.dtb \
 	imx6ulz-14x14-evk-gpmi-weim.dtb
