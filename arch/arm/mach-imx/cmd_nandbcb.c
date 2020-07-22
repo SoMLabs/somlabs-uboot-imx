@@ -131,8 +131,7 @@ static struct platform_config imx8q_plat_config = {
 };
 
 /* boot search related variables and definitions */
-static int g_boot_search_count = 4;
-static int g_boot_secondary_offset;
+static int g_boot_search_count = CONFIG_NANDBCB_BOOT_SEARCH_COUNT;
 static int g_boot_search_stride;
 static int g_pages_per_stride;
 
