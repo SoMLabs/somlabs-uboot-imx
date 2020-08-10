@@ -38,7 +38,7 @@ extern struct dram_timing_info dram_timing_mt53b256m32d1ds;
 
 void spl_dram_init(void)
 {
-	ddr_init(&dram_timing_k4f6e304hbmgcj);
+	ddr_init(&dram_timing);
 }
 
 #define I2C_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS)
