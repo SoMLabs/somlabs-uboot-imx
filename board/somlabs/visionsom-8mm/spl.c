@@ -23,9 +23,22 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
+#ifdef CONFIG_VISIOSOM_8MM_MEMORY_MT53D512M32D2DS
+extern struct dram_timing_info dram_timing_mt53d512m32d2ds;
+#define dram_timing	dram_timing_mt53d512m32d2ds
+#endif
+#ifdef CONFIG_VISIOSOM_8MM_MEMORY_K4F6E304HBMGCJ
+extern struct dram_timing_info dram_timing_k4f6e304hbmgcj;
+#define dram_timing	dram_timing_k4f6e304hbmgcj
+#endif
+#ifdef CONFIG_VISIOSOM_8MM_MEMORY_MT53B256M32D1DS
+extern struct dram_timing_info dram_timing_mt53b256m32d1ds;
+#define dram_timing	dram_timing_mt53b256m32d1ds
+#endif
+
 void spl_dram_init(void)
 {
-	ddr_init(&dram_timing);
+	ddr_init(&dram_timing_k4f6e304hbmgcj);
 }
 
 #define I2C_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS)
