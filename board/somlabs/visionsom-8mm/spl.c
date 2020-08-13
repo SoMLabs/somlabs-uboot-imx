@@ -21,24 +21,19 @@
 #include <mmc.h>
 #include <asm/arch/ddr.h>
 
+#include "hw_config.h"
+
 DECLARE_GLOBAL_DATA_PTR;
 
-#ifdef CONFIG_VISIOSOM_8MM_MEMORY_MT53D512M32D2DS
-extern struct dram_timing_info dram_timing_mt53d512m32d2ds;
-#define dram_timing	dram_timing_mt53d512m32d2ds
-#endif
-#ifdef CONFIG_VISIOSOM_8MM_MEMORY_K4F6E304HBMGCJ
-extern struct dram_timing_info dram_timing_k4f6e304hbmgcj;
-#define dram_timing	dram_timing_k4f6e304hbmgcj
-#endif
-#ifdef CONFIG_VISIOSOM_8MM_MEMORY_MT53B256M32D1DS
-extern struct dram_timing_info dram_timing_mt53b256m32d1ds;
-#define dram_timing	dram_timing_mt53b256m32d1ds
-#endif
 
 void spl_dram_init(void)
 {
-	ddr_init(&dram_timing);
+	if(visionsom8mm_get_dram_size() == 0){
+		puts("spl_dram_init() unknown memory type\n");
+		hang();
+	}
+	printf("Initialising memory %s\n", visionsom8mm_get_dram_name());
+	ddr_init(visionsom8mm_get_dram_timing());
 }
 
 #define I2C_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS)
@@ -85,18 +80,6 @@ static iomux_v3_cfg_t const usdhc1_pads[] = {
 	IMX8MM_PAD_SD1_DATA3_USDHC1_DATA3 | MUX_PAD_CTRL(USDHC_PAD_CTRL),
 //	IMX8MM_PAD_SD1_RESET_B_GPIO2_IO19 | MUX_PAD_CTRL(USDHC_GPIO_PAD_CTRL),
 };
-
-/*
- * The evk board uses DAT3 to detect CD card plugin,
- * in u-boot we mux the pin to GPIO when doing board_mmc_getcd.
- */
-static iomux_v3_cfg_t const usdhc1_cd_pad =
-	IMX8MM_PAD_SD1_DATA3_GPIO2_IO5 | MUX_PAD_CTRL(USDHC_GPIO_PAD_CTRL);
-
-static iomux_v3_cfg_t const usdhc1_dat3_pad =
-	IMX8MM_PAD_SD1_DATA3_USDHC1_DATA3 |
-	MUX_PAD_CTRL(USDHC_PAD_CTRL);
-
 
 static struct fsl_esdhc_cfg usdhc_cfg[2] = {
 	{USDHC1_BASE_ADDR, 0, 1},
@@ -151,17 +134,6 @@ int board_mmc_getcd(struct mmc *mmc)
 		break;
 	case USDHC1_BASE_ADDR:
 		ret = 1;
-		// imx_iomux_v3_setup_pad(usdhc1_cd_pad);
-		// gpio_request(USDHC1_CD_GPIO, "usdhc1 cd");
-		// gpio_direction_input(USDHC1_CD_GPIO);
-
-		// /*
-		//  * Since it is the DAT3 pin, this pin is pulled to
-		//  * low voltage if no card
-		//  */
-		// ret = gpio_get_value(USDHC1_CD_GPIO);
-
-		// imx_iomux_v3_setup_pad(usdhc1_dat3_pad);
 		return ret;
 	}
 

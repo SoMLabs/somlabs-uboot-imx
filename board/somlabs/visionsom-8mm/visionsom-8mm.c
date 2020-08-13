@@ -30,6 +30,8 @@
 #include <mipi_dsi_panel.h>
 #include <asm/mach-imx/video.h>
 
+#include "hw_config.h"
+
 DECLARE_GLOBAL_DATA_PTR;
 
 #define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1)
@@ -61,33 +63,39 @@ int board_early_init_f(void)
 
 int dram_init(void)
 {
-    /* rom_pointer[1] contains the size of TEE occupies */
-    if (rom_pointer[1])
-        gd->ram_size = PHYS_SDRAM_SIZE - rom_pointer[1];
-    else
-        gd->ram_size = PHYS_SDRAM_SIZE;
-
-#if CONFIG_NR_DRAM_BANKS == 2
-    gd->ram_size += PHYS_SDRAM_2_SIZE;
-#endif
-
+    gd->ram_size = visionsom8mm_get_dram_size() - (rom_pointer[1]?rom_pointer[1]:0);
     return 0;
 }
 
 int dram_init_banksize(void)
 {
+    phys_size_t size_bank1 = visionsom8mm_get_dram_size();
+
+#if CONFIG_NR_DRAM_BANKS == 2
+    phys_size_t size_bank2 = 0;
+    if (size_bank1 > (SZ_1G + SZ_2G)) {
+        size_bank2 = size_bank1 - SZ_1G + SZ_2G;
+        size_bank1 = SZ_1G + SZ_2G; // max 3GB in bank 1
+    }
+#else
+    if (size_bank1 > (SZ_1G + SZ_2G)) {
+        printf("WARNING: To support memory >3GB CONFIG_NR_DRAM_BANKS==2 must be set!!!");
+    }
+#endif
     gd->bd->bi_dram[0].start = PHYS_SDRAM;
-    if (rom_pointer[1])
-        gd->bd->bi_dram[0].size = PHYS_SDRAM_SIZE -rom_pointer[1];
-    else
-        gd->bd->bi_dram[0].size = PHYS_SDRAM_SIZE;
+    gd->bd->bi_dram[0].size = size_bank1 - (rom_pointer[1]?rom_pointer[1]:0);
 
 #if CONFIG_NR_DRAM_BANKS == 2
     gd->bd->bi_dram[1].start = PHYS_SDRAM_2;
-    gd->bd->bi_dram[1].size = PHYS_SDRAM_2_SIZE;
+    gd->bd->bi_dram[1].size = size_bank2;
 #endif
 
     return 0;
+}
+
+phys_size_t get_effective_memsize(void)
+{
+    return visionsom8mm_get_dram_size() - (rom_pointer[1]?rom_pointer[1]:0);
 }
 
 #ifdef CONFIG_FEC_MXC
@@ -564,28 +572,19 @@ int is_recovery_key_pressing(void)
 #endif /*CONFIG_ANDROID_RECOVERY*/
 #endif /*CONFIG_FSL_FASTBOOT*/
 
-phys_size_t get_effective_memsize(void)
-{
-    if (rom_pointer[1])
-        return (PHYS_SDRAM_SIZE - rom_pointer[1]);
-    else
-        return PHYS_SDRAM_SIZE;
-}
-
 /*
     This is called before OS start
-    We need to detect boot mode and configure NAND/eMMC/SD variant here
-    Nodes for not existing memories needs to be deleted from device tree.
 */
 int ft_board_setup(void *fdt, bd_t *bd)
 {
     int boot_dev = get_boot_device();
     /*
+     *  In case of eMMC boot switch to 8-bit bus and allow 1.8V signaling
      *  device tree is expected to be configured by default for SD card, but pinmux should be already
      *    set for 8-bit bus
      */
     if(boot_dev == MMC3_BOOT) {
-        printf("%s(): configuring device tree for eMMC\n", __func__);
+        puts("Updating device tree for eMMC\n");
         const char *usdhc3_path = fdt_get_alias(fdt, "mmc2");
         int off = fdt_path_offset(fdt, usdhc3_path);
         if (off < 0) {
@@ -594,6 +593,26 @@ int ft_board_setup(void *fdt, bd_t *bd)
         }
         fdt_setprop_u32(fdt, off, "bus-width", 8);
         fdt_delprop(fdt, off, "no-1-8-v");
+    }
+
+    /* disable wifi/bt nodes if wifi is not present */
+    if(!visionsom8mm_get_wifi_status()) {
+        puts("Disabling WLAN/BT device tree nodes...\n");
+        const char *path = fdt_get_alias(fdt, "mmc1");
+        int off = fdt_path_offset(fdt, path);
+        if (off) {
+            fdt_status_disabled(fdt, off);
+        } else {
+            printf("WARNING: Cannot find offset for mmc1 (%d)!\n", off);
+        }
+
+        path = fdt_get_alias(fdt, "serial0");
+        off = fdt_path_offset(fdt, path);
+        if (off) {
+            fdt_status_disabled(fdt, off);
+        } else {
+            printf("WARNING: Cannot find offset for serial0 (%d)!\n", off);
+        }
     }
 
     return 0;

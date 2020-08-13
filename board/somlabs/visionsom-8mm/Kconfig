@@ -9,17 +9,4 @@ config SYS_VENDOR
 config SYS_CONFIG_NAME
 	default "visionsom_8mm"
 
-menu "VisionSOM-8MM memory support"
-
-config VISIOSOM_8MM_MEMORY_MT53D512M32D2DS
-	bool "Include configuration data for MT53D512M32D2DS"
-
-config VISIOSOM_8MM_MEMORY_K4F6E304HBMGCJ
-	bool "Include configuration data for K4F6E304HBMGCJ"
-
-config VISIOSOM_8MM_MEMORY_MT53B256M32D1DS
-	bool "Include configuration data for MT53B256M32D1DS"
-
-endmenu
-
 endif
