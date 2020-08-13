@@ -71,7 +71,6 @@ static vsom_config_t read_hw_config(void)
 	*/
 	fuse_read(14, 0, &config.value);
 
-#ifdef CONFIG_SPL_BUILD
     if (!config.c.valid && is_usb_boot()) {
 		// check last 2 words in OCRAM for DRAM config options
 		u32* cfg = (u32*)0x93fffc;
@@ -80,7 +79,7 @@ static vsom_config_t read_hw_config(void)
 			config.value = *cfg;
 		}
 	}
-#endif
+
     debug("CFG: %08X, v: %c, wifi: %c, dram: %u, rev: %u\n",
           config.value, config.c.valid?'1':'0', config.c.wifi?'1':'0',
           config.c.ddr_type, config.c.hw_rev);
