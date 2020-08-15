@@ -1,0 +1,12 @@
+if TARGET_SOMLABS_VISIONSOM_8MM
+
+config SYS_BOARD
+	default "visionsom-8mm"
+
+config SYS_VENDOR
+	default "somlabs"
+
+config SYS_CONFIG_NAME
+	default "visionsom_8mm"
+
+endif
