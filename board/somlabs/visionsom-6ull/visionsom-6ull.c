@@ -284,7 +284,7 @@ static struct splash_location splash_location_mmc[] = {
 	.name = "mmc",
 	.storage = SPLASH_STORAGE_MMC,
 	.flags = SPLASH_STORAGE_FS,
-	.devpart = "0:1",
+	.devpart = "1:1",
 }};
 
 int splash_screen_prepare(void)
