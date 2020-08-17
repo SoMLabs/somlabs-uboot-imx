@@ -186,6 +186,9 @@ void lcdif_power_down(void)
 	struct mxs_lcdif_regs *regs = (struct mxs_lcdif_regs *)(ulong)(panel.isaBase);
 	int timeout = 1000000;
 
+	// Disable the display backlight
+	gpio_set_value(IMX_GPIO_NR(1, 15), 0);
+
 #ifdef CONFIG_MX6
 	if (check_module_fused(MX6_MODULE_LCDIF))
 		return;
