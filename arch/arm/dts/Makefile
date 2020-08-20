@@ -971,7 +971,7 @@ dtb-$(CONFIG_RZA1) += \
 	r7s72100-genmai.dtb \
 	r7s72100-gr-peach.dtb
 
-dtb-$(CONFIG_ARCH_IMX8M) += imx8mm-visionsom.dtb
+dtb-$(CONFIG_ARCH_IMX8M) += imx8mm-visionsbc.dtb imx8mm-visionsom.dtb
 
 dtb-$(CONFIG_RCAR_GEN5) += \
 	r8a78000-ironhide.dtb
