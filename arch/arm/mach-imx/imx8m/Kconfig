@@ -130,6 +130,12 @@ config TARGET_IMX8MN_DDR4_AB2
 	select SUPPORT_SPL
 	select IMX8M_DDR4
 
+config TARGET_SOMLABS_VISIONSBC_8MMINI
+	bool "SomLabs VisionSBC-8MMini"
+	select IMX8MM
+	select SUPPORT_SPL
+	select IMX8M_LPDDR4
+
 config TARGET_SOMLABS_VISIONSOM_8MM
 	bool "SomLabs VisionSOM-8MM"
 	select IMX8MM
@@ -151,6 +157,7 @@ source "board/freescale/imx8mm_evk/Kconfig"
 source "board/freescale/imx8mm_val/Kconfig"
 source "board/freescale/imx8mn_evk/Kconfig"
 source "board/freescale/imx8mp_evk/Kconfig"
+source "board/somlabs/visionsbc-8mmini/Kconfig"
 source "board/somlabs/visionsom-8mm/Kconfig"
 source "board/toradex/verdin-imx8mm/Kconfig"
 

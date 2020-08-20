@@ -801,7 +801,7 @@ dtb-$(CONFIG_ARCH_IMX8M) += \
 
 dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb
 
-dtb-$(CONFIG_ARCH_IMX8M) += imx8mm-visionsom.dtb
+dtb-$(CONFIG_ARCH_IMX8M) += imx8mm-visionsbc.dtb imx8mm-visionsom.dtb
 
 dtb-$(CONFIG_RCAR_GEN2) += \
 	r8a7790-lager-u-boot.dtb \
@@ -812,6 +812,7 @@ dtb-$(CONFIG_RCAR_GEN2) += \
 	r8a7793-gose-u-boot.dtb \
 	r8a7794-alt-u-boot.dtb \
 	r8a7794-silk-u-boot.dtb
+
 
 dtb-$(CONFIG_RCAR_GEN3) += \
 	r8a7795-h3ulcb-u-boot.dtb \
