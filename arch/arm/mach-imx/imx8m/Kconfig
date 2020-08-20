@@ -378,6 +378,12 @@ config TARGET_VERDIN_IMX8MP
 	select SUPPORT_SPL
 	select IMX8M_LPDDR4
 
+config TARGET_SOMLABS_VISIONSBC_8MMINI
+	bool "SomLabs VisionSBC-8MMini"
+	select IMX8MM
+	select SUPPORT_SPL
+	select IMX8M_LPDDR4
+
 config TARGET_SOMLABS_VISIONSOM_8MM
 	bool "SomLabs VisionSOM-8MM"
 	select IMX8MM
@@ -478,6 +484,7 @@ source "board/kontron/sl-mx8mm/Kconfig"
 source "board/menlo/mx8menlo/Kconfig"
 source "board/msc/sm2s_imx8mp/Kconfig"
 source "board/mntre/imx8mq_reform2/Kconfig"
+source "board/somlabs/visionsbc-8mmini/Kconfig"
 source "board/somlabs/visionsom-8mm/Kconfig"
 source "board/phytec/phycore_imx8mm/Kconfig"
 source "board/phytec/phycore_imx8mp/Kconfig"
