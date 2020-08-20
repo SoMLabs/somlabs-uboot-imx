@@ -1,0 +1,12 @@
+if TARGET_SOMLABS_VISIONSBC_8MMINI
+
+config SYS_BOARD
+	default "visionsbc-8mmini"
+
+config SYS_VENDOR
+	default "somlabs"
+
+config SYS_CONFIG_NAME
+	default "visionsbc_8mmini"
+
+endif
