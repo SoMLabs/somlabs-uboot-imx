@@ -230,6 +230,12 @@ config TARGET_IMX8MN_DDR3L_AB2
 	select MISC
 	select SPL_CRYPTO_SUPPORT if SPL
 
+config TARGET_SOMLABS_VISIONSBC_8MMINI
+	bool "SomLabs VisionSBC-8MMini"
+	select IMX8MM
+	select SUPPORT_SPL
+	select IMX8M_LPDDR4
+
 config TARGET_SOMLABS_VISIONSOM_8MM
 	bool "SomLabs VisionSOM-8MM"
 	select IMX8MM
@@ -277,6 +283,7 @@ source "board/freescale/imx8mp_evk/Kconfig"
 source "board/gateworks/venice/Kconfig"
 source "board/google/imx8mq_phanbell/Kconfig"
 source "board/technexion/pico-imx8mq/Kconfig"
+source "board/somlabs/visionsbc-8mmini/Kconfig"
 source "board/somlabs/visionsom-8mm/Kconfig"
 source "board/toradex/verdin-imx8mm/Kconfig"
 source "board/beacon/imx8mm/Kconfig"
