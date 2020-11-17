@@ -76,7 +76,7 @@ int board_init(void)
     return 0;
 }
 
-static int cbadv_get_mipi_hdmi_selection(void)
+static int cbadv_is_hdmi_selected(void)
 {
 #define MIPI_HDMI_SELECT IMX_GPIO_NR(4, 20)
     iomux_v3_cfg_t const mipi_hdmi_sel_pad = IMX8MM_PAD_SAI1_MCLK_GPIO4_IO20 | MUX_PAD_CTRL(NO_PAD_CTRL);
@@ -85,7 +85,7 @@ static int cbadv_get_mipi_hdmi_selection(void)
 
     gpio_request(MIPI_HDMI_SELECT, "mipi_hdmi");
     gpio_direction_input(MIPI_HDMI_SELECT);
-    return gpio_get_value(MIPI_HDMI_SELECT);
+    return !gpio_get_value(MIPI_HDMI_SELECT);
 }
 
 static int cb_is_lvds_enabled(bool is_adv_cb)
@@ -107,14 +107,17 @@ static int cb_is_lvds_enabled(bool is_adv_cb)
 }
 
 enum display_type {
-    dt_mipi,
+    dt_none,
+    dt_mipi7,
+    dt_mipi10,
+    dt_lvds,
     dt_hdmi,
-    dt_lvds
+    dt_reserved
 };
 
 int board_late_init(void)
 {
-    enum display_type display = dt_mipi;
+    enum display_type display = dt_none;
     struct udevice *bus;
     struct udevice *i2c_dev = NULL;
     int ret;
@@ -144,33 +147,44 @@ int board_late_init(void)
     }
 
     /*
-     * now check if there is MIPI/HDMI converter attached
-     * to choose between MIPI display and HDMI output
-     * We do this by checking if MIPI/HDMI bridge is present @0x48 on I2C2 bus
-     *  for STD board
-     * For ADV board we need to check jumper state at GPIO4-20 - low state means HDMI adapter,
-     *  high means MIPI display is selected
+     * We have 5 display options supported for 2 kinds of carrier boards:
+     * - no display
+     * - MIPI 7 inch  720x1280, vertical   (PH720128T003-ZBC02) touch @ 0x38
+     * - MIPI 10 inch 1280x800, horizontal (PH128800T004-ZFC18) touch @ 0x01
+     * - LVDS 10 inch 1280x800, horizontal (RK101II01D-CT092A) - lvds converter @ 0x48
+     * - HDMI - resolution detected by kernel with EDID - hdmi converter @ 0x48
+     *
+     * For std-cb we just check presence of i2c device with specific address and read gpio
+     *   to distinguish between LVDS and HDMI mode (selected by jumper)
+     *
+     * For std-adv board we have to read GPIO4-20:
+     *  - low state means HDMI/LVDS, another GPIO selects between them
+     *  - high state means MIPI/no display mode - exact display is dected by scanning i2c bus
      */
-    if(adv_carrier_board) {
-        display = cbadv_get_mipi_hdmi_selection()?dt_mipi:dt_hdmi;
+    if(adv_carrier_board && cbadv_is_hdmi_selected()) {
+        display = dt_hdmi;
+    } else if(!adv_carrier_board && (dm_i2c_probe(bus, 0x48, 0, &i2c_dev) == 0)) {
+        display = dt_hdmi;
+    }
+
+    if(display == dt_hdmi) {
+        if(cb_is_lvds_enabled(adv_carrier_board)) {
+            display = dt_lvds;
+        }
+    } else if(dm_i2c_probe(bus, 0x38, 0, &i2c_dev) == 0) {
+        display = dt_mipi7;
+        env_set("extra_args", "fbcon=rotate:1");
+    } else if(dm_i2c_probe(bus, 0x01, 0, &i2c_dev) == 0) {
+        display = dt_mipi10;
     } else {
-        ret = dm_i2c_probe(bus, 0x48, 0, &i2c_dev);
-        display = (ret != 0)?dt_mipi:dt_hdmi;
+        display = dt_none;
     }
 
-    // check if LVDS display is selected
-    if((display == dt_hdmi) && cb_is_lvds_enabled(adv_carrier_board)) {
-        display = dt_lvds;
-    }
+    const char* disp_type[] = {"", "-mipi7", "-mipi10", "-lvds", "-hdmi"};
+    const char* displays[]  = {"NONE", "MIPI 7\"", "MIPI 10\"", "LVDS", "HDMI"};
 
-    switch(display) {
-        case dt_hdmi: env_set("cb_disp", "-hdmi"); break;
-        case dt_lvds: env_set("cb_disp", "-lvds"); break;
-        default:      env_set("cb_disp", "");      break;
-    };
-
-    printf("Carrier board type: [%s] with [%s] display\n", (adv_carrier_board)?"ADV":"STD",
-            (display == dt_hdmi)?"HDMI":(display == dt_lvds)?"LVDS":"MIPI");
+    env_set("cb_disp", disp_type[display]);
+    printf("Carrier board type: [%s], display: [%s]\n", (adv_carrier_board)?"ADV":"STD", displays[display]);
 
     return 0;
 }
