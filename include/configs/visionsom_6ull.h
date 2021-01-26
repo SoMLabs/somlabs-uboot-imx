@@ -29,7 +29,7 @@
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	CONFIG_MFG_ENV_SETTINGS \
-	"bootm_size=0x10000000\0" \
+	"bootm_size=0x18000000\0" \
 	"console=ttymxc0\0" \
 	"initrd_addr=0x86800000\0" \
 	"fdt_addr=0x83000000\0" \
