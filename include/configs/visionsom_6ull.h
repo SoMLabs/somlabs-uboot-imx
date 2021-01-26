@@ -114,11 +114,13 @@
 #define CONFIG_SPLASH_SCREEN_ALIGN
 #define CONFIG_SPLASH_SOURCE
 #define CONFIG_BMP_16BPP
+#define CONFIG_BMP_24BPP
+#define CONFIG_BMP_32BPP
 #define CONFIG_VIDEO_BMP_RLE8
 #define CONFIG_VIDEO_BMP_LOGO
 #define CONFIG_VIDEO_BMP_GZIP
 #define CONFIG_SYS_VIDEO_LOGO_MAX_SIZE  (2 << 20)
->>>>>>> 574622302a... SOMLABS: add support for VisionSOM-6UL/ULL modules:include/configs/visionsom_6ull.h
+#define CONFIG_HIDE_LOGO_VERSION
 #endif
 
 #endif
