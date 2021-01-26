@@ -140,7 +140,7 @@ int splash_screen_prepare(void)
 #ifdef CONFIG_DM_VIDEO
 
 #define GPIO_LCD_RESET			IMX_GPIO_NR(3, 4)
-#define GPIO_LCD_BRIGHTNESS		IMX_GPIO_NR(4, 20)
+#define GPIO_LCD_BRIGHTNESS		IMX_GPIO_NR(1, 15)
 
 static int setup_lcd(void)
 {
@@ -240,6 +240,11 @@ int board_late_init(void)
 	set_wdog_reset((struct wdog_regs *)WDOG1_BASE_ADDR);
 
 	return 0;
+}
+
+void board_preboot_os(void)
+{
+        gpio_set_value(GPIO_LCD_BRIGHTNESS, 0);
 }
 
 static int fdt_get_offset(void *fdt, const char *alias)
