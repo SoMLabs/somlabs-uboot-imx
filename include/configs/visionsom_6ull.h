@@ -36,24 +36,24 @@
 	"script=boot.scr\0" \
 	"image=zImage\0" \
 	"splashimage=0x80000000\0" \
-	"splashfile=/boot/splash.bmp\0" \
+	"splashfile=splash.bmp\0" \
 	"setrootnand=setenv rootspec root=ubi0:rootfs ubi.mtd=ubi " \
 		"rootfstype=ubifs "CONFIG_MTDPARTS_DEFAULT"\0" \
 	"setbootscriptnand=setenv loadbootscript ubifsload " \
-		"${loadaddr} /boot/${script};\0" \
-	"setloadnand=setenv loadimage ubifsload ${loadaddr} /boot/${image}; " \
-	            "setenv loadfdt ubifsload ${fdt_addr} /boot/${fdt_file};\0" \
+		"${loadaddr} ${script};\0" \
+	"setloadnand=setenv loadimage ubifsload ${loadaddr} ${image}; " \
+	            "setenv loadfdt ubifsload ${fdt_addr} ${fdt_file};\0" \
 	"mmcdev=1\0" \
 	"mmcpart=1\0" \
-	"mmcroot=/dev/mmcblk1p1 rootwait rw\0" \
+	"mmcroot=/dev/mmcblk1p2 rootwait rw\0" \
 	"setrootmmc=setenv rootspec root=${mmcroot}\0" \
 	"setbootscriptmmc=setenv loadbootscript " \
 		"load mmc ${mmcdev}:${mmcpart} " \
-		"${loadaddr} /boot/${script};\0" \
+		"${loadaddr} ${script};\0" \
 	"setloadmmc=setenv loadimage load mmc ${mmcdev}:${mmcpart} " \
-		"${loadaddr} /boot/${image}; " \
+		"${loadaddr} ${image}; " \
 		"setenv loadfdt load mmc ${mmcdev}:${mmcpart} " \
-		"${fdt_addr} /boot/${fdt_file};\0" \
+		"${fdt_addr} ${fdt_file};\0" \
 	"setbootargs=setenv bootargs console=${console},${baudrate} " \
 		"${rootspec}\0" \
 	"execbootscript=echo Running bootscript...; source\0" \
