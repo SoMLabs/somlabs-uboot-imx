@@ -140,18 +140,16 @@ static struct mm_region imx8m_mem_map[] = {
 #else
 			 PTE_BLOCK_OUTER_SHARE
 #endif
-#ifdef PHYS_SDRAM_2_SIZE
 	}, {
 		/* DRAM2 */
-		.virt = 0x100000000UL,
-		.phys = 0x100000000UL,
-		.size = PHYS_SDRAM_2_SIZE,
+		.virt = 0,
+		.phys = 0,
+		.size = 0,
 		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) |
 #ifdef CONFIG_IMX_TRUSTY_OS
 			 PTE_BLOCK_INNER_SHARE
 #else
 			 PTE_BLOCK_OUTER_SHARE
-#endif
 #endif
 	}, {
 		/* empty entrie to split table entry 5
@@ -168,6 +166,15 @@ struct mm_region *mem_map = imx8m_mem_map;
 
 void enable_caches(void)
 {
+	// update memmap with real sizes
+	imx8m_mem_map[5].size = gd->bd->bi_dram[0].size;
+	imx8m_mem_map[5].phys = gd->bd->bi_dram[0].start;
+	imx8m_mem_map[5].virt = gd->bd->bi_dram[0].start;
+
+	imx8m_mem_map[6].size = gd->bd->bi_dram[1].size;
+	imx8m_mem_map[6].phys = gd->bd->bi_dram[1].start;
+	imx8m_mem_map[6].virt = gd->bd->bi_dram[1].start;
+
 	/* If OPTEE runs, remove OPTEE memory from MMU table to avoid speculative prefetch */
 	if (rom_pointer[1]) {
 
@@ -233,11 +240,17 @@ int dram_init_banksize(void)
 	int bank = 0;
 	int ret;
 	phys_size_t sdram_size;
+	phys_size_t bank2_size = 0;
+	const phys_size_t mem_3g = 3UL * SZ_1G;
 
 	ret = board_phys_sdram_size(&sdram_size);
 	if (ret)
 		return ret;
 
+	if(sdram_size > mem_3g) {
+		bank2_size = sdram_size - mem_3g;
+		sdram_size = mem_3g;
+	}
 	gd->bd->bi_dram[bank].start = PHYS_SDRAM;
 	if (rom_pointer[1]) {
 		phys_addr_t optee_start = (phys_addr_t)rom_pointer[0];
@@ -258,14 +271,14 @@ int dram_init_banksize(void)
 		gd->bd->bi_dram[bank].size = sdram_size;
 	}
 
-#ifdef PHYS_SDRAM_2_SIZE
-	if ( ++bank >= CONFIG_NR_DRAM_BANKS) {
-		puts("CONFIG_NR_DRAM_BANKS is not enough for SDRAM_2\n");
-		return -1;
+	if (bank2_size) {
+		if ( ++bank >= CONFIG_NR_DRAM_BANKS) {
+			puts("CONFIG_NR_DRAM_BANKS is not enough for SDRAM_2\n");
+			return -1;
+		}
+		gd->bd->bi_dram[bank].start = 0x100000000UL;
+		gd->bd->bi_dram[bank].size = bank2_size;
 	}
-	gd->bd->bi_dram[bank].start = PHYS_SDRAM_2;
-	gd->bd->bi_dram[bank].size = PHYS_SDRAM_2_SIZE;
-#endif
 
 	return 0;
 }
@@ -276,11 +289,13 @@ phys_size_t get_effective_memsize(void)
 	if (rom_pointer[1])
 		return ((phys_addr_t)rom_pointer[0] - PHYS_SDRAM);
 
-#ifdef PHYS_SDRAM_2_SIZE
-	return gd->ram_size - PHYS_SDRAM_2_SIZE;
-#else
-	return gd->ram_size;
-#endif
+	phys_size_t sdram_size = gd->ram_size;
+
+	if(sdram_size > (3UL * SZ_1G)) {
+		sdram_size = 3UL * SZ_1G;
+	}
+
+	return sdram_size;
 }
 
 static u32 get_cpu_variant_type(u32 type)
