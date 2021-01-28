@@ -22,7 +22,7 @@ typedef struct {
 /* Definition of data structure for DRAM parameters */
 struct dram_params {
 	char*                    name;		// memory name
-	u32                      size;		// in MB
+	phys_size_t              size;		// in MB
 #ifdef CONFIG_SPL_BUILD
 	struct dram_timing_info* timing;
 #endif
@@ -41,13 +41,15 @@ struct dram_params {
 extern struct dram_timing_info dram_timing_mt53d512m32d2ds;
 extern struct dram_timing_info dram_timing_k4f6e304hbmgcj;
 extern struct dram_timing_info dram_timing_mt53b256m32d1ds;
+extern struct dram_timing_info dram_timing_mt53d1024m32d4dt;
 #endif
 
 const struct dram_params dram_data[] = {
     MEM_ENTRY("UNKNOWN",            0, NULL),
 	MEM_ENTRY("MT53D512M32D2DS", 2048, &dram_timing_mt53d512m32d2ds),
 	MEM_ENTRY("K4F6E304HBMGCJ",  2048, &dram_timing_k4f6e304hbmgcj),
-	MEM_ENTRY("MT53B256M32D1DS", 1024, &dram_timing_mt53b256m32d1ds)
+	MEM_ENTRY("MT53B256M32D1DS", 1024, &dram_timing_mt53b256m32d1ds),
+	MEM_ENTRY("MT53D1024M32D4DT", 4096, &dram_timing_mt53d1024m32d4dt),
 };
 
 /*
@@ -72,12 +74,14 @@ static vsom_config_t read_hw_config(void)
 	fuse_read(14, 0, &config.value);
 
     if (!config.c.valid && is_usb_boot()) {
+        printf("Reading configuration from OCRAM...");
 		// check last 2 words in OCRAM for DRAM config options
 		u32* cfg = (u32*)0x93fffc;
 		u32* flag = (u32*)0x93fff8;
 		if (*flag == 0x55AABEEF) {
 			config.value = *cfg;
 		}
+        printf("config value: %08X(flag:%08X)\n", *cfg, *flag);
 	}
 
     debug("CFG: %08X, v: %c, wifi: %c, dram: %u, rev: %u\n",
