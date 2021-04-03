@@ -242,10 +242,12 @@ int board_late_init(void)
 	return 0;
 }
 
+#ifdef CONFIG_DM_VIDEO
 void board_preboot_os(void)
 {
         gpio_set_value(GPIO_LCD_BRIGHTNESS, 0);
 }
+#endif
 
 static int fdt_get_offset(void *fdt, const char *alias)
 {
