@@ -55,7 +55,7 @@
 		"setenv loadfdt load mmc ${mmcdev}:${mmcpart} " \
 		"${fdt_addr} ${fdt_file};\0" \
 	"setbootargs=setenv bootargs console=${console},${baudrate} " \
-		"${rootspec}\0" \
+		"${bootarg_cmasize} ${rootspec}\0" \
 	"execbootscript=echo Running bootscript...; source\0" \
 	"setfdtfile=setenv fdt_file somlabs-${board}${fdt_suffix}.dtb\0" \
 	"checkbootdev=if test ${bootdev} = nand; then " \
