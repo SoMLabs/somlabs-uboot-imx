@@ -23,7 +23,9 @@
 #include <miiphy.h>
 #include <linux/sizes.h>
 #include <mmc.h>
+#ifdef CONFIG_FEC_MXC
 #include <netdev.h>
+#endif
 #include <splash.h>
 
 DECLARE_GLOBAL_DATA_PTR;
@@ -230,6 +232,10 @@ int board_late_init(void)
 	}
 	if(fdt_suffix) {
 		env_set("fdt_suffix", fdt_suffix);
+	}
+
+	if(gd->ram_size < SZ_512M) {
+		env_set("bootarg_cmasize", "cma=96M");
 	}
 
 #ifdef CONFIG_DM_VIDEO
