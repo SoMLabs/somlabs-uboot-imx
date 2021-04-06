@@ -6,6 +6,9 @@
  * published by the Free Software Foundation.
  */
 
+/dts-v1/;
+
+#include "imx6ul.dtsi"
 #include "imx6ul-visionsom.dtsi"
 
 / {
