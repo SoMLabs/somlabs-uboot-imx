@@ -29,7 +29,6 @@
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	CONFIG_MFG_ENV_SETTINGS \
-	"bootm_size=0x18000000\0" \
 	"console=ttymxc0\0" \
 	"initrd_addr=0x86800000\0" \
 	"fdt_addr=0x83000000\0" \
@@ -41,8 +40,8 @@
 		"rootfstype=ubifs "CONFIG_MTDPARTS_DEFAULT"\0" \
 	"setbootscriptnand=setenv loadbootscript ubifsload " \
 		"${loadaddr} ${script};\0" \
-	"setloadnand=setenv loadimage ubifsload ${loadaddr} ${image}; " \
-	            "setenv loadfdt ubifsload ${fdt_addr} ${fdt_file};\0" \
+	"setloadnand=setenv loadimage ubifsload ${loadaddr} /boot/${image}; " \
+	            "setenv loadfdt ubifsload ${fdt_addr} /boot/${fdt_file};\0" \
 	"mmcdev=1\0" \
 	"mmcpart=1\0" \
 	"mmcroot=/dev/mmcblk1p2 rootwait rw\0" \
@@ -57,7 +56,7 @@
 	"setbootargs=setenv bootargs console=${console},${baudrate} " \
 		"${bootarg_cmasize} ${rootspec}\0" \
 	"execbootscript=echo Running bootscript...; source\0" \
-	"setfdtfile=setenv fdt_file somlabs-${board}${fdt_suffix}.dtb\0" \
+	"fdt_file=\0" \
 	"checkbootdev=if test ${bootdev} = nand; then " \
 		"nand device 0; ubi part ubi; ubifsmount ubi0:rootfs; " \
 		"run setbootscriptnand; " \
@@ -68,6 +67,18 @@
 		"run setrootmmc; " \
 		"run setloadmmc; " \
 	"fi; " \
+
+#define CONFIG_BOOTCOMMAND \
+	"run checkbootdev; " \
+	"run loadfdt;" \
+	"if run loadbootscript; then " \
+		"run bootscript; " \
+	"else " \
+		"if run loadimage; then " \
+			"run setbootargs; " \
+			"bootz ${loadaddr} - ${fdt_addr}; " \
+		"fi; " \
+	"fi"
 
 /* Miscellaneous configurable options */
 
@@ -99,13 +110,13 @@
 #define CONFIG_MXC_USB_PORTSC  (PORT_PTS_UTMI | PORT_PTS_PTW)
 #endif
 
-<<<<<<< HEAD:include/configs/somlabs_visionsom_6ull.h
 #ifdef CONFIG_CMD_NET
 #define IMX_FEC_BASE			ENET_BASE_ADDR
 #define CONFIG_FEC_MXC_PHYADDR		0x1
 #define CONFIG_FEC_XCV_TYPE		RMII
 #define CONFIG_ETHPRIME			"eth0"
-=======
+#endif
+
 #ifndef CONFIG_SPL_BUILD
 #ifdef CONFIG_DM_VIDEO
 #define CONFIG_VIDEO_MXS
