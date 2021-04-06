@@ -5,7 +5,9 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  */
+/dts-v1/;
 
+#include "imx6ull.dtsi"
 #include "imx6ul-visionsom.dtsi"
 
 / {
