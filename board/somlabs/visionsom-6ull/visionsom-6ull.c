@@ -185,16 +185,32 @@ int board_init(void)
 	return 0;
 }
 
+#define GPIO_BT_ENABLE			IMX_GPIO_NR(4, 17)
+#define GPIO_BT_HOST_WAKE		IMX_GPIO_NR(4, 19)
+
+int board_with_wifi(void)
+{
+	int ret = 0;
+
+	gpio_request(GPIO_BT_ENABLE, "bt_enable");
+	gpio_request(GPIO_BT_HOST_WAKE, "bt_hwake");
+	gpio_direction_input(GPIO_BT_HOST_WAKE);
+	gpio_direction_output(GPIO_BT_ENABLE , 1);
+	udelay(5000);	// wait 5ms until signal is stable
+	/* wlan/bt chip drives this pin low when BT PWR is enabled! */
+	if(gpio_get_value(GPIO_BT_HOST_WAKE) == 0) {
+		ret = 1;
+	}
+	gpio_direction_output(GPIO_BT_ENABLE , 0);
+	gpio_free(GPIO_BT_ENABLE);
+	gpio_free(GPIO_BT_HOST_WAKE);
+	return ret;
+}
+
 int board_late_init(void)
 {
 	const char* bootdev = NULL;
 	const char* bootdevno = NULL;
-	const char* fdt_suffix = NULL;
-
-	if (is_cpu_type(MXC_CPU_MX6ULL))
-		env_set("board", "visionsom-6ull");
-	else
-		env_set("board", "visionsom-6ul");
 
 	switch (get_boot_device()) {
 		case SD1_BOOT:
@@ -204,7 +220,6 @@ int board_late_init(void)
 		case MMC1_BOOT:
 			bootdev = "emmc";
 			bootdevno = "0";
-			fdt_suffix = "-emmc";
 			break;
 		case SD2_BOOT:
 			bootdev = "sd";
@@ -213,14 +228,12 @@ int board_late_init(void)
 		case MMC2_BOOT:
 			bootdev = "emmc";
 			bootdevno = "1";
-			fdt_suffix = "-emmc";
 			break;
 		case QSPI_BOOT:
 			bootdev = "qspi";
 			break;
 		case NAND_BOOT:
 			bootdev = "nand";
-			fdt_suffix = "-nand";
 			break;
 		default:
 			break;
@@ -231,8 +244,16 @@ int board_late_init(void)
 	if(bootdevno) {
 		env_set("bootdevno", bootdevno);
 	}
-	if(fdt_suffix) {
-		env_set("fdt_suffix", fdt_suffix);
+
+	if (env_get("fdt_file") == NULL) {
+		char buffer[40];
+		int with_wifi = board_with_wifi();
+		snprintf(buffer, sizeof(buffer), "visioncb-%s-%s-%s%s.dtb",
+						 is_cpu_type(MXC_CPU_MX6ULL)?"6ull":"6ul",
+						 "std",
+						 bootdev,
+						 with_wifi?"-btwifi":"");
+		env_set("fdt_file", buffer);
 	}
 
 	if(gd->ram_size < SZ_512M) {
