@@ -29,7 +29,6 @@
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	CONFIG_MFG_ENV_SETTINGS \
-	"bootm_size=0x18000000\0" \
 	"console=ttymxc0\0" \
 	"initrd_addr=0x86800000\0" \
 	"fdt_addr=0x83000000\0" \
@@ -41,8 +40,8 @@
 		"rootfstype=ubifs "CONFIG_MTDPARTS_DEFAULT"\0" \
 	"setbootscriptnand=setenv loadbootscript ubifsload " \
 		"${loadaddr} ${script};\0" \
-	"setloadnand=setenv loadimage ubifsload ${loadaddr} ${image}; " \
-	            "setenv loadfdt ubifsload ${fdt_addr} ${fdt_file};\0" \
+	"setloadnand=setenv loadimage ubifsload ${loadaddr} /boot/${image}; " \
+	            "setenv loadfdt ubifsload ${fdt_addr} /boot/${fdt_file};\0" \
 	"mmcdev=1\0" \
 	"mmcpart=1\0" \
 	"mmcroot=/dev/mmcblk1p2 rootwait rw\0" \
@@ -57,7 +56,7 @@
 	"setbootargs=setenv bootargs console=${console},${baudrate} " \
 		"${bootarg_cmasize} ${rootspec}\0" \
 	"execbootscript=echo Running bootscript...; source\0" \
-	"setfdtfile=setenv fdt_file somlabs-${board}${fdt_suffix}.dtb\0" \
+	"fdt_file=\0" \
 	"checkbootdev=if test ${bootdev} = nand; then " \
 		"nand device 0; ubi part ubi; ubifsmount ubi0:rootfs; " \
 		"run setbootscriptnand; " \
@@ -70,7 +69,6 @@
 	"fi; " \
 
 #define CONFIG_BOOTCOMMAND \
-	"run setfdtfile; " \
 	"run checkbootdev; " \
 	"run loadfdt;" \
 	"if run loadbootscript; then " \
