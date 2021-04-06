@@ -6,11 +6,6 @@
  * published by the Free Software Foundation.
  */
 
-/dts-v1/;
-
-#include <dt-bindings/input/input.h>
-#include "imx6ul.dtsi"
-
 / {
 	chosen {
 		stdout-path = &uart1;
@@ -107,6 +102,8 @@
 		pinctrl_hog_1: hoggrp-1 {
 			fsl,pins = <
 				MX6UL_PAD_JTAG_TCK__OSC32K_32K_OUT		0x17099	/* 0x4001b031*/	/* 32kHz low power clock reference clock for WiFi*/
+				MX6UL_PAD_CSI_MCLK__GPIO4_IO17 			0x17059	/* output */
+				MX6UL_PAD_CSI_VSYNC__GPIO4_IO19			0x1b001 /* input with 100k pullup */
 			>;
 		};
 
