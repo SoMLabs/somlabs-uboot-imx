@@ -20,9 +20,6 @@
 #endif
 #endif
 
-#define PHYS_SDRAM_SIZE		SZ_512M
-#define BOOTARGS_CMA_SIZE   ""
-
 #undef CONFIG_LDO_BYPASS_CHECK
 
 #define CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
@@ -75,7 +72,6 @@
 	"setloadmmc=setenv loadimage ext4load mmc ${mmcdev}:${mmcpart} ${loadaddr} /boot/${image}; " \
 	           "setenv loadfdt ext4load mmc ${mmcdev}:${mmcpart} ${fdt_addr} /boot/${fdt_file};\0" \
 	"setbootargs=setenv bootargs console=${console},${baudrate} " \
-		BOOTARGS_CMA_SIZE \
 		"${rootspec}\0" \
 	"execbootscript=echo Running bootscript...; " \
 		"source\0" \
