@@ -23,6 +23,8 @@
 #include <mmc.h>
 #include <asm/arch/ddr.h>
 
+#include "hw_config.h"
+
 DECLARE_GLOBAL_DATA_PTR;
 
 int spl_board_boot_device(enum boot_device boot_dev_spl)
@@ -45,11 +47,14 @@ int spl_board_boot_device(enum boot_device boot_dev_spl)
 	}
 }
 
-extern struct dram_timing_info dram_timing_mt53d512m32d2ds;
-
 void spl_dram_init(void)
 {
-	ddr_init(&dram_timing_mt53d512m32d2ds);
+	if(visionsbc8mmini_get_dram_size() == 0){
+		puts("spl_dram_init() unknown memory type\n");
+		hang();
+	}
+	printf("Initialising memory %s\n", visionsbc8mmini_get_dram_name());
+	ddr_init(visionsbc8mmini_get_dram_timing());
 }
 
 #define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1)
