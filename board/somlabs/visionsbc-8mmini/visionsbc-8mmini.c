@@ -26,13 +26,15 @@
 
 #include <usb.h>
 
+#include "hw_config.h"
+
 DECLARE_GLOBAL_DATA_PTR;
 
-// int board_phys_sdram_size(phys_size_t *size)
-// {
-//     *size = visionsom8mm_get_dram_size();
-//     return 0;
-// }
+int board_phys_sdram_size(phys_size_t *size)
+{
+    *size = visionsbc8mmini_get_dram_size();
+    return 0;
+}
 
 #if IS_ENABLED(CONFIG_FEC_MXC)
 static int setup_fec(void)
