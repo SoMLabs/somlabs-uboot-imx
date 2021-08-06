@@ -6,6 +6,9 @@
 #include "hw_config.h"
 #include <fuse.h>
 
+#ifdef CONFIG_SPL_BUILD
+#include "lpddr4_timing.h"
+#endif
 
 /*
    Definition of data structure held in GP10 fuse (bank 14, word 0)
@@ -37,19 +40,13 @@ struct dram_params {
     {name, size}
 #endif
 
-#ifdef CONFIG_SPL_BUILD
-extern struct dram_timing_info dram_timing_mt53d512m32d2ds;
-extern struct dram_timing_info dram_timing_k4f6e304hbmgcj;
-extern struct dram_timing_info dram_timing_mt53b256m32d1ds;
-extern struct dram_timing_info dram_timing_mt53d1024m32d4dt;
-#endif
-
 const struct dram_params dram_data[] = {
-    MEM_ENTRY("UNKNOWN",            0, NULL),
-	MEM_ENTRY("MT53D512M32D2DS", 2048, &dram_timing_mt53d512m32d2ds),
-	MEM_ENTRY("K4F6E304HBMGCJ",  2048, &dram_timing_k4f6e304hbmgcj),
-	MEM_ENTRY("MT53B256M32D1DS", 1024, &dram_timing_mt53b256m32d1ds),
-	MEM_ENTRY("MT53D1024M32D4DT", 4096, &dram_timing_mt53d1024m32d4dt),
+    MEM_ENTRY("UNKNOWN",             0, NULL),
+    MEM_ENTRY("MT53D512M32D2DS",  2048, &dram_timing_mt53d512m32d2ds),
+    MEM_ENTRY("K4F6E304HBMGCJ",   2048, &dram_timing_k4f6e304hbmgcj),
+    MEM_ENTRY("MT53B256M32D1DS",  1024, &dram_timing_mt53b256m32d1ds),
+    MEM_ENTRY("MT53D1024M32D4DT", 4096, &dram_timing_mt53d1024m32d4dt),
+    MEM_ENTRY("MT53E128M32D2DS",   512, &dram_timing_mt53e128m32d2ds),
 };
 
 /*
