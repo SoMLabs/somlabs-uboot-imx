@@ -202,6 +202,22 @@ int mmc_map_to_kernel_blk(int dev_no)
         return dev_no;
 }
 
+static int set_fdt_cma_size(void *fdt, int size) {
+    int off = fdt_subnode_offset(fdt, 0, "reserved-memory");
+    if(off < 0)
+        return -1;
+
+    off = fdt_subnode_offset(fdt, off, "linux,cma");
+    if(off < 0)
+        return -1;
+
+    const uint32_t cma_value[2] = {cpu_to_fdt32(0), cpu_to_fdt32(size)};
+    int ret = fdt_setprop(fdt, off, "size", cma_value, sizeof(cma_value));
+    if(ret)
+        return -1;
+
+    return 0;
+}
 /*
     This is called before OS start
 */
@@ -245,10 +261,15 @@ int ft_board_setup(void *fdt, bd_t *bd)
         }
     }
 
-    {
-        const char* rev = visionsom8mm_get_hw_rev_str();
-	    fdt_setprop(fdt, 0, "somlabs,board-rev", rev, strlen(rev) + 1);
+    /* In modules with 512MB RAM the Linux CMA should be decreased to 256MB */
+    if(visionsom8mm_get_dram_size() == (512 * SZ_1M)) {
+        puts("Setting Linux CMA size to 256MB\n");
+        if(set_fdt_cma_size(fdt, 256 * SZ_1M) != 0)
+            printf("WARNING: Cannot set new CMA value!\n");
     }
+
+    const char* rev = visionsom8mm_get_hw_rev_str();
+    fdt_setprop(fdt, 0, "somlabs,board-rev", rev, strlen(rev) + 1);
 
     return 0;
 }
