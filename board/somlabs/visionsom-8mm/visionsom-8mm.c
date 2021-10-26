@@ -21,6 +21,7 @@
 #include <spl.h>
 #include <asm/mach-imx/dma.h>
 #include <power/pmic.h>
+#include <fdt_support.h>
 
 #include <asm/mach-imx/boot_mode.h>
 
@@ -221,7 +222,7 @@ static int set_fdt_cma_size(void *fdt, int size) {
 /*
     This is called before OS start
 */
-int ft_board_setup(void *fdt, bd_t *bd)
+int ft_board_setup(void *fdt, struct bd_info *bd)
 {
     int boot_dev = get_boot_device();
     /*
