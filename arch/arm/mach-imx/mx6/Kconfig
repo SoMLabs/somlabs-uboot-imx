@@ -776,7 +776,7 @@ config TARGET_SECOMX6
 
 config TARGET_SOMLABS_VISIONSOM_6UL
 	bool "visionsom-6ul"
-	select MX6UL
+	depends on MX6UL
 	select BOARD_LATE_INIT
 	select DM
 	select DM_ETH
