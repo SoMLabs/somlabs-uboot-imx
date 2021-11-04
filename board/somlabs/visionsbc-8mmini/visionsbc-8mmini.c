@@ -21,10 +21,14 @@
 #include <spl.h>
 #include <asm/mach-imx/dma.h>
 #include <power/pmic.h>
+#include <fdt_support.h>
 
 #include <asm/mach-imx/boot_mode.h>
 
 #include <usb.h>
+
+#include <imx_sip.h>
+#include <linux/arm-smccc.h>
 
 #include "hw_config.h"
 
@@ -66,20 +70,19 @@ int board_usb_cleanup(int index, enum usb_init_type init)
 	return imx8m_usb_power(index, false);
 }
 
-#define FSL_SIP_GPC			0xC2000000
-#define FSL_SIP_CONFIG_GPC_PM_DOMAIN	0x3
 #define DISPMIX				9
 #define MIPI				10
 
 int board_init(void)
 {
+    struct arm_smccc_res res;
 
-	if (IS_ENABLED(CONFIG_FEC_MXC)) {
-		setup_fec();
+    if (IS_ENABLED(CONFIG_FEC_MXC)) {
+        setup_fec();
     }
 
-	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, DISPMIX, true, 0);
-	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, MIPI, true, 0);
+    arm_smccc_smc(IMX_SIP_GPC, IMX_SIP_GPC_PM_DOMAIN, DISPMIX, true, 0, 0, 0, 0, &res);
+    arm_smccc_smc(IMX_SIP_GPC, IMX_SIP_GPC_PM_DOMAIN, MIPI, true, 0, 0, 0, 0, &res);
 
     return 0;
 }
@@ -101,7 +104,7 @@ int mmc_map_to_kernel_blk(int dev_no)
 /*
     This is called before OS start
 */
-int ft_board_setup(void *fdt, bd_t *bd)
+int ft_board_setup(void *fdt, struct bd_info *bd)
 {
 
     return 0;
