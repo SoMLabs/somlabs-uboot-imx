@@ -14,6 +14,7 @@
 #include <asm/arch/imx8mm_pins.h>
 #include <asm/arch/sys_proto.h>
 #include <asm/mach-imx/boot_mode.h>
+#include <init.h>
 
 #include <power/pmic.h>
 #include <power/pca9450.h>
@@ -147,7 +148,7 @@ static struct fsl_esdhc_cfg usdhc_cfg[2] = {
 	{USDHC3_BASE_ADDR, 0, 1},
 };
 
-int board_mmc_init(bd_t *bis)
+int board_mmc_init(struct bd_info *bis)
 {
 	int i, ret;
 
@@ -203,7 +204,7 @@ int power_init_board(void)
 	struct pmic *p;
 	int ret;
 
-	ret = power_pca9450a_init(I2C_PMIC);
+	ret = power_pca9450_init(I2C_PMIC);
 	if (ret)
 		printf("power init failed");
 	p = pmic_get("PCA9450");
@@ -286,13 +287,4 @@ void board_init_f(ulong dummy)
 	setup_i2c(0, CONFIG_SYS_MXC_I2C2_SPEED, 0x7f, &i2c_pad_info1);
 
 	board_init_r(NULL, 0);
-}
-
-int do_reset(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
-{
-	puts ("resetting ...\n");
-
-	reset_cpu(WDOG1_BASE_ADDR);
-
-	return 0;
 }
