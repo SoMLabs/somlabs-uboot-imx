@@ -1,0 +1,12 @@
+if TARGET_SOMLABS_STARSOM_6ULL
+
+config SYS_BOARD
+	default "starsom-6ull"
+
+config SYS_VENDOR
+	default "somlabs"
+
+config SYS_CONFIG_NAME
+	default "starsom_6ull"
+
+endif
