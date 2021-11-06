@@ -769,6 +769,7 @@ dtb-$(CONFIG_MX6UL) += \
 	imx6ul-14x14-ddr3-val-emmc.dtb \
 	imx6ul-14x14-ddr3-val-gpmi-weim.dtb \
 	imx6ul-14x14-lpddr2-val.dtb \
+	imx6ul-visionsom.dtb \
 	imx6ul-14x14-evk.dtb \
 	imx6ul-14x14-evk-emmc.dtb \
 	imx6ul-14x14-evk-gpmi-weim.dtb \
@@ -792,7 +793,7 @@ dtb-$(CONFIG_MX6ULL) += \
 	imx6ull-myir-mys-6ulx-eval.dtb \
 	imx6ull-phytec-segin-ff-rdk-emmc.dtb \
 	imx6ull-dart-6ul.dtb \
-	imx6ull-somlabs-visionsom.dtb \
+	imx6ull-visionsom.dtb \
 	imx6ulz-14x14-evk.dtb \
 	imx6ulz-14x14-evk-emmc.dtb \
 	imx6ulz-14x14-evk-gpmi-weim.dtb
@@ -888,6 +889,8 @@ dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb \
 	imxrt1020-evk.dtb
 dtb-$(CONFIG_ARCH_IMX8ULP) += imx8ulp-evk.dtb
 
+dtb-$(CONFIG_ARCH_IMX8M) += imx8mm-visionsbc.dtb imx8mm-visionsom.dtb
+
 dtb-$(CONFIG_RCAR_GEN2) += \
 	r8a7790-lager-u-boot.dtb \
 	r8a7790-stout-u-boot.dtb \
@@ -897,6 +900,7 @@ dtb-$(CONFIG_RCAR_GEN2) += \
 	r8a7793-gose-u-boot.dtb \
 	r8a7794-alt-u-boot.dtb \
 	r8a7794-silk-u-boot.dtb
+
 
 dtb-$(CONFIG_RCAR_GEN3) += \
 	r8a774a1-beacon-rzg2m-kit.dtb \
