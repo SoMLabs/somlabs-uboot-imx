@@ -150,6 +150,31 @@ static int do_fuse(struct cmd_tbl *cmdtp, int flag, int argc,
 			if (ret)
 				goto err;
 		}
+	} else if (!strcmp(op, "safeprog")) {
+		if (argc < 3)
+			return CMD_RET_USAGE;
+
+		for (i = 2; i < argc; i++, word++) {
+			printf("Checking bank %u word 0x%.8x\n", bank, word);
+			ret = fuse_read(bank, word, &val);
+			if (ret)
+				goto err;
+			if (val != 0) {
+				printf("Bank %u word 0x%.8x is not zero: 0x%.8x\n", bank, word, val);
+				return CMD_RET_FAILURE;
+			}
+
+			if (strtou32(argv[i], 16, &val))
+				return CMD_RET_USAGE;
+
+			printf("Programming bank %u word 0x%.8x to 0x%.8x...\n",
+				bank, word, val);
+			if (!confirmed && !confirm_prog())
+				return CMD_RET_FAILURE;
+			ret = fuse_prog(bank, word, val);
+			if (ret)
+				goto err;
+		}
 	} else if (!strcmp(op, "override")) {
 		if (argc < 3)
 			return CMD_RET_USAGE;
@@ -188,6 +213,9 @@ U_BOOT_CMD(
 	"    starting at 'word'\n"
 	"fuse prog [-y] <bank> <word> <hexval> [<hexval>...] - program 1 or\n"
 	"    several fuse words, starting at 'word' (PERMANENT)\n"
+	"fuse safeprog [-y] <bank> <word> <hexval> [<hexval>...] - program 1 or\n"
+	"    several fuse words only if the current words are equal to 0,\n"
+	"    starting at 'word' (PERMANENT)\n"
 	"fuse override <bank> <word> <hexval> [<hexval>...] - override 1 or\n"
 	"    several fuse words, starting at 'word'"
 );
