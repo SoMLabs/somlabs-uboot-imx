@@ -746,6 +746,18 @@ config TARGET_SOMLABS_STARSOM_6ULL
 	select DM_THERMAL
 	imply CMD_DM
 
+config TARGET_SOMLABS_STARSBC_6ULL
+	bool "Somlabs StarSBC-6ULL"
+	depends on MX6ULL
+	select BOARD_LATE_INIT
+	select DM
+	select DM_ETH
+	select DM_GPIO
+	select DM_MMC
+	select DM_SERIAL
+	select DM_THERMAL
+	imply CMD_DM
+
 config TARGET_SOMLABS_VISIONSOM_6UL
 	bool "visionsom-6ul"
 	depends on MX6UL
@@ -912,6 +924,7 @@ source "board/liebherr/mccmon6/Kconfig"
 source "board/logicpd/imx6/Kconfig"
 source "board/solidrun/mx6cuboxi/Kconfig"
 source "board/somlabs/starsom-6ull/Kconfig"
+source "board/somlabs/starsbc-6ull/Kconfig"
 source "board/somlabs/visionsom-6ull/Kconfig"
 source "board/technexion/pico-imx6/Kconfig"
 source "board/technexion/pico-imx6ul/Kconfig"
