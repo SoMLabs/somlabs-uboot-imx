@@ -1,0 +1,14 @@
+if TARGET_SPACESOM_8MPLUS
+
+config SYS_BOARD
+	default "spacesom-8mplus"
+
+config SYS_VENDOR
+	default "somlabs"
+
+config SYS_CONFIG_NAME
+	default "somlabs_spacesom_8mplus"
+
+source "board/freescale/common/Kconfig"
+
+endif
