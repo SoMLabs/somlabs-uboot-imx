@@ -353,6 +353,17 @@ config TARGET_IMX8MP_RSB3720A1_6G
 	select IMX8MP
 	select SUPPORT_SPL
 	select IMX8M_LPDDR4
+
+config TARGET_SPACESOM_8MPLUS
+	bool "SOMLABS SpaceSOM-8MPlus"
+	select IMX8MP
+        select SUPPORT_SPL
+	select IMX8M_LPDDR4
+	select FSL_CAAM
+	select FSL_BLOB
+	select MISC
+	select SPL_CRYPTO_SUPPORT if SPL
+
 endchoice
 
 source "board/advantech/imx8mp_rsb3720a1/Kconfig"
@@ -369,20 +380,14 @@ source "board/freescale/imx8mn_evk/Kconfig"
 source "board/freescale/imx8mp_evk/Kconfig"
 source "board/gateworks/venice/Kconfig"
 source "board/google/imx8mq_phanbell/Kconfig"
-<<<<<<< HEAD
 source "board/kontron/pitx_imx8m/Kconfig"
 source "board/kontron/sl-mx8mm/Kconfig"
-=======
-source "board/technexion/pico-imx8mq/Kconfig"
-source "board/somlabs/visionsbc-8mmini/Kconfig"
-source "board/somlabs/visionsom-8mm/Kconfig"
-source "board/toradex/verdin-imx8mm/Kconfig"
-source "board/beacon/imx8mm/Kconfig"
-source "board/beacon/imx8mn/Kconfig"
->>>>>>> 2ba36607bc... SOMLABS: add support for VisionSOM-8MM module.
 source "board/phytec/phycore_imx8mm/Kconfig"
 source "board/phytec/phycore_imx8mp/Kconfig"
 source "board/ronetix/imx8mq-cm/Kconfig"
+source "board/somlabs/visionsbc-8mmini/Kconfig"
+source "board/somlabs/visionsom-8mm/Kconfig"
+source "board/somlabs/spacesom-8mplus/Kconfig"
 source "board/technexion/pico-imx8mq/Kconfig"
 source "board/variscite/imx8mn_var_som/Kconfig"
 source "board/toradex/verdin-imx8mm/Kconfig"
