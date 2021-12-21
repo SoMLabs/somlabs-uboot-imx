@@ -1,0 +1,6 @@
+SOMLABS SpaceSOM-8MPlus
+M:	Arkadiusz Karas <arkadiusz.karas@somlabs.com>
+S:	Maintained
+F:	board/somlabs/spacesom_8mplus/
+F:	include/configs/somlabs_spacesom_8mplus.h
+F:	configs/somlabs_spacesom_8mplus_defconfig
