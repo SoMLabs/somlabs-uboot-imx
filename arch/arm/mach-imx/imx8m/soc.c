@@ -171,16 +171,18 @@ static struct mm_region imx8m_mem_map[] = {
 #else
 			 PTE_BLOCK_OUTER_SHARE | PTE_MAP_NS
 #endif
+#ifdef PHYS_SDRAM_2_SIZE
 	}, {
 		/* DRAM2 */
-		.virt = 0,
-		.phys = 0,
-		.size = 0,
+		.virt = 0x100000000UL,
+		.phys = 0x100000000UL,
+		.size = PHYS_SDRAM_2_SIZE,
 		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) |
 #ifdef CONFIG_IMX_TRUSTY_OS
 			 PTE_BLOCK_INNER_SHARE | PTE_MAP_NS
 #else
 			 PTE_BLOCK_OUTER_SHARE | PTE_MAP_NS
+#endif
 #endif
 	}, {
 		/* empty entrie to split table entry 5 if needed when TEEs are used */
@@ -217,15 +219,6 @@ void enable_caches(void)
 	 */
 	int entry = imx8m_find_dram_entry_in_mem_map();
 	u64 attrs = imx8m_mem_map[entry].attrs;
-
-	// update memmap with real sizes
-	imx8m_mem_map[5].size = gd->bd->bi_dram[0].size;
-	imx8m_mem_map[5].phys = gd->bd->bi_dram[0].start;
-	imx8m_mem_map[5].virt = gd->bd->bi_dram[0].start;
-
-	imx8m_mem_map[6].size = gd->bd->bi_dram[1].size;
-	imx8m_mem_map[6].phys = gd->bd->bi_dram[1].start;
-	imx8m_mem_map[6].virt = gd->bd->bi_dram[1].start;
 
 	while (i < CONFIG_NR_DRAM_BANKS &&
 	       entry < ARRAY_SIZE(imx8m_mem_map)) {
