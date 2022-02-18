@@ -126,6 +126,8 @@
 #define CONFIG_SYS_SDRAM_BASE           0x40000000
 #define PHYS_SDRAM                      0x40000000
 #define PHYS_SDRAM_SIZE			0x80000000 /* 3GB DDR */
+#define PHYS_SDRAM_2                    0x100000000
+#define PHYS_SDRAM_2_SIZE               0x00000000
 
 #undef CONFIG_SYS_MEMTEST_START
 #define CONFIG_SYS_MEMTEST_START	PHYS_SDRAM
