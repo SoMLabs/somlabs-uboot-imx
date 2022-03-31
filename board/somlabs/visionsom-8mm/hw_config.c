@@ -40,6 +40,7 @@ struct dram_params {
     {name, size}
 #endif
 
+/* MT53B256M32D1DS memory has two possible hw_config values */
 const struct dram_params dram_data[] = {
     MEM_ENTRY("UNKNOWN",             0, NULL),
     MEM_ENTRY("MT53D512M32D2DS",  2048, &dram_timing_mt53d512m32d2ds),
@@ -47,6 +48,8 @@ const struct dram_params dram_data[] = {
     MEM_ENTRY("MT53B256M32D1DS",  1024, &dram_timing_mt53b256m32d1ds),
     MEM_ENTRY("MT53D1024M32D4DT", 4096, &dram_timing_mt53d1024m32d4dt),
     MEM_ENTRY("MT53E128M32D2DS",   512, &dram_timing_mt53e128m32d2ds),
+    MEM_ENTRY("UNKNOWN",             0, NULL),
+    MEM_ENTRY("MT53B256M32D1DS",  1024, &dram_timing_mt53b256m32d1ds),
 };
 
 /*
@@ -97,7 +100,7 @@ static u32 get_dram_info_index(void)
 
     vsom_config_t cfg = read_hw_config();
 
-    if(cfg.valid && ((cfg.ddr_type + 1) < ARRAY_SIZE(dram_data))) {
+    if(cfg.valid && ((cfg.ddr_type + 1) < ARRAY_SIZE(dram_data)) && (dram_data[cfg.ddr_type + 1].size > 0)) {
         index = cfg.ddr_type + 1;
     } else {
         printf("ERROR: unknown memory type: %u (valid: %s)\n",
