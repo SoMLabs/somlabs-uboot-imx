@@ -33,7 +33,7 @@ CONFIG_OF_BOARD_SETUP=y
 CONFIG_OF_SYSTEM_SETUP=y
 CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=arch/arm/mach-imx/imx8m/imximage-8mp-lpddr4.cfg"
 CONFIG_BOOTCOMMAND="run distro_bootcmd;run bsp_bootcmd"
-CONFIG_DEFAULT_FDT_FILE="spacesom-8mplus.dtb"
+CONFIG_DEFAULT_FDT_FILE="spacesom-8mplus-cb-adv.dtb"
 CONFIG_ARCH_MISC_INIT=y
 CONFIG_BOARD_EARLY_INIT_F=y
 CONFIG_BOARD_LATE_INIT=y
