@@ -7,7 +7,9 @@
 #define __VISIONSOM_8MM_H
 
 #include <linux/sizes.h>
+#include <linux/stringify.h>
 #include <asm/arch/imx-regs.h>
+#include "imx_env.h"
 
 #define CONFIG_SPL_MAX_SIZE		(148 * 1024)
 #define CONFIG_SYS_MONITOR_LEN		SZ_512K
@@ -32,6 +34,8 @@
 #define CONFIG_POWER
 #define CONFIG_POWER_I2C
 #define CONFIG_POWER_PCA9450
+
+#include <config_distro_bootcmd.h>
 
 #define CONFIG_SYS_I2C
 
@@ -91,18 +95,6 @@
 		"else " \
 			"echo wait for boot; " \
 		"fi;\0"
-
-#define CONFIG_BOOTCOMMAND \
-	   "mmc dev ${mmcdev}; if mmc rescan; then " \
-		   "if run loadbootscript; then " \
-			   "run bootscript; " \
-		   "else " \
-			   "if run loadimage; then " \
-				   "run mmcboot; " \
-			   "else echo \"ERROR: Cannot load boot image!\"; " \
-			   "fi; " \
-		   "fi; " \
-	   "else booti ${loadaddr} - ${fdt_addr}; fi"
 
 /* Link Definitions */
 #define CONFIG_LOADADDR			0x40480000
@@ -177,7 +169,9 @@
 #define CONFIG_VIDEO_BMP_LOGO
 #endif
 
-#if defined(CONFIG_ANDROID_SUPPORT)
+#define CONFIG_CMD_READ
+
+#ifdef CONFIG_ANDROID_SUPPORT
 #include "imx8mm_evk_android.h"
 #endif
 
