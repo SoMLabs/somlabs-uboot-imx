@@ -14,6 +14,7 @@
 #include "MT53B256M32D1DS.h"
 #include "MT53D1024M32D4DT.h"
 #include "MT53E128M32D2DS.h"
+#include "K4F8E3S4HBMFCJ.h"
 
 /* ddr phy trained csr */
 struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
@@ -1625,6 +1626,23 @@ struct dram_timing_info dram_timing_mt53e128m32d2ds = {
 	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
 	.fsp_table = { 3000, 400, 100, },
 };
+
+/* ddr timing config params */
+struct dram_timing_info dram_timing_k4f8e3s4hbmfcj = {
+	.ddrc_cfg = ddr_ddrc_cfg_k4f8e3s4hbmfcj,
+	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_k4f8e3s4hbmfcj),
+	.ddrphy_cfg = ddr_ddrphy_cfg,
+	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
+	.fsp_msg = ddr_dram_fsp_msg_k4f8e3s4hbmfcj,
+	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg_k4f8e3s4hbmfcj),
+	.ddrphy_trained_csr = ddr_ddrphy_trained_csr,
+	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
+	.ddrphy_pie = ddr_phy_pie,
+	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
+	.fsp_table = { 3000, 400, 100, },
+};
+
+
 
 /*****************************************************************************/
 /*****************************************************************************/
