@@ -117,7 +117,8 @@ static int cb_is_lvds_enabled(bool is_adv_cb)
 
 enum display_type {
     dt_none,
-    dt_mipi7,
+    dt_mipi7_powertip,
+    dt_mipi7_riverdi,
     dt_mipi10,
     dt_lvds,
     dt_hdmi,
@@ -181,16 +182,18 @@ int board_late_init(void)
             display = dt_lvds;
         }
     } else if(dm_i2c_probe(bus, 0x38, 0, &i2c_dev) == 0) {
-        display = dt_mipi7;
+        display = dt_mipi7_powertip;
         env_set("extra_args", "fbcon=rotate:1");
+    } else if(dm_i2c_probe(bus, 0x41, 0, &i2c_dev) == 0) {
+        display = dt_mipi7_riverdi;
     } else if(dm_i2c_probe(bus, 0x01, 0, &i2c_dev) == 0) {
         display = dt_mipi10;
     } else {
         display = dt_none;
     }
 
-    const char* disp_type[] = {"", "-mipi7", "-mipi10", "-lvds", "-hdmi"};
-    const char* displays[]  = {"NONE", "MIPI 7\"", "MIPI 10\"", "LVDS", "HDMI"};
+    const char* disp_type[] = {"", "-mipi7-powertip",  "-mipi7-riverdi", "-mipi10", "-lvds", "-hdmi"};
+    const char* displays[]  = {"NONE", "MIPI 7\" POWERTIP", "MIPI 7\" RIVERDI", "MIPI 10\"", "LVDS", "HDMI"};
 
     env_set("cb_disp", disp_type[display]);
     printf("Carrier board type: [%s], display: [%s]\n", (adv_carrier_board)?"ADV":"STD", displays[display]);
