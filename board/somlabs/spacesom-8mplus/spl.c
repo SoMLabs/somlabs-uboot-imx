@@ -1,5 +1,6 @@
 /*
  * Copyright 2018-2019 NXP
+ * Copyright 2020-2023 Somlabs
  *
  * SPDX-License-Identifier:	GPL-2.0+
  */
@@ -34,6 +35,8 @@
 #include <mmc.h>
 #include <asm/arch/ddr.h>
 
+#include "hw_config.h"
+
 DECLARE_GLOBAL_DATA_PTR;
 
 int spl_board_boot_device(enum boot_device boot_dev_spl)
@@ -64,7 +67,12 @@ int spl_board_boot_device(enum boot_device boot_dev_spl)
 
 void spl_dram_init(void)
 {
-	ddr_init(&dram_timing);
+	if(spacesom8mp_get_dram_size() == 0){
+		puts("spl_dram_init() unknown memory type\n");
+		hang();
+	}
+	printf("Initialising memory %s\n", spacesom8mp_get_dram_name());
+	ddr_init(spacesom8mp_get_dram_timing());
 }
 
 #if CONFIG_IS_ENABLED(DM_PMIC_PCA9450)
