@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0+
 /*
- * Copyright 2019 NXP
+ * Copyright 2023 Somlabs
  */
 
 #include <common.h>
@@ -30,6 +30,10 @@
 #include <imx_sip.h>
 #include <linux/arm-smccc.h>
 #include <mmc.h>
+#include <fdt_support.h>
+#include <command.h>
+
+#include "hw_config.h"
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -62,6 +66,35 @@ int board_early_init_f(void)
 }
 
 #ifdef CONFIG_OF_BOARD_SETUP
+
+static int setup_board_fdt_from_hwinfo(void *fdt, struct bd_info *bd)
+{
+	/* disable wifi/bt nodes if wifi is not present */
+	if(!spacesom8mp_get_wifi_status()) {
+		puts("Disabling WLAN/BT device tree nodes...\n");
+		const char *path = fdt_get_alias(fdt, "mmc1");
+		int off = fdt_path_offset(fdt, path);
+		if (off) {
+		fdt_status_disabled(fdt, off);
+		} else {
+		printf("WARNING: Cannot find offset for mmc1 (%d)!\n", off);
+		}
+
+		path = fdt_get_alias(fdt, "serial0");
+		off = fdt_path_offset(fdt, path);
+		if (off) {
+		fdt_status_disabled(fdt, off);
+		} else {
+		printf("WARNING: Cannot find offset for serial0 (%d)!\n", off);
+		}
+	}
+
+	const char* rev = spacesom8mp_get_hw_rev_str();
+	fdt_setprop(fdt, 0, "somlabs,board-rev", rev, strlen(rev) + 1);
+
+	return 0;
+}
+
 int ft_board_setup(void *blob, struct bd_info *bd)
 {
 #ifdef CONFIG_IMX8M_DRAM_INLINE_ECC
@@ -102,7 +135,7 @@ int ft_board_setup(void *blob, struct bd_info *bd)
 #endif
 #endif
 
-	return 0;
+	return setup_board_fdt_from_hwinfo(blob, bd);
 }
 #endif
 
@@ -428,6 +461,12 @@ int board_phy_config(struct phy_device *phydev)
 #define DISPMIX				13
 #define MIPI				15
 
+int board_phys_sdram_size(phys_size_t *size)
+{
+	*size = spacesom8mp_get_dram_size();
+	return 0;
+}
+
 int board_init(void)
 {
 	struct arm_smccc_res res;
@@ -508,11 +547,6 @@ int board_late_init(void)
 #ifdef CONFIG_ENV_IS_IN_MMC
 	board_late_mmc_env_init();
 #endif
-#ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
-	env_set("board_name", "EVK");
-	env_set("board_rev", "iMX8MP");
-#endif
-
 	return 0;
 }
 
