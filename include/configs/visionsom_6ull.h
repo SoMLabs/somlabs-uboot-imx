@@ -27,6 +27,7 @@
 #define CONFIG_MFG_ENV_SETTINGS
 #endif
 
+#ifndef CONFIG_ENV_SOURCE_FILE
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	CONFIG_MFG_ENV_SETTINGS \
 	"console=ttymxc0\0" \
@@ -67,6 +68,8 @@
 		"run setrootmmc; " \
 		"run setloadmmc; " \
 	"fi; " \
+	
+#endif
 
 #define CONFIG_BOOTCOMMAND \
 	"run checkbootdev; " \
