@@ -7,6 +7,7 @@
 
 #include <dt-bindings/input/input.h>
 #include "imx6ull.dtsi"
+#include "imx6ul-lcd-ph800480t013.dtsi"
 
 / {
 	model = "SoMLabs StarSOM-6ULL";
@@ -164,8 +165,6 @@
 				MX6UL_PAD_LCD_ENABLE__LCDIF_ENABLE  0x79
 				MX6UL_PAD_LCD_HSYNC__LCDIF_HSYNC    0x79
 				MX6UL_PAD_LCD_VSYNC__LCDIF_VSYNC    0x79
-				/* used for lcd reset */
-				MX6UL_PAD_LCD_RESET__GPIO3_IO04     0x79
 				/* used for LCD power on */
 				MX6UL_PAD_JTAG_TRST_B__GPIO1_IO15   0x79
 			>;
@@ -292,31 +291,6 @@
 		     &pinctrl_lcdif_ctrl>;
 	display = <&display0>;
 	status = "okay";
-
-	display0: display {
-		bits-per-pixel = <24>;
-		bus-width = <24>;
-
-		display-timings {
-			native-mode = <&timing0>;
-			timing0: timing0 {
-			clock-frequency = <33300000>;
-			hactive = <800>;
-			vactive = <480>;
-			hfront-porch = <210>;
-			hback-porch = <46>;
-			hsync-len = <20>;
-			vback-porch = <23>;
-			vfront-porch = <22>;
-			vsync-len = <10>;
-
-			hsync-active = <0>;
-			vsync-active = <0>;
-			de-active = <1>;
-			pixelclk-active = <0>;
-			};
-		};
-	};
 };
 
 &pwm8 {
