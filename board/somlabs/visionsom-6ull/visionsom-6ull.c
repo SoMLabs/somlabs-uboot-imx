@@ -142,18 +142,11 @@ int splash_screen_prepare(void)
 
 #ifdef CONFIG_DM_VIDEO
 
-#define GPIO_LCD_RESET			IMX_GPIO_NR(3, 4)
 #define GPIO_LCD_BRIGHTNESS		IMX_GPIO_NR(1, 15)
 
 static int setup_lcd(void)
 {
 	enable_lcdif_clock(LCDIF1_BASE_ADDR, 1);
-
-	/* Reset the LCD */
-	gpio_request(GPIO_LCD_RESET, "lcd reset");
-	gpio_direction_output(GPIO_LCD_RESET , 0);
-	udelay(500);
-	gpio_direction_output(GPIO_LCD_RESET , 1);
 
 	/* Set Brightness to high */
 	gpio_request(GPIO_LCD_BRIGHTNESS, "backlight");
