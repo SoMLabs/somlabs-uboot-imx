@@ -120,7 +120,7 @@ enum display_type {
     dt_mipi7_ph720128t003,
     dt_mipi7_rvt70hsmnwc00,
     dt_mipi10,
-    dt_lvds,
+    dt_lvds_rvt70hslnwc00_b,
     dt_hdmi,
     dt_reserved
 };
@@ -159,9 +159,10 @@ int board_late_init(void)
     /*
      * We have 5 display options supported for 2 kinds of carrier boards:
      * - no display
-     * - MIPI 7 inch  720x1280, vertical   (PH720128T003-ZBC02) touch @ 0x38
+     * - MIPI 7 inch 720x1280, vertical (PH720128T003) touch @ 0x38
+     * - MIPI 7 inch 1024x600, horizontal (RVT70HSMNWC00) touch @ 0x41
      * - MIPI 10 inch 1280x800, horizontal (PH128800T004-ZFC18) touch @ 0x01
-     * - LVDS 10 inch 1280x800, horizontal (RK101II01D-CT092A) - lvds converter @ 0x48
+     * - LVDS 10 inch 1024x600, horizontal (RVT70HSLNWC00-B) - lvds converter @ 0x48
      * - HDMI - resolution detected by kernel with EDID - hdmi converter @ 0x48
      *
      * For std-cb we just check presence of i2c device with specific address and read gpio
@@ -179,7 +180,7 @@ int board_late_init(void)
 
     if(display == dt_hdmi) {
         if(cb_is_lvds_enabled(adv_carrier_board)) {
-            display = dt_lvds;
+            display = dt_lvds_rvt70hslnwc00_b;
         }
     } else if(dm_i2c_probe(bus, 0x38, 0, &i2c_dev) == 0) {
         display = dt_mipi7_ph720128t003;
@@ -192,8 +193,8 @@ int board_late_init(void)
         display = dt_none;
     }
 
-    const char* disp_type[] = {"", "-mipi7-ph720128t003",  "-mipi7-rvt70hsmnwc00", "-mipi10", "-lvds", "-hdmi"};
-    const char* displays[]  = {"NONE", "MIPI 7\" PH720128T003", "MIPI 7\" RVT70HSMNWC00", "MIPI 10\"", "LVDS", "HDMI"};
+    const char* disp_type[] = {"", "-mipi7-ph720128t003",  "-mipi7-rvt70hsmnwc00", "-mipi10", "-lvds-rvt70hslnwc00-b", "-hdmi"};
+    const char* displays[]  = {"NONE", "MIPI 7\" PH720128T003", "MIPI 7\" RVT70HSMNWC00", "MIPI 10\"", "LVDS RVT70HSLNWC00-B", "HDMI"};
 
     env_set("cb_disp", disp_type[display]);
     printf("Carrier board type: [%s], display: [%s]\n", (adv_carrier_board)?"ADV":"STD", displays[display]);
