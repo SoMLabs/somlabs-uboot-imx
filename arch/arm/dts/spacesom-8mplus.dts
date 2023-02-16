@@ -68,46 +68,6 @@
 		startup-delay-us = <100>;
 		off-on-delay-us = <12000>;
 	};
-
-	dsi_host: dsi-host {
-		compatible = "samsung,sec-mipi-dsi";
-		status = "okay";
-	};
-
-	rm67199_panel {
-		compatible = "raydium,rm67199";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_mipi_dsi_en>;
-		reset-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
-		dsi-lanes = <4>;
-		video-mode = <2>;	/* 0: burst mode
-					 * 1: non-burst mode with sync event
-					 * 2: non-burst mode with sync pulse
-					 */
-		panel-width-mm = <68>;
-		panel-height-mm = <121>;
-		status = "okay";
-
-		port {
-			rm67191_from_dsim: endpoint {
-				remote-endpoint = <&dsim_to_rm67191>;
-			};
-		};
-	};
-
-	// cbtl04gp {
-	// 	compatible = "nxp,cbtl04gp";
-	// 	pinctrl-names = "default";
-	// 	pinctrl-0 = <&pinctrl_typec_mux>;
-	// 	switch-gpios = <&gpio4 20 GPIO_ACTIVE_LOW>;
-	// 	orientation-switch;
-
-	// 	port {
-	// 		usb3_data_ss: endpoint {
-	// 			remote-endpoint = <&typec_con_ss>;
-	// 		};
-	// 	};
-	// };
 };
 
 &eqos {
@@ -295,20 +255,6 @@
 	};
 };
 
-&lcdif1 {
-	status = "okay";
-};
-
-&mipi_dsi {
-	status = "okay";
-
-	port@2 {
-		dsim_to_rm67191: endpoint {
-			remote-endpoint = <&rm67191_from_dsim>;
-		};
-	};
-};
-
 &snvs_pwrkey {
 	status = "okay";
 };
@@ -337,18 +283,7 @@
 
 &usb_dwc3_0 {
 	dr_mode = "device";
-	// hnp-disable;
-	// srp-disable;
-	// adp-disable;
-	// usb-role-switch;
-	// role-switch-default-mode = "none";
 	status = "okay";
-
-// 	port {
-// 		usb3_drd_sw: endpoint {
-// 			remote-endpoint = <&typec_dr_sw>;
-// 		};
-// 	};
 };
 
 &usb3_phy1 {
@@ -526,12 +461,6 @@
 		fsl,pins = <
 			MX8MP_IOMUXC_SAI5_RXFS__GPIO3_IO19        	0x1c3
 			MX8MP_IOMUXC_SAI5_RXC__GPIO3_IO20        	0x1c3
-		>;
-	};
-
-	pinctrl_mipi_dsi_en: mipi_dsi_en {
-		fsl,pins = <
-			MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08	0x16
 		>;
 	};
 
