@@ -15,8 +15,6 @@
 
 #define CONFIG_SPL_MAX_SIZE		(152 * 1024)
 #define CONFIG_SYS_MONITOR_LEN		(512 * 1024)
-#define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_USE_SECTOR
-#define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR	0x300
 #define CONFIG_SYS_UBOOT_BASE	(QSPI0_AMBA_BASE + CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_SECTOR * 512)
 
 #ifdef CONFIG_SPL_BUILD
@@ -53,14 +51,13 @@
 
 #ifdef CONFIG_DISTRO_DEFAULTS
 #define BOOT_TARGET_DEVICES(func) \
-	func(USB, usb, 0) \
-	func(MMC, mmc, 1) \
-	func(MMC, mmc, 2)
+       func(MMC, mmc, 1) \
 
 #include <config_distro_bootcmd.h>
 #else
 #define BOOTENV
 #endif
+
 
 #define JAILHOUSE_ENV \
 	"jh_clk= \0 " \
@@ -72,7 +69,7 @@
 	"jh_netboot=setenv fdtfile imx8mp-evk-root.dtb; setenv jh_clk clk_ignore_unused mem=2048MB; run netboot; \0 "
 
 #define CONFIG_MFG_ENV_SETTINGS \
-	CONFIG_MFG_ENV_SETTINGS_DEFAULT \
+	"bootcmd_mfg=fastboot 0\0" \
 	"initrd_addr=0x43800000\0" \
 	"initrd_high=0xffffffffffffffff\0" \
 	"emmc_dev=2\0"\
@@ -83,7 +80,6 @@
 #define CONFIG_EXTRA_ENV_SETTINGS		\
 	CONFIG_MFG_ENV_SETTINGS \
 	JAILHOUSE_ENV \
-	BOOTENV \
 	"scriptaddr=0x43500000\0" \
 	"kernel_addr_r=" __stringify(CONFIG_LOADADDR) "\0" \
 	"bsp_script=boot.scr\0" \
@@ -98,7 +94,7 @@
 	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0" \
 	"bootm_size=0x10000000\0" \
 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
-	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
+	"mmcpart=1\0" \
 	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
 	"mmcautodetect=yes\0" \
 	"mmcargs=setenv bootargs ${jh_clk} console=${console} root=${mmcroot}\0 " \
@@ -151,10 +147,6 @@
 	   "fi;"
 
 /* Link Definitions */
-#define CONFIG_LOADADDR			0x40480000
-
-#define CONFIG_SYS_LOAD_ADDR		CONFIG_LOADADDR
-
 #define CONFIG_SYS_INIT_RAM_ADDR	0x40000000
 #define CONFIG_SYS_INIT_RAM_SIZE	0x80000
 #define CONFIG_SYS_INIT_SP_OFFSET \
@@ -167,7 +159,10 @@
 #define CONFIG_ENV_SPI_MODE		CONFIG_SF_DEFAULT_MODE
 #define CONFIG_ENV_SPI_MAX_HZ		CONFIG_SF_DEFAULT_SPEED
 
-#define CONFIG_MMCROOT			"/dev/mmcblk1p2"  /* USDHC2 */
+#define CONFIG_ENV_OVERWRITE
+#define CONFIG_SYS_MMC_ENV_DEV          2   /* USDHC3 */
+#define CONFIG_MMCROOT                  "/dev/mmcblk2p2"  /* USDHC3 */
+
 
 /* Size of malloc() pool */
 #define CONFIG_SYS_MALLOC_LEN		SZ_32M
@@ -188,22 +183,11 @@
 					sizeof(CONFIG_SYS_PROMPT) + 16)
 
 #define CONFIG_IMX_BOOTAUX
-#define CONFIG_FSL_USDHC
 
 #define CONFIG_SYS_FSL_USDHC_NUM	3
 #define CONFIG_SYS_FSL_ESDHC_ADDR	0
 
-#define CONFIG_SYS_MMC_IMG_LOAD_PART	1
-
 #define CONFIG_SYS_I2C_SPEED		100000
-
-/* USB configs */
-#ifndef CONFIG_SPL_BUILD
-
-#define CONFIG_CMD_USB_MASS_STORAGE
-#define CONFIG_USB_GADGET_MASS_STORAGE
-#define CONFIG_USB_FUNCTION_MASS_STORAGE
-#endif
 
 #define CONFIG_USB_MAX_CONTROLLER_COUNT         2
 #define CONFIG_USBD_HS
