@@ -230,15 +230,12 @@ int board_late_init(void)
 		env_set("bootdevno", bootdevno);
 	}
 
-	if (env_get("fdt_file") == NULL) {
-		char buffer[40];
-		int with_wifi = board_with_wifi();
-		snprintf(buffer, sizeof(buffer), "starsom-cb-6ull-%s%s.dtb",
-						 bootdev,
-						 with_wifi?"-btwifi":"");
-		env_set("fdt_file", buffer);
-		printf("using fdt_file=%s\n", buffer);
-	}
+	char buffer[40];
+	int with_wifi = board_with_wifi();
+	snprintf(buffer, sizeof(buffer), "-%s%s",
+		 bootdev,
+		 with_wifi?"-btwifi":"");
+	env_set("fdt_suffix", buffer);
 
 	if(gd->ram_size < SZ_512M) {
 		env_set("bootarg_cmasize", "cma=96M");

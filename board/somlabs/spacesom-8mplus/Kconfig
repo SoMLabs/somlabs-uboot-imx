@@ -7,7 +7,7 @@ config SYS_VENDOR
 	default "somlabs"
 
 config SYS_CONFIG_NAME
-	default "somlabs_spacesom_8mplus"
+	default "spacesom_8mplus"
 
 source "board/freescale/common/Kconfig"
 

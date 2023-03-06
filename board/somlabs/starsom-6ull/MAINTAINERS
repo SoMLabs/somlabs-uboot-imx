@@ -2,5 +2,5 @@ VISIONSOM-6ULL BOARD
 M:	Arkadiusz Karas <arkadiusz.karas@somlabs.com>
 S:	Maintained
 F:	board/somlabs/starsom-6ull/
-F:	include/configs/somlabs_starsom_6ull.h
-F:	configs/somlabs_starsom_6ull_defconfig
+F:	include/configs/starsom_6ull.h
+F:	configs/starsom_6ull_defconfig
