@@ -51,47 +51,6 @@
 #define IMX_FEC_BASE			0x30BE0000
 #endif	/* CONFIG_FEC_MXC */
 
-/* Initial environment variables */
-#define CONFIG_EXTRA_ENV_SETTINGS		\
-	"bootcmd_mfg=fastboot 0\0" \
-	"emmc_dev=2\0" \
-	"sd_dev=2\0" \
-	"script=boot.scr\0" \
-	"image=Image\0" \
-	"console=ttymxc3,115200 earlycon=ec_imx6q,0x30a60000,115200\0" \
-	"fdt_addr=0x43000000\0"			\
-	"fdt_high=0xffffffffffffffff\0"		\
-	"fdt_file_custom=visionsom-8mm-custom.dtb\0" \
-	"setfdtfile=setenv fdt_file visionsom-8mm-cb-${cb_type}${cb_disp}.dtb\0" \
-	"initrd_addr=0x43800000\0"		\
-	"initrd_high=0xffffffffffffffff\0" \
-	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
-	"mmcpart=1\0" \
-	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
-	"mmcautodetect=yes\0" \
-	"mmcargs=setenv bootargs ${jh_clk} console=${console} root=${mmcroot} ${extra_args} \0 " \
-	"loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};\0" \
-	"bootscript=echo Running bootscript from mmc ...; " \
-		"source\0" \
-	"loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}\0" \
-	"loadfdtcustom=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file_custom}\0" \
-	"loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}\0" \
-	"mmcboot=echo Booting from mmc ...; " \
-		"run mmcargs; run setfdtfile; " \
-		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
-			"if run loadfdtcustom; then " \
-				"echo Using custom dtb file: ${fdt_file_custom}; " \
-				"booti ${loadaddr} - ${fdt_addr}; " \
-			"elif run loadfdt; then " \
-				"echo Using default dtb file: ${fdt_file}; " \
-				"booti ${loadaddr} - ${fdt_addr}; " \
-			"else " \
-				"echo WARN: Cannot load the DT; " \
-			"fi; " \
-		"else " \
-			"echo wait for boot; " \
-		"fi;\0"
-
 #define CONFIG_BOOTCOMMAND \
 	   "mmc dev ${mmcdev}; if mmc rescan; then " \
 		   "if run loadbootscript; then " \
