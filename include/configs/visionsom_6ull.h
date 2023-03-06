@@ -19,58 +19,14 @@
 /* Size of malloc() pool */
 #define CONFIG_SYS_MALLOC_LEN		(16 * SZ_1M)
 
-/* for version with fastboot we set bootdelay to 0 */
-#ifdef CONFIG_FSL_FASTBOOT
-#define CONFIG_MFG_ENV_SETTINGS \
-	"bootdelay=0\0"
-#else
-#define CONFIG_MFG_ENV_SETTINGS
-#endif
-
-#define CONFIG_EXTRA_ENV_SETTINGS \
-	CONFIG_MFG_ENV_SETTINGS \
-	"console=ttymxc0\0" \
-	"initrd_addr=0x86800000\0" \
-	"fdt_addr=0x83000000\0" \
-	"script=boot.scr\0" \
-	"image=zImage\0" \
-	"splashimage=0x80000000\0" \
-	"splashfile=splash.bmp\0" \
-	"setrootnand=setenv rootspec root=ubi0:rootfs ubi.mtd=ubi " \
-		"rootfstype=ubifs "CONFIG_MTDPARTS_DEFAULT"\0" \
-	"setbootscriptnand=setenv loadbootscript ubifsload " \
-		"${loadaddr} ${script};\0" \
-	"setloadnand=setenv loadimage ubifsload ${loadaddr} /boot/${image}; " \
-	            "setenv loadfdt ubifsload ${fdt_addr} /boot/${fdt_file};\0" \
-	"mmcdev=1\0" \
-	"mmcpart=1\0" \
-	"mmcroot=/dev/mmcblk1p2 rootwait rw\0" \
-	"setrootmmc=setenv rootspec root=${mmcroot}\0" \
-	"setbootscriptmmc=setenv loadbootscript " \
-		"load mmc ${mmcdev}:${mmcpart} " \
-		"${loadaddr} ${script};\0" \
-	"setloadmmc=setenv loadimage load mmc ${mmcdev}:${mmcpart} " \
-		"${loadaddr} ${image}; " \
-		"setenv loadfdt load mmc ${mmcdev}:${mmcpart} " \
-		"${fdt_addr} ${fdt_file};\0" \
-	"setbootargs=setenv bootargs console=${console},${baudrate} " \
-		"${bootarg_cmasize} ${rootspec}\0" \
-	"execbootscript=echo Running bootscript...; source\0" \
-	"fdt_file=\0" \
-	"checkbootdev=if test ${bootdev} = nand; then " \
-		"nand device 0; ubi part ubi; ubifsmount ubi0:rootfs; " \
-		"run setbootscriptnand; " \
-		"run setrootnand; " \
-		"run setloadnand; " \
-	"else " \
-		"run setbootscriptmmc; " \
-		"run setrootmmc; " \
-		"run setloadmmc; " \
-	"fi; " \
-
 #define CONFIG_BOOTCOMMAND \
+	"run set_fdt_file; " \
 	"run checkbootdev; " \
-	"run loadfdt;" \
+	"if run loadfdtcustom; then " \
+		"echo Using custom dtb file: ${fdt_file_custom}; " \
+	"else " \
+		"echo Using dtb file: ${fdt_file}; run loadfdt; " \
+	"fi; " \
 	"if run loadbootscript; then " \
 		"run bootscript; " \
 	"else " \
@@ -102,8 +58,6 @@
 #define CONFIG_SYS_NAND_ONFI_DETECTION
 #define CONFIG_SYS_NAND_USE_FLASH_BBT
 #endif
-
-//#define CONFIG_ENV_SIZE			SZ_8K
 
 /* USB Configs */
 #ifdef CONFIG_CMD_USB
