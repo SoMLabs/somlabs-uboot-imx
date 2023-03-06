@@ -239,16 +239,14 @@ int board_late_init(void)
 		env_set("bootdevno", bootdevno);
 	}
 
-	if (env_get("fdt_file") == NULL) {
-		char buffer[40];
-		int with_wifi = board_with_wifi();
-		snprintf(buffer, sizeof(buffer), "visioncb-%s-%s-%s%s.dtb",
-						 is_cpu_type(MXC_CPU_MX6ULL)?"6ull":"6ul",
-						 "std",
-						 bootdev,
-						 with_wifi?"-btwifi":"");
-		env_set("fdt_file", buffer);
-	}
+	char buffer[40];
+	int with_wifi = board_with_wifi();
+	snprintf(buffer, sizeof(buffer), "-%s-%s-%s%s",
+					 is_cpu_type(MXC_CPU_MX6ULL)?"6ull":"6ul",
+					 "std",
+					 bootdev,
+					 with_wifi?"-btwifi":"");
+	env_set("fdt_suffix", buffer);
 
 	if(gd->ram_size < SZ_512M) {
 		env_set("bootarg_cmasize", "cma=96M");
