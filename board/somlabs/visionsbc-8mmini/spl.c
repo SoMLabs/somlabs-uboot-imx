@@ -204,7 +204,7 @@ int power_init_board(void)
 	struct pmic *p;
 	int ret;
 
-	ret = power_pca9450_init(I2C_PMIC);
+	ret = power_pca9450_init(I2C_PMIC, 0x25);
 	if (ret)
 		printf("power init failed");
 	p = pmic_get("PCA9450");
@@ -278,7 +278,7 @@ void board_init_f(ulong dummy)
 	enable_tzc380();
 
 	/* Adjust pmic voltage to 1.0V for 800M */
-	setup_i2c(I2C_PMIC, CONFIG_SYS_MXC_I2C2_SPEED, 0x7f, &i2c_pad_info2);
+	setup_i2c(I2C_PMIC, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c_pad_info2);
 	power_init_board();
 
 	/* DDR initialization */
