@@ -235,9 +235,12 @@
 	/delete-property/ assigned-clocks;
 	/delete-property/ assigned-clock-parents;
 	/delete-property/ assigned-clock-rates;
-	phy-reset-gpios = <&gpio3 16 GPIO_ACTIVE_LOW>; /* GPIO3_16 */
-	phy-reset-duration = <10>;
-	phy-reset-post-delay = <50>;
+};
+
+&ethphy0 {
+        reset-gpios = <&gpio3 16 GPIO_ACTIVE_LOW>;
+        reset-assert-us = <15000>;
+        reset-deassert-us = <100000>;
 };
 
 &fec {
