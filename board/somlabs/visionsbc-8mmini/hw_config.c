@@ -38,7 +38,6 @@ struct dram_params {
 
 #ifdef CONFIG_SPL_BUILD
 extern struct dram_timing_info dram_timing_mt53d512m32d2ds;
-extern struct dram_timing_info dram_timing_k4f6e304hbmgcj;
 extern struct dram_timing_info dram_timing_mt53b256m32d1ds;
 extern struct dram_timing_info dram_timing_mt53d1024m32d4dt;
 #endif
@@ -46,7 +45,7 @@ extern struct dram_timing_info dram_timing_mt53d1024m32d4dt;
 const struct dram_params dram_data[] = {
     MEM_ENTRY("UNKNOWN",            0, NULL),
 	MEM_ENTRY("MT53D512M32D2DS", 2048, &dram_timing_mt53d512m32d2ds),
-	MEM_ENTRY("K4F6E304HBMGCJ",  2048, &dram_timing_k4f6e304hbmgcj),
+	MEM_ENTRY("MT53D512M32D2DS",  2048, &dram_timing_mt53d512m32d2ds),
 	MEM_ENTRY("MT53B256M32D1DS", 1024, &dram_timing_mt53b256m32d1ds),
 	MEM_ENTRY("MT53D1024M32D4DT", 4096, &dram_timing_mt53d1024m32d4dt),
 };
@@ -144,4 +143,3 @@ const char* visionsbc8mmini_get_hw_rev_str(void)
     // unknow revision/config data missing!
     return "x.x";
 }
-
