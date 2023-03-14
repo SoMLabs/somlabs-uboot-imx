@@ -38,6 +38,10 @@
 
 /* Miscellaneous configurable options */
 
+#define CONFIG_SYS_HZ                   1000
+
+#define CONFIG_SERIAL_TAG
+
 /* Physical Memory Map */
 #define PHYS_SDRAM			MMDC0_ARB_BASE_ADDR
 
