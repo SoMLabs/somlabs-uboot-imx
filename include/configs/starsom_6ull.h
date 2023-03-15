@@ -12,13 +12,9 @@
 #include <linux/sizes.h>
 #include "mx6_common.h"
 #include <asm/mach-imx/gpio.h>
-#include "imx_env.h"
 
 /* SPL options */
 #include "imx6_spl.h"
-
-/* Size of malloc() pool */
-#define CONFIG_SYS_MALLOC_LEN		(16 * SZ_1M)
 
 #define CONFIG_BOOTCOMMAND \
 	"run setrootmmc; " \
@@ -39,8 +35,6 @@
 
 /* Miscellaneous configurable options */
 
-#define CONFIG_SYS_HZ			1000
-
 #define CONFIG_SERIAL_TAG
 
 /* Physical Memory Map */
@@ -54,8 +48,6 @@
 	(CONFIG_SYS_INIT_RAM_SIZE - GENERATED_GBL_DATA_SIZE)
 #define CONFIG_SYS_INIT_SP_ADDR \
 	(CONFIG_SYS_INIT_RAM_ADDR + CONFIG_SYS_INIT_SP_OFFSET)
-
-//#define CONFIG_ENV_SIZE			SZ_8K
 
 /* USB Configs */
 #ifdef CONFIG_CMD_USB

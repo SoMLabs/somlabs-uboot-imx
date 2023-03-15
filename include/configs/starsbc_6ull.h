@@ -16,9 +16,6 @@
 /* SPL options */
 #include "imx6_spl.h"
 
-/* Size of malloc() pool */
-#define CONFIG_SYS_MALLOC_LEN		(16 * SZ_1M)
-
 #define CONFIG_BOOTCOMMAND \
 	"run setrootmmc; " \
 	"run set_fdt_file; " \
@@ -37,8 +34,6 @@
 	"fi"
 
 /* Miscellaneous configurable options */
-
-#define CONFIG_SYS_HZ			1000
 
 #define CONFIG_SERIAL_TAG
 
