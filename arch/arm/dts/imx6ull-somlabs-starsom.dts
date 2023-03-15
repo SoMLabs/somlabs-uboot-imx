@@ -311,12 +311,6 @@
 	status = "okay";
 };
 
-// &uart3 {
-// 	pinctrl-names = "default";
-// 	pinctrl-0 = <&pinctrl_uart3>;
-// 	status = "okay";
-// };
-
 &usbotg1 {
     vbus-supply = <&reg_usb_otg1_vbus>;
 	dr_mode = "host";
