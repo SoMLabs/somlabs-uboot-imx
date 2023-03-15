@@ -16,9 +16,6 @@
 /* SPL options */
 #include "imx6_spl.h"
 
-/* Size of malloc() pool */
-#define CONFIG_SYS_MALLOC_LEN		(16 * SZ_1M)
-
 #define CONFIG_BOOTCOMMAND \
 	"run set_fdt_file; " \
 	"run checkbootdev; " \
@@ -38,8 +35,6 @@
 
 /* Miscellaneous configurable options */
 
-#define CONFIG_SYS_HZ                   1000
-
 #define CONFIG_SERIAL_TAG
 
 /* Physical Memory Map */
@@ -58,21 +53,11 @@
 #ifdef CONFIG_NAND_MXS
 #define CONFIG_SYS_MAX_NAND_DEVICE      1
 #define CONFIG_SYS_NAND_BASE            0x40000000
-#define CONFIG_SYS_NAND_5_ADDR_CYCLE
-#define CONFIG_SYS_NAND_ONFI_DETECTION
-#define CONFIG_SYS_NAND_USE_FLASH_BBT
 #endif
 
 /* USB Configs */
 #ifdef CONFIG_CMD_USB
 #define CONFIG_MXC_USB_PORTSC  (PORT_PTS_UTMI | PORT_PTS_PTW)
-#endif
-
-#ifdef CONFIG_CMD_NET
-#define IMX_FEC_BASE			ENET_BASE_ADDR
-#define CONFIG_FEC_MXC_PHYADDR		0x1
-#define CONFIG_FEC_XCV_TYPE		RMII
-#define CONFIG_ETHPRIME			"eth0"
 #endif
 
 #endif /* __VISIONSOM_6ULL_H */
