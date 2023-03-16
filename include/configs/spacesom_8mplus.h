@@ -105,15 +105,6 @@
 #define CONFIG_USBD_HS
 #define CONFIG_USB_GADGET_VBUS_DRAW 2
 
-#ifdef CONFIG_DM_VIDEO
-#define CONFIG_VIDEO_LOGO
-#define CONFIG_BMP_16BPP
-#define CONFIG_BMP_24BPP
-#define CONFIG_BMP_32BPP
-#define CONFIG_VIDEO_BMP_RLE8
-#define CONFIG_VIDEO_BMP_LOGO
-#endif
-
 #ifdef CONFIG_ANDROID_SUPPORT
 #include "somlabs_spacesom_8mp_android.h"
 #endif
