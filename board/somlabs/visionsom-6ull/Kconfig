@@ -12,4 +12,14 @@ config SYS_CONFIG_NAME
 config IMX_CONFIG
 	default "board/somlabs/visionsom-6ull/imximage.cfg"
 
+config IMX_KOBS
+	bool "Support the 'imxkobs' command"
+	select BCH
+	select BITREVERSE
+	help
+		This is a minimal implementation of NXP kobs-ng tool,
+		and it supports only iMX6UL/ULL processors for now.
+		Use this command to write Flash Control Block data expected
+		by BOOTROM.
+
 endif
