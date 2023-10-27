@@ -13,9 +13,6 @@
 #include "mx6_common.h"
 #include <asm/mach-imx/gpio.h>
 
-/* SPL options */
-#include "imx6_spl.h"
-
 #define CONFIG_BOOTCOMMAND \
 	"run set_fdt_file; " \
 	"run checkbootdev; " \
@@ -33,31 +30,21 @@
 		"fi; " \
 	"fi"
 
-/* Miscellaneous configurable options */
-
-#define CONFIG_SERIAL_TAG
-
 /* Physical Memory Map */
 #define PHYS_SDRAM			MMDC0_ARB_BASE_ADDR
 
-#define CONFIG_SYS_SDRAM_BASE		PHYS_SDRAM
-#define CONFIG_SYS_INIT_RAM_ADDR	IRAM_BASE_ADDR
-#define CONFIG_SYS_INIT_RAM_SIZE	IRAM_SIZE
+#define CFG_SYS_SDRAM_BASE		PHYS_SDRAM
+#define CFG_SYS_INIT_RAM_ADDR		IRAM_BASE_ADDR
+#define CFG_SYS_INIT_RAM_SIZE		IRAM_SIZE
 
-#define CONFIG_SYS_INIT_SP_OFFSET \
-	(CONFIG_SYS_INIT_RAM_SIZE - GENERATED_GBL_DATA_SIZE)
-#define CONFIG_SYS_INIT_SP_ADDR \
-	(CONFIG_SYS_INIT_RAM_ADDR + CONFIG_SYS_INIT_SP_OFFSET)
-
-/* NAND stuff */
-#ifdef CONFIG_NAND_MXS
-#define CONFIG_SYS_MAX_NAND_DEVICE      1
-#define CONFIG_SYS_NAND_BASE            0x40000000
-#endif
+#define CFG_SYS_INIT_SP_OFFSET \
+	(CFG_SYS_INIT_RAM_SIZE - GENERATED_GBL_DATA_SIZE)
+#define CFG_SYS_INIT_SP_ADDR \
+	(CFG_SYS_INIT_RAM_ADDR + CFG_SYS_INIT_SP_OFFSET)
 
 /* USB Configs */
 #ifdef CONFIG_CMD_USB
-#define CONFIG_MXC_USB_PORTSC  (PORT_PTS_UTMI | PORT_PTS_PTW)
+#define CFG_MXC_USB_PORTSC  (PORT_PTS_UTMI | PORT_PTS_PTW)
 #endif
 
 #endif /* __VISIONSOM_6ULL_H */
