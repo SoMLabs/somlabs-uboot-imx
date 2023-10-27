@@ -140,7 +140,7 @@ int splash_screen_prepare(void)
 }
 #endif
 
-#ifdef CONFIG_DM_VIDEO
+#ifdef CONFIG_VIDEO
 
 #define GPIO_LCD_BRIGHTNESS		IMX_GPIO_NR(1, 15)
 
@@ -252,7 +252,7 @@ int board_late_init(void)
 		env_set("bootarg_cmasize", "cma=96M");
 	}
 
-#ifdef CONFIG_DM_VIDEO
+#ifdef CONFIG_VIDEO
 	setup_lcd();
 #endif
 
@@ -261,7 +261,7 @@ int board_late_init(void)
 	return 0;
 }
 
-#ifdef CONFIG_DM_VIDEO
+#ifdef CONFIG_VIDEO
 void board_preboot_os(void)
 {
         gpio_set_value(GPIO_LCD_BRIGHTNESS, 0);
