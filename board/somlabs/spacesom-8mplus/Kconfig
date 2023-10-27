@@ -9,6 +9,4 @@ config SYS_VENDOR
 config SYS_CONFIG_NAME
 	default "spacesom_8mplus"
 
-source "board/freescale/common/Kconfig"
-
 endif
