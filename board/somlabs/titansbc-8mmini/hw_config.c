@@ -108,7 +108,7 @@ static u32 get_dram_info_index(void)
     return index;
 }
 
-const char* visionsbc8mmini_get_dram_name(void)
+const char* titansbc8mmini_get_dram_name(void)
 {
     return dram_data[get_dram_info_index()].name;
 }
@@ -116,19 +116,19 @@ const char* visionsbc8mmini_get_dram_name(void)
 /*
     return memory size in bytes
 */
-phys_size_t visionsbc8mmini_get_dram_size(void)
+phys_size_t titansbc8mmini_get_dram_size(void)
 {
     return dram_data[get_dram_info_index()].size * SZ_1M;
 }
 
 #ifdef CONFIG_SPL_BUILD
-struct dram_timing_info* visionsbc8mmini_get_dram_timing(void)
+struct dram_timing_info* titansbc8mmini_get_dram_timing(void)
 {
     return dram_data[get_dram_info_index()].timing;
 }
 #endif
 
-const char* visionsbc8mmini_get_hw_rev_str(void)
+const char* titansbc8mmini_get_hw_rev_str(void)
 {
     vsom_config_t cfg = read_hw_config();
 
