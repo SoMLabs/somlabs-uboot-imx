@@ -1015,7 +1015,7 @@ dtb-$(CONFIG_ARCH_IMX9) += \
 dtb-$(CONFIG_ARCH_IMXRT) += imxrt1050-evk.dtb \
 	imxrt1020-evk.dtb
 
-dtb-$(CONFIG_ARCH_IMX8M) += imx8mm-visionsbc.dtb imx8mm-visionsom.dtb
+dtb-$(CONFIG_ARCH_IMX8M) += imx8mm-titansbc.dtb imx8mm-visionsom.dtb
 
 dtb-$(CONFIG_RCAR_GEN2) += \
 	r8a7790-lager-u-boot.dtb \
