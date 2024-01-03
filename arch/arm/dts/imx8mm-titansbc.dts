@@ -8,8 +8,8 @@
 #include "imx8mm.dtsi"
 
 / {
-    model = "SomLabs VisionSBC-8MMini";
-    compatible = "somlabs,visionsbc-8mmini", "fsl,imx8mm";
+    model = "SomLabs TitanSBC-8Mmini";
+    compatible = "somlabs,titansbc-8mmini", "fsl,imx8mm";
 
     chosen {
         bootargs = "console=ttymxc3,115200 earlycon=ec_imx6q,0x30a60000,115200";

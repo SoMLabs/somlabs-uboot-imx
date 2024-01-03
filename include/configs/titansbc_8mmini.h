@@ -3,8 +3,8 @@
  * Copyright 2020 Somlabs
  */
 
-#ifndef __VISIONSBC_8MMINI_H
-#define __VISIONSBC_8MMINI_H
+#ifndef __TITANSBC_8MMINI_H
+#define __TITANSBC_8MMINI_H
 
 #include <linux/sizes.h>
 #include <asm/arch/imx-regs.h>
@@ -65,4 +65,4 @@
 #include "imx8mm_evk_android.h"
 #endif
 
-#endif /*__VISIONSBC_8MMINI_H */
+#endif /*__TITANSBC_8MMINI_H */

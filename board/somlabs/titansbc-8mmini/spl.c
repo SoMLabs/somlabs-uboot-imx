@@ -50,12 +50,12 @@ int spl_board_boot_device(enum boot_device boot_dev_spl)
 
 void spl_dram_init(void)
 {
-	if(visionsbc8mmini_get_dram_size() == 0){
+	if(titansbc8mmini_get_dram_size() == 0){
 		puts("spl_dram_init() unknown memory type\n");
 		hang();
 	}
-	printf("Initialising memory %s\n", visionsbc8mmini_get_dram_name());
-	ddr_init(visionsbc8mmini_get_dram_timing());
+	printf("Initialising memory %s\n", titansbc8mmini_get_dram_name());
+	ddr_init(titansbc8mmini_get_dram_timing());
 }
 
 #define UART_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_FSEL1)
