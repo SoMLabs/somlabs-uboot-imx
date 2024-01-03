@@ -36,7 +36,7 @@ DECLARE_GLOBAL_DATA_PTR;
 
 int board_phys_sdram_size(phys_size_t *size)
 {
-    *size = visionsbc8mmini_get_dram_size();
+    *size = titansbc8mmini_get_dram_size();
     return 0;
 }
 
