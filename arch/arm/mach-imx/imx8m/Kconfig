@@ -370,8 +370,8 @@ config TARGET_VERDIN_IMX8MP
 	select SUPPORT_SPL
 	select IMX8M_LPDDR4
 
-config TARGET_SOMLABS_VISIONSBC_8MMINI
-	bool "SomLabs VisionSBC-8MMini"
+config TARGET_SOMLABS_TITANSBC_8MMINI
+	bool "SomLabs TitanSBC-8Mmini"
 	select IMX8MM
 	select SUPPORT_SPL
 	select IMX8M_LPDDR4
@@ -495,22 +495,16 @@ source "board/kontron/pitx_imx8m/Kconfig"
 source "board/kontron/sl-mx8mm/Kconfig"
 source "board/menlo/mx8menlo/Kconfig"
 source "board/msc/sm2s_imx8mp/Kconfig"
-source "board/technexion/pico-imx8mq/Kconfig"
-source "board/somlabs/visionsbc-8mmini/Kconfig"
-source "board/somlabs/visionsom-8mm/Kconfig"
-source "board/toradex/verdin-imx8mm/Kconfig"
-source "board/beacon/imx8mm/Kconfig"
-source "board/beacon/imx8mn/Kconfig"
 source "board/phytec/phycore_imx8mm/Kconfig"
 source "board/phytec/phycore_imx8mp/Kconfig"
 source "board/purism/librem5/Kconfig"
 source "board/ronetix/imx8mq-cm/Kconfig"
-source "board/somlabs/visionsbc-8mmini/Kconfig"
+source "board/somlabs/titansbc-8mmini/Kconfig"
 source "board/somlabs/visionsom-8mm/Kconfig"
 source "board/somlabs/spacesom-8mplus/Kconfig"
 source "board/technexion/pico-imx8mq/Kconfig"
-source "board/variscite/imx8mn_var_som/Kconfig"
 source "board/toradex/verdin-imx8mm/Kconfig"
 source "board/toradex/verdin-imx8mp/Kconfig"
+source "board/variscite/imx8mn_var_som/Kconfig"
 
 endif
