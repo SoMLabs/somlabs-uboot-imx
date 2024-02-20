@@ -41,10 +41,11 @@ struct dram_params {
 #endif
 
 const struct dram_params dram_data[] = {
-	MEM_ENTRY("UNKNOWN",            0, NULL),
-	MEM_ENTRY("DEFAULT",         1024, &dram_timing),
-	MEM_ENTRY("K4F8E3S4HBMFCJ",  1024, &dram_timing),
-	MEM_ENTRY("MT53D512M32D2DS", 2048, &dram_timing),
+	MEM_ENTRY("UNKNOWN",             0, NULL),
+	MEM_ENTRY("DEFAULT",          1024, &dram_timing),
+	MEM_ENTRY("K4F8E3S4HBMFCJ",   1024, &dram_timing),
+	MEM_ENTRY("MT53D512M32D2DS",  2048, &dram_timing),
+	MEM_ENTRY("MT53D1024M32D4DT", 4096, &dram_timing_4g),
 };
 
 /*
