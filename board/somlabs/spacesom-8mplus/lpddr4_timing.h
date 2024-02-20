@@ -13,5 +13,6 @@
 
 /* ddr timing config params */
 extern struct dram_timing_info dram_timing;
+extern struct dram_timing_info dram_timing_4g;
 
 #endif /* LPDDR4_TIMING_H */
