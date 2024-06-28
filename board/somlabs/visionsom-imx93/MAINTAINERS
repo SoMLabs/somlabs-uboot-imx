@@ -1,0 +1,6 @@
+VISIONSOM-IMX93 BOARD
+M:	Krzysztof Chojnowski <krzysztof.chojnowski@somlabs.com>
+S:	Maintained
+F:	board/somlabs/visionsom-imx93/
+F:	include/configs/imx93_evk.h
+F:	configs/visionsom-imx93_defconfig
