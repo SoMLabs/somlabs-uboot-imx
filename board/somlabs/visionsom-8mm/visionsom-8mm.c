@@ -14,6 +14,7 @@
 #include <fsl_esdhc.h>
 #include <mmc.h>
 #include <asm/arch/imx8mm_pins.h>
+#include <asm/arch/imx-regs.h>
 #include <asm/arch/sys_proto.h>
 #include <asm/mach-imx/gpio.h>
 #include <asm/mach-imx/mxc_i2c.h>
@@ -53,7 +54,7 @@ static int setup_fec(void)
 
     /* Use 125M anatop REF_CLK1 for ENET1, not from external */
     clrsetbits_le32(&gpr->gpr[1],
-            IOMUXC_GPR_GPR1_GPR_ENET1_TX_CLK_SEL_MASK, 0);
+            IOMUXC_GPR_GPR1_GPR_ENET1_TX_CLK_SEL, 0);
     return set_clk_enet(ENET_125MHZ);
 }
 
