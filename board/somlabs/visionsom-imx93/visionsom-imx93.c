@@ -13,18 +13,17 @@
 #include <asm/arch-imx9/ccm_regs.h>
 #include <asm/arch/sys_proto.h>
 #include <asm/arch-imx9/imx93_pins.h>
+#include <asm/mach-imx/gpio.h>
 #include <asm/arch/clock.h>
 #include <power/pmic.h>
 #include <dm/device.h>
 #include <dm/uclass.h>
 #include <usb.h>
 #include <dwc3-uboot.h>
-#include <asm/gpio.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
 #define UART_PAD_CTRL	(PAD_CTL_DSE(6) | PAD_CTL_FSEL2)
-#define WDOG_PAD_CTRL	(PAD_CTL_DSE(6) | PAD_CTL_ODE | PAD_CTL_PUE | PAD_CTL_PE)
 
 static iomux_v3_cfg_t const uart_pads[] = {
 	MX93_PAD_UART1_RXD__LPUART1_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
@@ -94,8 +93,23 @@ int board_init(void)
 	return 0;
 }
 
+static int cb_is_lvds_enabled(void)
+{
+	uint32_t lvds_select;
+	imx_iomux_v3_setup_pad(MX93_PAD_GPIO_IO07__GPIO2_IO07 |
+				MUX_PAD_CTRL(PAD_CTL_PUE));
+        lvds_select = IMX_GPIO_NR(1, 7);
+	gpio_request(lvds_select, "lvds_sel");
+	gpio_direction_input(lvds_select);
+	return !gpio_get_value(lvds_select);
+}
+
 int board_late_init(void)
 {
+	struct udevice *bus;
+	struct udevice *i2c_dev = NULL;
+	int ret;
+
 	env_set("sec_boot", "no");
 #ifdef CONFIG_AHAB_BOOT
 	env_set("sec_boot", "yes");
@@ -105,6 +119,25 @@ int board_late_init(void)
 	env_set("board_name", "VisionSOM-IMX93");
 	env_set("board_rev", "iMX93");
 #endif
+
+	ret = uclass_get_device_by_seq(UCLASS_I2C, 0, &bus);
+	if (ret) {
+		printf("%s: Can't find bus\n", __func__);
+		return -EINVAL;
+	}
+
+	/*
+	*  Check if there is active touch controler @0x41 on I2C1 bus.
+	*  It should be present on LVDS and DSI variants.
+	*/
+	ret = dm_i2c_probe(bus, 0x41, 0, &i2c_dev);
+	if(ret == 0) {
+		if(cb_is_lvds_enabled())
+			env_set("cb_disp", "-lvds-rvt70hslnwc00-b");
+		else
+			env_set("cb_disp", "-mipi-rvt70hsmnwc00");
+	}
+
 	return 0;
 }
 
