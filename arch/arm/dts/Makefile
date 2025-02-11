@@ -1044,6 +1044,7 @@ dtb-$(CONFIG_MX6ULL) += \
 	imx6ull-dart-6ul.dtb \
 	imx6ull-somlabs-visionsom.dtb \
 	imx6ulz-bsh-smm-m2.dtb \
+	imx6ull-somlabs-iot-box.dtb \
 	imx6ull-somlabs-starsom.dtb \
 	imx6ull-somlabs-starsbc.dtb \
 	imx6ull-visionsom.dtb \
