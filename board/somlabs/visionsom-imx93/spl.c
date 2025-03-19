@@ -68,15 +68,10 @@ void spl_board_init(void)
 	puts("Normal Boot\n");
 }
 
-extern struct dram_timing_info dram_timing_1866mts;
+extern struct dram_timing_info dram_timing;
 void spl_dram_init(void)
 {
 	struct dram_timing_info *ptiming = &dram_timing;
-#if IS_ENABLED(CONFIG_IMX93_EVK_LPDDR4X)
-	if (is_voltage_mode(VOLT_LOW_DRIVE))
-		ptiming = &dram_timing_1866mts;
-#endif
-
 	printf("DDR: %uMTS\n", ptiming->fsp_msg[0].drate);
 	ddr_init(ptiming);
 }
