@@ -21,6 +21,8 @@
 #include <usb.h>
 #include <dwc3-uboot.h>
 
+#include "hw_config.h"
+
 DECLARE_GLOBAL_DATA_PTR;
 
 #define UART_PAD_CTRL	(PAD_CTL_DSE(6) | PAD_CTL_FSEL2)
@@ -137,6 +139,35 @@ int board_late_init(void)
 		else
 			env_set("cb_disp", "-mipi-rvt70hsmnwc00");
 	}
+
+	return 0;
+}
+
+int ft_board_setup(void *fdt, struct bd_info *bd)
+{
+
+        /* disable wifi/bt nodes if wifi is not present */
+        if(!visionsomimx93_get_wifi_status()) {
+                puts("Disabling WLAN/BT device tree nodes...\n");
+                const char *path = fdt_get_alias(fdt, "mmc2");
+                int off = fdt_path_offset(fdt, path);
+                if (off) {
+                        fdt_status_disabled(fdt, off);
+                } else {
+                        printf("WARNING: Cannot find offset for mmc1 (%d)!\n", off);
+                }
+
+                path = fdt_get_alias(fdt, "serial2");
+                off = fdt_path_offset(fdt, path);
+                if (off) {
+                        fdt_status_disabled(fdt, off);
+                } else {
+                        printf("WARNING: Cannot find offset for serial2 (%d)!\n", off);
+                }
+        }
+
+        const char* rev = visionsomimx93_get_hw_rev_str();
+        fdt_setprop(fdt, 0, "somlabs,board-rev", rev, strlen(rev) + 1);
 
 	return 0;
 }

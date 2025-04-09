@@ -5,6 +5,7 @@
 #
 
 obj-y += visionsom-imx93.o
+obj-y += hw_config.o
 
 ifdef CONFIG_SPL_BUILD
 obj-y += spl.o
