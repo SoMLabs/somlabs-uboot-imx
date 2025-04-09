@@ -11,7 +11,7 @@
 #include <asm/arch/ddr.h>
 
 /* Initialize DDRC registers */
-static struct dram_cfg_param ddr_ddrc_cfg[] = {
+static struct dram_cfg_param ddr_ddrc_cfg_mt53d512m16d1ds[] = {
     {0x4e300110, 0x44100001},
     {0x4e300000, 0x8000bf},
     {0x4e300008, 0x0},
@@ -34,7 +34,7 @@ static struct dram_cfg_param ddr_ddrc_cfg[] = {
 };
 
 /* dram fsp cfg */
-static struct dram_fsp_cfg ddr_dram_fsp_cfg[] = {
+static struct dram_fsp_cfg ddr_dram_fsp_cfg_mt53d512m16d1ds[] = {
     {
         {
             {0x4e300100, 0x24A0321B},
@@ -120,7 +120,7 @@ static struct dram_fsp_cfg ddr_dram_fsp_cfg[] = {
 };
 
 /* PHY Initialize Configuration */
-static struct dram_cfg_param ddr_ddrphy_cfg[] = {
+static struct dram_cfg_param ddr_ddrphy_cfg_mt53d512m16d1ds[] = {
     {0x100a0, 0x4},
     {0x100a1, 0x5},
     {0x100a2, 0x6},
@@ -255,7 +255,7 @@ static struct dram_cfg_param ddr_ddrphy_cfg[] = {
 };
 
 /* PHY trained csr */
-static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
+static struct dram_cfg_param ddr_ddrphy_trained_csr_mt53d512m16d1ds[] = {
     {0x1005f, 0x0},
     {0x1015f, 0x0},
     {0x1105f, 0x0},
@@ -1235,7 +1235,7 @@ static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
 };
 
 /* P0 message block parameter for training firmware */
-static struct dram_cfg_param ddr_fsp0_cfg[] = {
+static struct dram_cfg_param ddr_fsp0_cfg_mt53d512m16d1ds[] = {
     {0xd0000, 0x0},
     {0x54003, 0xe94},
     {0x54004, 0x4},
@@ -1272,7 +1272,7 @@ static struct dram_cfg_param ddr_fsp0_cfg[] = {
 };
 
 /* P1 message block parameter for training firmware */
-static struct dram_cfg_param ddr_fsp1_cfg[] = {
+static struct dram_cfg_param ddr_fsp1_cfg_mt53d512m16d1ds[] = {
     {0xd0000, 0x0},
     {0x54002, 0x1},
     {0x54003, 0x74a},
@@ -1310,7 +1310,7 @@ static struct dram_cfg_param ddr_fsp1_cfg[] = {
 };
 
 /* P2 message block parameter for training firmware */
-static struct dram_cfg_param ddr_fsp2_cfg[] = {
+static struct dram_cfg_param ddr_fsp2_cfg_mt53d512m16d1ds[] = {
     {0xd0000, 0x0},
     {0x54002, 0x102},
     {0x54003, 0x270},
@@ -1349,7 +1349,7 @@ static struct dram_cfg_param ddr_fsp2_cfg[] = {
 
 
 /* P0 2D message block parameter for training firmware */
-static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+static struct dram_cfg_param ddr_fsp0_2d_cfg_mt53d512m16d1ds[] = {
     {0xd0000, 0x0},
     {0x54003, 0xe94},
     {0x54004, 0x4},
@@ -1387,7 +1387,7 @@ static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
 };
 
 /* DRAM PHY init engine image */
-static struct dram_cfg_param ddr_phy_pie[] = {
+static struct dram_cfg_param ddr_phy_pie_mt53d512m16d1ds[] = {
     {0xd0000, 0x0},
     {0x90000, 0x10},
     {0x90001, 0x400},
@@ -1949,51 +1949,51 @@ static struct dram_cfg_param ddr_phy_pie[] = {
     {0xd0000, 0x1},
 };
 
-static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
+static struct dram_fsp_msg ddr_dram_fsp_msg_mt53d512m16d1ds[] = {
     {
         /* P0 3733mts 1D */
         .drate = 3733,
         .fw_type = FW_1D_IMAGE,
-        .fsp_cfg = ddr_fsp0_cfg,
-        .fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg),
+        .fsp_cfg = ddr_fsp0_cfg_mt53d512m16d1ds,
+        .fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg_mt53d512m16d1ds),
     },
     {
         /* P1 1866mts 1D */
         .drate = 1866,
         .fw_type = FW_1D_IMAGE,
-        .fsp_cfg = ddr_fsp1_cfg,
-        .fsp_cfg_num = ARRAY_SIZE(ddr_fsp1_cfg),
+        .fsp_cfg = ddr_fsp1_cfg_mt53d512m16d1ds,
+        .fsp_cfg_num = ARRAY_SIZE(ddr_fsp1_cfg_mt53d512m16d1ds),
     },
     {
         /* P2 625mts 1D */
         .drate = 625,
         .fw_type = FW_1D_IMAGE,
-        .fsp_cfg = ddr_fsp2_cfg,
-        .fsp_cfg_num = ARRAY_SIZE(ddr_fsp2_cfg),
+        .fsp_cfg = ddr_fsp2_cfg_mt53d512m16d1ds,
+        .fsp_cfg_num = ARRAY_SIZE(ddr_fsp2_cfg_mt53d512m16d1ds),
     },
     {
         /* P0 3733mts 2D */
         .drate = 3733,
         .fw_type = FW_2D_IMAGE,
-        .fsp_cfg = ddr_fsp0_2d_cfg,
-        .fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg),
+        .fsp_cfg = ddr_fsp0_2d_cfg_mt53d512m16d1ds,
+        .fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg_mt53d512m16d1ds),
     },
 };
 
 /* ddr timing config params */
-struct dram_timing_info dram_timing = {
-    .ddrc_cfg = ddr_ddrc_cfg,
-    .ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
-    .ddrphy_cfg = ddr_ddrphy_cfg,
-    .ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
-    .fsp_msg = ddr_dram_fsp_msg,
-    .fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
-    .ddrphy_trained_csr = ddr_ddrphy_trained_csr,
-    .ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
-    .ddrphy_pie = ddr_phy_pie,
-    .ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
+struct dram_timing_info dram_timing_mt53d512m16d1ds = {
+    .ddrc_cfg = ddr_ddrc_cfg_mt53d512m16d1ds,
+    .ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_mt53d512m16d1ds),
+    .ddrphy_cfg = ddr_ddrphy_cfg_mt53d512m16d1ds,
+    .ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg_mt53d512m16d1ds),
+    .fsp_msg = ddr_dram_fsp_msg_mt53d512m16d1ds,
+    .fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg_mt53d512m16d1ds),
+    .ddrphy_trained_csr = ddr_ddrphy_trained_csr_mt53d512m16d1ds,
+    .ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr_mt53d512m16d1ds),
+    .ddrphy_pie = ddr_phy_pie_mt53d512m16d1ds,
+    .ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie_mt53d512m16d1ds),
     .fsp_table = { 3733, 1866, 625, },
-    .fsp_cfg = ddr_dram_fsp_cfg,
-    .fsp_cfg_num = ARRAY_SIZE(ddr_dram_fsp_cfg),
+    .fsp_cfg = ddr_dram_fsp_cfg_mt53d512m16d1ds,
+    .fsp_cfg_num = ARRAY_SIZE(ddr_dram_fsp_cfg_mt53d512m16d1ds),
 };
 
