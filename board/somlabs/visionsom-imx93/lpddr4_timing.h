@@ -13,5 +13,6 @@
 #define LPDDR4_TIMING_H
 
 extern struct dram_timing_info dram_timing_mt53d512m16d1ds;
+extern struct dram_timing_info dram_timing_mt53e1g16d1zw;
 
 #endif /* LPDDR4_TIMING_H */
