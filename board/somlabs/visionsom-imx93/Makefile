@@ -10,4 +10,5 @@ obj-y += hw_config.o
 ifdef CONFIG_SPL_BUILD
 obj-y += spl.o
 obj-y += lpddr4_timing.o
+obj-y += lpddr4_timing_2g.o
 endif
