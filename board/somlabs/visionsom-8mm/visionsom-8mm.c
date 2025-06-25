@@ -123,6 +123,7 @@ enum display_type {
     dt_mipi10,
     dt_lvds_rvt70hslnwc00_b,
     dt_hdmi,
+    dt_display_port,
     dt_reserved
 };
 
@@ -192,20 +193,21 @@ int board_late_init(void)
     }
 
     /*
-     * We have 5 display options supported for 2 kinds of carrier boards:
+     * We have 6 display options supported for 2 kinds of carrier boards:
      * - no display
      * - MIPI 7 inch 720x1280, vertical (PH720128T003) touch @ 0x38
      * - MIPI 7 inch 1024x600, horizontal (RVT70HSMNWC00) touch @ 0x41
      * - MIPI 10 inch 1280x800, horizontal (PH128800T004-ZFC18) touch @ 0x01
      * - LVDS 10 inch 1024x600, horizontal (RVT70HSLNWC00-B) - lvds converter @ 0x48
      * - HDMI - resolution detected by kernel with EDID - hdmi converter @ 0x48
+     * - DisplayPort - resolution detected by kernel with EDID - DP converter @ 0x2d
      *
      * For std-cb we just check presence of i2c device with specific address and read gpio
      *   to distinguish between LVDS and HDMI mode (selected by jumper)
      *
-     * For std-adv board we have to read GPIO4-20:
+     * For adv-cb board we have to read GPIO4-20:
      *  - low state means HDMI/LVDS, another GPIO selects between them
-     *  - high state means MIPI/no display mode - exact display is dected by scanning i2c bus
+     *  - high state means MIPI/no display mode - exact display is detected by scanning i2c bus
      */
     if(adv_carrier_board && cbadv_is_hdmi_selected()) {
         display = dt_hdmi;
@@ -224,12 +226,14 @@ int board_late_init(void)
         display = dt_mipi7_rvt70hsmnwc00;
     } else if(dm_i2c_probe(bus, 0x01, 0, &i2c_dev) == 0) {
         display = dt_mipi10;
+    } else if(dm_i2c_probe(bus, 0x2d, 0, &i2c_dev) == 0) {
+        display = dt_display_port;
     } else {
         display = dt_none;
     }
 
-    const char* disp_type[] = {"", "-mipi7-ph720128t003",  "-mipi7-rvt70hsmnwc00", "-mipi10", "-lvds-rvt70hslnwc00-b", "-hdmi"};
-    const char* displays[]  = {"NONE", "MIPI 7\" PH720128T003", "MIPI 7\" RVT70HSMNWC00", "MIPI 10\"", "LVDS RVT70HSLNWC00-B", "HDMI"};
+    const char* disp_type[] = {"", "-mipi7-ph720128t003",  "-mipi7-rvt70hsmnwc00", "-mipi10", "-lvds-rvt70hslnwc00-b", "-hdmi", "-dp"};
+    const char* displays[]  = {"NONE", "MIPI 7\" PH720128T003", "MIPI 7\" RVT70HSMNWC00", "MIPI 10\"", "LVDS RVT70HSLNWC00-B", "HDMI", "DisplayPort"};
 
     env_set("cb_disp", disp_type[display]);
     printf("Carrier board type: [%s], display: [%s]\n", (adv_carrier_board)?"ADV":"STD", displays[display]);
