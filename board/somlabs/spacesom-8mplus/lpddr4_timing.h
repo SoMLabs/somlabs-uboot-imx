@@ -15,5 +15,6 @@
 extern struct dram_timing_info dram_timing;
 extern struct dram_timing_info dram_timing_4g;
 extern struct dram_timing_info dram_timing_mt53e1g32d2fw;
+extern struct dram_timing_info dram_timing_mt53e2g32d4de;
 
 #endif /* LPDDR4_TIMING_H */

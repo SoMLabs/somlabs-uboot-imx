@@ -47,6 +47,7 @@ const struct dram_params dram_data[] = {
 	MEM_ENTRY("MT53D512M32D2DS",  2048, &dram_timing),
 	MEM_ENTRY("MT53D1024M32D4DT", 4096, &dram_timing_4g),
 	MEM_ENTRY("MT53E1G32D2FW",    4096, &dram_timing_mt53e1g32d2fw),
+	MEM_ENTRY("MT53E2G32D4DE",    8192, &dram_timing_mt53e2g32d4de),
 };
 
 /*
