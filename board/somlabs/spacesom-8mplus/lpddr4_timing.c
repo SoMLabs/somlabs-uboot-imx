@@ -14,6 +14,10 @@
 #include <linux/kernel.h>
 #include <asm/arch/ddr.h>
 
+#include "lpddr4_timing_4g.h"
+#include "lpddr4_timing_mt53e1g32d2fw.h"
+#include "lpddr4_timing_mt53e2g32d4de.h"
+
 struct dram_cfg_param ddr_ddrc_cfg[] = {
 	/** Initialize DDRC registers **/
 	{ 0x3d400304, 0x1 },
@@ -1849,4 +1853,46 @@ struct dram_timing_info dram_timing = {
 	.ddrphy_pie = ddr_phy_pie,
 	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
 	.fsp_table = { 4000, 400, 100, },
+};
+
+struct dram_timing_info dram_timing_4g = {
+        .ddrc_cfg = ddr_ddrc_cfg_4g,
+        .ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_4g),
+        .ddrphy_cfg = ddr_ddrphy_cfg_4g,
+        .ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg_4g),
+        .fsp_msg = ddr_dram_fsp_msg_4g,
+        .fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg_4g),
+        .ddrphy_trained_csr = ddr_ddrphy_trained_csr,
+        .ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
+        .ddrphy_pie = ddr_phy_pie_4g,
+        .ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie_4g),
+        .fsp_table = { 3000, 400, 100, },
+};
+
+struct dram_timing_info dram_timing_mt53e1g32d2fw = {
+    .ddrc_cfg = ddr_ddrc_cfg_mt53e1g32d2fw,
+    .ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_mt53e1g32d2fw),
+    .ddrphy_cfg = ddr_ddrphy_cfg_mt53e1g32d2fw,
+    .ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg_mt53e1g32d2fw),
+    .fsp_msg = ddr_dram_fsp_msg_mt53e1g32d2fw,
+    .fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg_mt53e1g32d2fw),
+    .ddrphy_trained_csr = ddr_ddrphy_trained_csr,
+    .ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
+    .ddrphy_pie = ddr_phy_pie_mt53e1g32d2fw,
+    .ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie_mt53e1g32d2fw),
+    .fsp_table = { 4000, },
+};
+
+struct dram_timing_info dram_timing_mt53e2g32d4de = {
+    .ddrc_cfg = ddr_ddrc_cfg_mt53e2g32d4de,
+    .ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_mt53e2g32d4de),
+    .ddrphy_cfg = ddr_ddrphy_cfg_mt53e2g32d4de,
+    .ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg_mt53e2g32d4de),
+    .fsp_msg = ddr_dram_fsp_msg_mt53e2g32d4de,
+    .fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg_mt53e2g32d4de),
+    .ddrphy_trained_csr = ddr_ddrphy_trained_csr,
+    .ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
+    .ddrphy_pie = ddr_phy_pie_mt53e2g32d4de,
+    .ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie_mt53e2g32d4de),
+    .fsp_table = { 4000, },
 };
