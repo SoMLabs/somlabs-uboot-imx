@@ -14,13 +14,11 @@
 #include <spl.h>
 #include <asm/global_data.h>
 #include <asm/io.h>
-#include <asm/arch/imx93_pins.h>
 #include <asm/arch/mu.h>
 #include <asm/arch/clock.h>
 #include <asm/arch/sys_proto.h>
 #include <asm/mach-imx/boot_mode.h>
 #include <asm/mach-imx/mxc_i2c.h>
-#include <asm/arch-mx7ulp/gpio.h>
 #include <asm/mach-imx/ele_api.h>
 #include <asm/mach-imx/syscounter.h>
 #include <asm/sections.h>
@@ -34,7 +32,6 @@
 #include <asm/arch/ddr.h>
 #include <power/pmic.h>
 #include <power/pca9450.h>
-#include <power/pf0900.h>
 #include <asm/arch/trdc.h>
 
 #include "hw_config.h"
@@ -124,7 +121,7 @@ int power_init_board(void)
 		pmic_reg_write(dev, PCA9450_BUCK3OUT_DVS0, buck_val + 0x4);
 	}
 
-	if (IS_ENABLED(CONFIG_IMX93_EVK_LPDDR4)) {
+	if (IS_ENABLED(CONFIG_IMX93_EVK_LPDDR4) || IS_ENABLED(CONFIG_IMX91_EVK_LPDDR4)) {
 		/* Set VDDQ to 1.1V from buck2 */
 		pmic_reg_write(dev, PCA9450_BUCK2OUT_DVS0, 0x28);
 	}

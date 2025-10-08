@@ -12,8 +12,16 @@
 #include <asm/global_data.h>
 #include <asm/arch-imx9/ccm_regs.h>
 #include <asm/arch/sys_proto.h>
+
+#if defined CONFIG_TARGET_VISIONSOM_IMX93
 #include <asm/arch-imx9/imx93_pins.h>
-#include <asm/mach-imx/gpio.h>
+#elif defined CONFIG_TARGET_VISIONSOM_IMX91
+#include <asm/arch-imx9/imx91_pins.h>
+#else
+#error "Unsupported target configured!"
+#endif
+
+#include <asm/gpio.h>
 #include <asm/arch/clock.h>
 #include <power/pmic.h>
 #include <dm/device.h>
@@ -25,11 +33,29 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
+
+#if defined CONFIG_TARGET_VISIONSOM_IMX93
+
+#define MX9x_PAD_UART1_RXD__LPUART1_RX	MX93_PAD_UART1_RXD__LPUART1_RX
+#define MX9x_PAD_UART1_TXD__LPUART1_TX	MX93_PAD_UART1_TXD__LPUART1_TX
+#define MX9x_PAD_GPIO_IO07__GPIO2_IO07	MX93_PAD_GPIO_IO07__GPIO2_IO07
+
+#elif defined CONFIG_TARGET_VISIONSOM_IMX91
+
+#define MX9x_PAD_UART1_RXD__LPUART1_RX	MX91_PAD_UART1_RXD__LPUART1_RX
+#define MX9x_PAD_UART1_TXD__LPUART1_TX	MX91_PAD_UART1_TXD__LPUART1_TX
+#define MX9x_PAD_GPIO_IO07__GPIO2_IO07	MX91_PAD_GPIO_IO07__GPIO2_IO7
+
+#endif
+
+
+
+
 #define UART_PAD_CTRL	(PAD_CTL_DSE(6) | PAD_CTL_FSEL2)
 
 static iomux_v3_cfg_t const uart_pads[] = {
-	MX93_PAD_UART1_RXD__LPUART1_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
-	MX93_PAD_UART1_TXD__LPUART1_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
+	MX9x_PAD_UART1_RXD__LPUART1_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
+	MX9x_PAD_UART1_TXD__LPUART1_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
 };
 
 #if CONFIG_IS_ENABLED(EFI_HAVE_CAPSULE_SUPPORT)
@@ -95,15 +121,29 @@ int board_init(void)
 	return 0;
 }
 
+#if defined CONFIG_TARGET_VISIONSOM_IMX93
 static int cb_is_lvds_enabled(void)
 {
-	uint32_t lvds_select;
-	imx_iomux_v3_setup_pad(MX93_PAD_GPIO_IO07__GPIO2_IO07 |
-				MUX_PAD_CTRL(PAD_CTL_PUE));
-        lvds_select = IMX_GPIO_NR(1, 7);
-	gpio_request(lvds_select, "lvds_sel");
-	gpio_direction_input(lvds_select);
-	return !gpio_get_value(lvds_select);
+	struct gpio_desc desc;
+	int ret;
+
+	imx_iomux_v3_setup_pad(MX9x_PAD_GPIO_IO07__GPIO2_IO07 |
+			MUX_PAD_CTRL(PAD_CTL_PUE));
+
+	ret = dm_gpio_lookup_name("GPIO2_7", &desc);
+	printf("error: %s:%u %d\n", __func__, __LINE__, ret);
+	if (ret)
+		return 0;
+
+	ret = dm_gpio_request(&desc, "LVDS_SEL");
+	printf("error: %s:%u %d\n", __func__, __LINE__, ret);
+	if (ret)
+		return 0;
+
+	dm_gpio_set_dir_flags(&desc, GPIOD_IS_IN);
+	printf("error: %s:%u %d\n", __func__, __LINE__, dm_gpio_get_value(&desc));
+
+	return !dm_gpio_get_value(&desc);
 }
 
 int board_late_init(void)
@@ -112,12 +152,8 @@ int board_late_init(void)
 	struct udevice *i2c_dev = NULL;
 	int ret;
 
-	env_set("sec_boot", "no");
-#ifdef CONFIG_AHAB_BOOT
-	env_set("sec_boot", "yes");
-#endif
-
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
+	env_set("board", "visionsom-imx93");
 	env_set("board_name", "VisionSOM-IMX93");
 	env_set("board_rev", "iMX93");
 #endif
@@ -142,6 +178,20 @@ int board_late_init(void)
 
 	return 0;
 }
+#endif
+
+#if defined CONFIG_TARGET_VISIONSOM_IMX91
+int board_late_init(void)
+{
+#ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
+	env_set("board", "visionsom-imx91");
+	env_set("board_name", "VisionSOM-IMX91");
+	env_set("board_rev", "iMX91");
+#endif
+
+	return 0;
+}
+#endif
 
 int ft_board_setup(void *fdt, struct bd_info *bd)
 {
