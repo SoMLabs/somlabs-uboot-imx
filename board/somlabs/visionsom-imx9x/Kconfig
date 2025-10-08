@@ -1,0 +1,40 @@
+if TARGET_VISIONSOM_IMX93
+
+config SYS_BOARD
+	default "visionsom-imx9x"
+
+config SYS_VENDOR
+	default "somlabs"
+
+config SYS_CONFIG_NAME
+	default "visionsom-imx93"
+
+config IMX93_EVK_LPDDR4X
+	bool "Using LPDDR4X Timing and PMIC voltage"
+	default y
+	select IMX9_LPDDR4X
+	help
+	  Select the LPDDR4X timing and 0.6V VDDQ
+
+endif
+
+if TARGET_VISIONSOM_IMX91
+
+config SYS_BOARD
+	default "visionsom-imx9x"
+
+config SYS_VENDOR
+	default "somlabs"
+
+config SYS_CONFIG_NAME
+	default "visionsom-imx91"
+
+
+config IMX91_EVK_LPDDR4
+	bool "Using LPDDR4 Timing and PMIC voltage"
+	default y
+	select IMX9_LPDDR4X
+	help
+	  Select the LPDDR4 timing and 1.1V VDDQ
+
+endif

@@ -4,7 +4,7 @@
 # SPDX-License-Identifier:      GPL-2.0+
 #
 
-obj-y += visionsom-imx93.o
+obj-y += visionsom-imx9x.o
 obj-y += hw_config.o
 
 ifdef CONFIG_SPL_BUILD
