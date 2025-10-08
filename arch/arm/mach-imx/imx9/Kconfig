@@ -65,6 +65,11 @@ config TARGET_VISIONSOM_IMX93
 	select OF_BOARD_FIXUP
 	select IMX93
 
+config TARGET_VISIONSOM_IMX91
+	bool "visionsom_imx91"
+	select OF_BOARD_FIXUP
+	select IMX91
+
 config TARGET_PHYCORE_IMX93
 	bool "phycore_imx93"
 	select IMX93
@@ -97,6 +102,6 @@ source "board/variscite/imx93_var_som/Kconfig"
 source "board/freescale/imx93_qsb/Kconfig"
 source "board/freescale/imx95_evk/Kconfig"
 source "board/toradex/verdin-imx95/Kconfig"
-source "board/somlabs/visionsom-imx93/Kconfig"
+source "board/somlabs/visionsom-imx9x/Kconfig"
 
 endif
