@@ -588,6 +588,16 @@ config TARGET_SPACESOM_8MPLUS
 	select MISC
 	select SPL_CRYPTO_SUPPORT if SPL
 
+config TARGET_STARSOM_8MP
+	bool "SOMLABS StarSOM-8MP"
+	select IMX8MP
+        select SUPPORT_SPL
+	select IMX8M_LPDDR4
+	select FSL_CAAM
+	select FSL_BLOB
+	select MISC
+	select SPL_CRYPTO_SUPPORT if SPL
+
 endchoice
 
 source "board/advantech/imx8mp_rsb3720a1/Kconfig"
@@ -624,6 +634,7 @@ source "board/polyhex/imx8mp_debix_model_a/Kconfig"
 source "board/purism/librem5/Kconfig"
 source "board/ronetix/imx8mq-cm/Kconfig"
 source "board/somlabs/spacesom-8mplus/Kconfig"
+source "board/somlabs/starsom-8mp/Kconfig"
 source "board/somlabs/titansbc-8mmini/Kconfig"
 source "board/somlabs/visionsom-8mm/Kconfig"
 source "board/technexion/pico-imx8mq/Kconfig"
