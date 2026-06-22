@@ -1,0 +1,6 @@
+SOMLABS StarSOM-8MP
+M:	Arkadiusz Karas <arkadiusz.karas@somlabs.com>
+S:	Maintained
+F:	board/somlabs/starsom_8mp/
+F:	include/configs/starsom_8mp.h
+F:	configs/starsom_8mp_defconfig

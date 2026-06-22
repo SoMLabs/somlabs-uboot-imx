@@ -1,0 +1,12 @@
+if TARGET_STARSOM_8MP
+
+config SYS_BOARD
+	default "starsom-8mp"
+
+config SYS_VENDOR
+	default "somlabs"
+
+config SYS_CONFIG_NAME
+	default "starsom_8mp"
+
+endif
