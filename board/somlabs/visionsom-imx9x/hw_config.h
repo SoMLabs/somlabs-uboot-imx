@@ -6,7 +6,6 @@
 #ifndef HW_CONFIG_H
 #define HW_CONFIG_H
 
-#include <common.h>
 #include <asm/arch/ddr.h>
 
 #ifdef CONFIG_SPL_BUILD

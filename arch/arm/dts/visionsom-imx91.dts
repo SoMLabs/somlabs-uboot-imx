@@ -6,6 +6,7 @@
 /dts-v1/;
 
 #include "imx91.dtsi"
+#include "imx91-u-boot.dtsi"
 
 / {
 	model = "SoMLabs VisionSOM-IMX91";
@@ -83,14 +84,6 @@
 
 &adc1 {
 	vref-supply = <&reg_vref_1v8>;
-	status = "okay";
-};
-
-&mu1 {
-	status = "okay";
-};
-
-&mu2 {
 	status = "okay";
 };
 

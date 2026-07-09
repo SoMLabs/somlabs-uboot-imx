@@ -3,7 +3,6 @@
  * Copyright 2020 Somlabs
  */
 
-#include <common.h>
 #include <malloc.h>
 #include <errno.h>
 #include <asm/io.h>

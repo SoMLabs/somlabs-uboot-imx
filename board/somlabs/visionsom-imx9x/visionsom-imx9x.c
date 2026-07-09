@@ -3,7 +3,6 @@
  * Copyright 2024 Somlabs
  */
 
-#include <common.h>
 #include <env.h>
 #include <efi_loader.h>
 #include <init.h>
@@ -131,17 +130,14 @@ static int cb_is_lvds_enabled(void)
 			MUX_PAD_CTRL(PAD_CTL_PUE));
 
 	ret = dm_gpio_lookup_name("GPIO2_7", &desc);
-	printf("error: %s:%u %d\n", __func__, __LINE__, ret);
 	if (ret)
 		return 0;
 
 	ret = dm_gpio_request(&desc, "LVDS_SEL");
-	printf("error: %s:%u %d\n", __func__, __LINE__, ret);
 	if (ret)
 		return 0;
 
 	dm_gpio_set_dir_flags(&desc, GPIOD_IS_IN);
-	printf("error: %s:%u %d\n", __func__, __LINE__, dm_gpio_get_value(&desc));
 
 	return !dm_gpio_get_value(&desc);
 }

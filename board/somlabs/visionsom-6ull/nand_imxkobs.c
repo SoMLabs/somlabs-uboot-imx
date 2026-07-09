@@ -12,7 +12,6 @@
 	It requiers software BCH and bit reverse libraries.
 */
 
-#include <common.h>
 #include <linux/mtd/mtd.h>
 #include <linux/errno.h>
 #include <command.h>
