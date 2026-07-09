@@ -4,7 +4,9 @@
  */
 
 #include "hw_config.h"
+#include <asm/arch/imx-regs.h>
 #include <fuse.h>
+#include <linux/sizes.h>
 
 #ifdef CONFIG_SPL_BUILD
 #include "lpddr4_timing.h"

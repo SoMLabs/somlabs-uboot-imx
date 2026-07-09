@@ -3,7 +3,6 @@
  * Copyright 2023 Somlabs
  */
 
-#include <common.h>
 #include <env.h>
 #include <errno.h>
 #include <init.h>
@@ -316,12 +315,6 @@ static struct dwc3_device dwc3_device_data = {
 	.index = 0,
 	.power_down_scale = 2,
 };
-
-int dm_usb_gadget_handle_interrupts(struct udevice *dev)
-{
-	dwc3_uboot_handle_interrupt(dev);
-	return 0;
-}
 
 static void dwc3_nxp_usb_phy_init(struct dwc3_device *dwc3)
 {

@@ -3,7 +3,6 @@
  * Copyright 2026 Somlabs
  */
 
-#include <common.h>
 #include <env.h>
 #include <errno.h>
 #include <init.h>
@@ -297,12 +296,6 @@ static struct dwc3_device dwc3_device_data = {
 	.power_down_scale = 2,
 };
 
-int dm_usb_gadget_handle_interrupts(struct udevice *dev)
-{
-	dwc3_uboot_handle_interrupt(dev);
-	return 0;
-}
-
 static void dwc3_nxp_usb_phy_init(struct dwc3_device *dwc3)
 {
 	u32 RegData;
@@ -426,7 +419,7 @@ static int setup_eqos(void)
 			IOMUXC_GPR_GPR1_GPR_ENET_QOS_INTF_SEL_MASK, BIT(16));
 	setbits_le32(&gpr->gpr[1], BIT(19) | BIT(21));
 
-	return set_clk_eqos(ENET_125MHZ);
+	return set_clk_enet(ENET_125MHZ);
 }
 
 #if CONFIG_IS_ENABLED(NET)
