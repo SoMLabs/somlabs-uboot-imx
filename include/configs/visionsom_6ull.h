@@ -13,6 +13,10 @@
 #include "mx6_common.h"
 #include <asm/mach-imx/gpio.h>
 
+#ifdef CONFIG_BOOTCOMMAND
+#undef CONFIG_BOOTCOMMAND
+#endif
+
 #define CONFIG_BOOTCOMMAND \
 	"run set_fdt_file; " \
 	"run checkbootdev; " \

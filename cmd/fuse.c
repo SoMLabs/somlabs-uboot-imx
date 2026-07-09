@@ -16,6 +16,17 @@
 #include <linux/errno.h>
 #include <linux/string.h>
 
+static int strtou32(const char *str, unsigned int base, u32 *result)
+{
+	char *ep;
+
+	*result = simple_strtoul(str, &ep, base);
+	if (ep == str || *ep != '\0')
+		return -EINVAL;
+
+	return 0;
+}
+
 static int confirm_prog(void)
 {
 	puts("Warning: Programming fuses is an irreversible operation!\n"

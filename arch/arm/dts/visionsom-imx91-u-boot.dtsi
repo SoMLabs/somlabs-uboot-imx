@@ -41,7 +41,7 @@
 };
 
 &A55_0 {
-	clocks = <&clk IMX91_CLK_A55_SEL>;
+	clocks = <&clk IMX93_CLK_A55_SEL>;
 };
 
 &{/soc@0} {
@@ -204,14 +204,4 @@
 &clk_ext1 {
 	bootph-all;
 	bootph-pre-ram;
-};
-
-&lcdif {
-	assigned-clocks = <&clk IMX91_CLK_MEDIA_AXI>, <&clk IMX91_CLK_MEDIA_APB>;
-	assigned-clock-parents = <&clk IMX91_CLK_SYS_PLL_PFD0>, <&clk IMX91_CLK_SYS_PLL_PFD1_DIV2>;
-	assigned-clock-rates = <333333334>, <133333334>;
-};
-
-&parallel_disp_fmt {
-	/delete-property/ power-domains;
 };

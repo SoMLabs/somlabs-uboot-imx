@@ -6,8 +6,8 @@
 #ifndef HW_CONFIG_H
 #define HW_CONFIG_H
 
-#include <common.h>
 #include <asm/arch/ddr.h>
+#include <linux/sizes.h>
 
 #ifdef CONFIG_SPL_BUILD
 struct dram_timing_info* spacesom8mp_get_dram_timing(void);

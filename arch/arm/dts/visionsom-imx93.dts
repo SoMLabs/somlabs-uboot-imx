@@ -7,6 +7,7 @@
 
 // #include <dt-bindings/usb/pd.h>
 #include "imx93.dtsi"
+#include "imx93-u-boot.dtsi"
 
 / {
 	model = "SoMLabs VisionSOM-IMX93";
