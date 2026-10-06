@@ -43,14 +43,15 @@ struct dram_params {
 /* MT53B256M32D1DS memory has two possible hw_config values */
 const struct dram_params dram_data[] = {
     MEM_ENTRY("UNKNOWN",             0, NULL),
-    MEM_ENTRY("MT53D512M32D2DS",  2048, &dram_timing_mt53d512m32d2ds),
-    MEM_ENTRY("K4F6E304HBMGCJ",   2048, &dram_timing_k4f6e304hbmgcj),
-    MEM_ENTRY("MT53B256M32D1DS",  1024, &dram_timing_mt53b256m32d1ds),
-    MEM_ENTRY("MT53D1024M32D4DT", 4096, &dram_timing_mt53d1024m32d4dt),
-    MEM_ENTRY("MT53E128M32D2DS",   512, &dram_timing_mt53e128m32d2ds),
-    MEM_ENTRY("K4F8E3S4HBMFCJ",   1024, &dram_timing_k4f8e3s4hbmfcj),
-    MEM_ENTRY("MT53B256M32D1DS",  1024, &dram_timing_mt53b256m32d1ds),
-    MEM_ENTRY("K4F8E3S4HDGFCL",   1024, &dram_timing_k4f8e3s4hdgfcl),
+    MEM_ENTRY("MT53D512M32D2DS",    2048, &dram_timing_mt53d512m32d2ds),
+    MEM_ENTRY("K4F6E304HBMGCJ",     2048, &dram_timing_k4f6e304hbmgcj),
+    MEM_ENTRY("MT53B256M32D1DS",    1024, &dram_timing_mt53b256m32d1ds),
+    MEM_ENTRY("MT53D1024M32D4DT",   4096, &dram_timing_mt53d1024m32d4dt),
+    MEM_ENTRY("MT53E128M32D2DS",     512, &dram_timing_mt53e128m32d2ds),
+    MEM_ENTRY("K4F8E3S4HBMFCJ",     1024, &dram_timing_k4f8e3s4hbmfcj),
+    MEM_ENTRY("MT53B256M32D1DS",    1024, &dram_timing_mt53b256m32d1ds),
+    MEM_ENTRY("K4F8E3S4HDGFCL",     1024, &dram_timing_k4f8e3s4hdgfcl),
+    MEM_ENTRY("RS1G32LR4D2BNR46BT", 4096, &dram_timing_rs1g32lr4d2bnr46bt),
 };
 
 /*
