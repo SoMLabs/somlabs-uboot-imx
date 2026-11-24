@@ -44,10 +44,12 @@ struct dram_params {
 
 // TODO default timing change
 const struct dram_params dram_data[] = {
-    MEM_ENTRY("UNKNOWN",            0, NULL),
-    MEM_ENTRY("DEFAULT",         1024, &dram_timing_mt53d512m16d1ds),
-    MEM_ENTRY("MT53D512M16D1DS", 1024, &dram_timing_mt53d512m16d1ds),
-    MEM_ENTRY("MT53E1G16D1ZW",   2048, &dram_timing_mt53e1g16d1zw),
+    MEM_ENTRY("UNKNOWN",                0, NULL),
+    MEM_ENTRY("DEFAULT",             1024, &dram_timing_mt53d512m16d1ds),
+    MEM_ENTRY("MT53D512M16D1DS",     1024, &dram_timing_mt53d512m16d1ds),
+    MEM_ENTRY("MT53E1G16D1ZW",       2048, &dram_timing_mt53e1g16d1zw),
+    MEM_ENTRY("W66CP6RBQAGJ",         512, &dram_timing_w66cp6rbqagj),
+    MEM_ENTRY("RS1G32LR4D2BNR-46BT", 2048, &dram_timing_rs1g32lr4d2bnr46bt),
 };
 
 /*
